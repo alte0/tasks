@@ -1,0 +1,35 @@
+.form {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  &_task-add {
+    max-width: none;
+    & label {
+      @media screen and (max-width: 690px) {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+  // &__reg {}
+  // &__auth {}
+
+  &__title {
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  &__row {
+    margin-bottom: 24px;
+    &_conten-column,
+    &_label-group-two {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &__input,
+  &__button {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}

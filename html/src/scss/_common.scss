@@ -1,0 +1,38 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: $baseFont;
+  font-size: $baseFontSize;
+  line-height: $baseLineHeight;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+textarea {
+  resize: none;
+  padding: 8px;
+  line-height: $baseLineHeight;
+  min-height: $baseLineHeight * 3 * $baseFontSize;
+}
+
+.container {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer {
+  margin-top: auto;
+  text-align: center;
+}

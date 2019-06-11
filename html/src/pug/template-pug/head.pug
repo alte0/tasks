@@ -1,0 +1,17 @@
+head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    block head
+    meta(name='copyright', content= copyrightContent || 'Start build project (SBP), 2018')
+    meta(name='author' content= authorContent || 'Start build project (SBP)')
+    title= pageTitle || 'Start build project (SBP)'
+    //- link(rel='stylesheet', href='<%=htmlWebpackPlugin.files.css%>')
+
+    link(href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700&display=swap&subset=cyrillic&display=swap', rel='stylesheet')
+
+    if minify
+      style
+        include ../../../dist/css/style.css
+    else
+      link(rel='stylesheet', href='css/style.css')
