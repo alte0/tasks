@@ -26,6 +26,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "flatpickr": "^4.6.1",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {

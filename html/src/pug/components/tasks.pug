@@ -7,7 +7,7 @@
   +e.LABEL.tab(for="set-tasks")
     +e.H2.title Задачи поставленные мною.
   +e.hidden-divider
-  +e.INPUT.input#set-task(type="radio", name="tasks-tab")
+  +e.INPUT.input#set-task(type="radio", name="tasks-tab" checked)
   +e.LABEL.tab(for="set-task")
     +e.H2.title Поставить задачу.
 
@@ -38,16 +38,17 @@
   +e.set-task
     +b.FORM.form._task-add(action="", method="post")
       +e.row._label-group-two
-        +e.LABEL Дата начало задачи 
-          +e.INPUT.time-add(type="date", name="text")
-        //- +e.row
-        +e.LABEL Дата окончания задачи (если задачу нужно выполнить до определенной даты)
-          +e.INPUT.time-end(type="date", name="text")
+        +e.LABEL Дата начала и окончания задачи 
+          .flatpickr
+            +e.INPUT.date(type="text", name="text", placeholder="выберите дату или даты", data-input)
+            button(type="button" title="toggle" data-toggle="") календарь
+            button(type="button" title="toggle" data-clear="") очистить
+
       +e.row._conten-column
         +e.LABEL Загаловок задачи 
         +e.TEXTAREA.title-add(type="date", name="title" placeholder="сделать ...")
       +e.row._conten-column
-        +e.LABEL Текст задачи 
+        +e.LABEL Дополнительная информация по задаче
         +e.TEXTAREA#textarea-text(name="text" placeholder="Обьяснение задачи ...")
       +e.row
         +e.BUTTON.submit(type="submit") Добавить задачу
