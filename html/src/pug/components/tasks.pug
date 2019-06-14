@@ -15,7 +15,7 @@
     - var i = 1
     while i <= 4
       +b.task
-        +e.date Начало задачи: 11.06.2019
+        +e.date-start Начало задачи: 11.06.2019
         +e.status в работе.
         +e.H3.title Загаловок задачи #{i}
         +e.desc
@@ -28,7 +28,7 @@
     - var i = 1
     while i <= 4
       +b.task
-        +e.date Начало задачи: 10.06.2019
+        +e.date-start Начало задачи: 10.06.2019
         +e.status выполнено.
         +e.H3.title Загаловок задачи #{i}
         +e.desc
@@ -41,16 +41,21 @@
       +e.row._label-group-two
         +e.LABEL Дата начала и окончания задачи 
           .flatpickr
-            +e.INPUT.date(type="text", name="text", placeholder="выберите дату или даты", data-input)
+            +e.INPUT.date(type="text", name="text", placeholder="выберите дату или даты", data-input required)
             button(type="button" title="toggle" data-toggle="") календарь
             button(type="button" title="toggle" data-clear="") очистить
 
-      +e.row._conten-column
+      +e.row._content-column
+        +e.SPAN Выберите исполнителя
+        +e.SELECT.list-users(name="executor" required)
+          option(value="" selected disabled) Не выбрано
+          option(value="") User
+      +e.row._content-column
         +e.LABEL Загаловок задачи 
-        +e.TEXTAREA.title-add(type="date", name="title" placeholder="сделать ...")
-      +e.row._conten-column
+        +e.TEXTAREA.title-add(type="date", name="title" placeholder="сделать ..." required)
+      +e.row._content-column
         +e.LABEL Дополнительная информация по задаче
-        +e.TEXTAREA#textarea-text(name="text" placeholder="Обьяснение задачи ...")
+        +e.TEXTAREA#textarea-text(name="text" placeholder="Обьяснение задачи ..." required)
       +e.row
         +e.BUTTON.submit(type="submit") Добавить задачу
       
