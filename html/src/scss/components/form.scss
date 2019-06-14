@@ -13,7 +13,11 @@
     }
   }
   // &__reg {}
-  // &__auth {}
+  &_auth {
+    & .form__row:last-child {
+      text-align: center;
+    }
+  }
 
   &__title {
     margin-bottom: 40px;
@@ -21,7 +25,7 @@
   }
   &__row {
     margin-bottom: 24px;
-    &_conten-column,
+    &_content-column,
     &_label-group-two {
       display: flex;
       flex-direction: column;
