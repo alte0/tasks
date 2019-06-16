@@ -2,10 +2,10 @@
   +e.H3.title Авторизация
   +e.row._content-column
     label(for="login") Ваш логин:
-    +e.INPUT.input#login(type="text", name="Login" required)
+    +e.INPUT.input#login(type="text", name="Login", minlength="2", maxlength="20",  required)
   +e.row._content-column
     label(for="password") Пароль:
-    +e.INPUT.input#password(type="password", name="password" required)
+    +e.INPUT.input#password(type="password", name="password", minlength="6", maxlength="20", required)
   +e.row._content-column
     +e.BUTTON.button(type="submit") Войти
   +e.row
