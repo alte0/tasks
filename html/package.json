@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx gulp",
     "sbp:dev": "npx gulp dev",
-    "sbp:prod": "npx gulp build",
+    "sbp:prod": "npx gulp prod",
     "sbp:zip": "npx gulp zip",
     "sbp:minify": "npx gulp minify"
   },
