@@ -1,0 +1,5 @@
+<IfModule dir_module>
+  # Зададим index файл который будет
+  # отдаваться если запрошенный не найден
+  DirectoryIndex signup.php
+</IfModule>

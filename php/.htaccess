@@ -1,0 +1,11 @@
+# Установка кодировки страниц сайта или off
+AddDefaultCharset Off
+
+# Запретим пользователям просматривать файлы директории
+# Options All -Indexes
+
+<IfModule dir_module>
+  # Зададим index файл который будет
+  # отдаваться если запрошенный не найден
+  DirectoryIndex index.php index.html
+</IfModule>
