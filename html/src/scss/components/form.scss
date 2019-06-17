@@ -13,11 +13,8 @@
     }
   }
   // &__reg {}
-  &_auth {
-    & .form__row:last-child {
-      text-align: center;
-    }
-  }
+  // &_auth {
+  // }
 
   &__title {
     margin-bottom: 40px;
@@ -29,6 +26,9 @@
     &_label-group-two {
       display: flex;
       flex-direction: column;
+    }
+    &:last-child {
+      text-align: center;
     }
   }
   &__input,
