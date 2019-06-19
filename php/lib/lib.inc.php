@@ -60,30 +60,31 @@ function checkHash($password, $hash) {
 /**
  * Проверка пользователя в бд
  * @param $linkBd - соединение с mysql
- * @param $login - $login
+ * @param $user - массив с данными = ["login"=> "login","password"=> "password"]
+ * @param $isPwd - Признак надо ли на проверку пароль.
  * @return void
  */
-function checkLoginInDB($linkBd, $login) {
-  $sql = "SELECT * FROM users WHERE login='$login'";
-  if (!$query = mysqli_query($linkBd, $sql)) {
-    return false;
-  }
-  $result = mysqli_fetch_assoc($query);
-  return $result["login"] === $login;
-}
-/**
- * Проверка парроля пользователя в бд
- * @param $linkBd - соединение с mysql
- * @param $password - $password
- * @return void
- */
-function checkPasswordInDB($linkBd, $password, $login) {
+function checkUserInDB($linkBd, $user, $isPwd = false) {
+  $login = $user["login"];
+  $password = $user["password"];
+  
   $sql = "SELECT * FROM `users` WHERE login='$login'";
   if (!$query = mysqli_query($linkBd, $sql)) {
     return false;
   }
   $result = mysqli_fetch_assoc($query);
-  return checkHash($password, $result["password"]);
+
+  if ($isPwd) {
+    if (checkHash($password, $result["password"]) && $result["login"] === $login) {
+      return true;
+    }
+
+    return false;
+  } else {
+    return !($result["login"] === $login);
+  }
+
+  return false;
 }
 /**
  * Регистрация пользователя
@@ -100,6 +101,7 @@ function signup($linkBd, $post){
   $patronymic = clearStr($post["patronymic"]);
   $minLengthText = 2;
   $minLengthPSW = 6;
+  $user = [];
   global $errors;
   $errors = [];
 
@@ -128,11 +130,19 @@ function signup($linkBd, $post){
     return false;
   }
 
-  if (checkLoginInDB($linkBd, $login) === $login) {
+  // if (checkLoginInDB($linkBd, $login) === $login) {
+  //   $errors["login"] = "Такой логин занят.";
+  //   return false;
+  // }
+
+  $user["login"] = $login;
+  $user["password"] = $password;
+  if (!checkUserInDB($linkBd, $user)) {
     $errors["login"] = "Такой логин занят.";
     return false;
   }
-  
+
+
   $hashPassword = getHashPassword($password);
   $sql = "INSERT INTO users (login, password, name, surname, patronymic) VALUES (?, ?, ?, ?, ?)";
   $stmt = mysqli_stmt_init($linkBd);
@@ -158,6 +168,7 @@ function signin($linkBd, $post){
   $password = clearStr($post["password"]);
   $minLengthText = 2;
   $minLengthPSW = 6;
+  $user = [];
   global $errors;
   $errors = [];
 
@@ -172,7 +183,12 @@ function signin($linkBd, $post){
     return false;
   }
 
-  if (checkLoginInDB($linkBd, $login) && checkPasswordInDB($linkBd, $password, $login)) {
+  // if (checkLoginInDB($linkBd, $login) && checkPasswordInDB($linkBd, $password, $login)) {
+  //   return true;
+  // }
+  $user["login"] = $login;
+  $user["password"] = $password;
+  if (checkUserInDB($linkBd, $user, true)) {
     return true;
   }
   $errors["enter"] = "Неверный логин или пароль.";
