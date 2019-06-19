@@ -50,7 +50,7 @@ CREATE TABLE `tasks` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `name` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
   `patronymic` varchar(50) NOT NULL
