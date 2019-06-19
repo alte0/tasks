@@ -1,10 +1,9 @@
 <?php
 include __DIR__ . "/lib/lib.inc.php";
 
-$user = false;
 $signup = false;
 
-// phpinfo();
+// test-test
 
 if ($_GET["page"] === "signup") {
   $signup = true;
@@ -12,18 +11,26 @@ if ($_GET["page"] === "signup") {
 if ($_GET["page"] === "signin") {
   $signup = false;
 }
-// test-test
 session_start();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  if (count($_POST) === 2) {
-    if (signup($mysqli, $_POST)) {
+  if ($_POST["signin"] === '') {
+    if (signin($mysqli, $_POST)) {
       $_SESSION['auth'] = true;
       header("Location: " . $_SERVER["REQUEST_URI"]);
       header("Location: /");
       exit;
     }
-  } else {
-    signin($mysqli, $_POST);
+  }
+
+  if ($_POST["signup"] === '') {
+    if (signup($mysqli, $_POST)) {
+      // $_SESSION['auth'] = true;
+      header("Location: " . $_SERVER["REQUEST_URI"]);
+      header("Location: /");
+      exit;
+    } else {
+      $signup = true;
+    }
   }
 }
 ?>
@@ -42,15 +49,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body>
-  <!-- <?= var_dump($_SESSION) ?>
-  <?= var_dump(session_status()) ?> -->
+  <!-- <?= var_dump($_POST) ?> -->
   <main>
     <div class="container">
       <?php
-      // print_r($_POST);
       if ($_SESSION['auth']) {
         require_once __DIR__ . "/templates/tasks.php";
-      } elseif (!$user && !$signup) {
+      } elseif (!$signup) {
         require_once __DIR__ . "/templates/signin.php";
       } else {
         require_once __DIR__ . "/templates/signup.php";

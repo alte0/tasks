@@ -3,6 +3,7 @@ $DB_host = '127.0.0.1';
 $DB_login = "root";
 $DB_password = "";
 $DB_name = "tasks-db";
+$errors = [];
 
 $mysqli = mysqli_connect( $DB_host, $DB_login, $DB_password, $DB_name);
 if (!$mysqli) {
@@ -11,7 +12,6 @@ if (!$mysqli) {
   echo "Ошибка подключения к БД. " . $errorNumber . " " . $errorText;
   exit();
 }
-// $sqlSigin = "INSERT INTO `users`(`login`, `password`, `name`, `surname`, `patronymic`) VALUES (?,?,?,?,?)";
 /**
  * Очистка данных.
  * @param $value
@@ -23,9 +23,44 @@ function clearStr($data) {
   return mysqli_real_escape_string($mysqli, $data);
 }
 /**
+ * Показывает ошибки при заполнении формы.
+ * @param $errors - массив с текстом ошибок в оррме.
+ * @return void
+ */
+function showError($errors) {
+  if (count($errors) > 0) {
+    echo "<ul>";
+    foreach ($errors as $key => $value) {
+      echo "<li>";
+      echo "$value";
+      echo "</li>";
+    }
+    echo "</ul>";
+  }
+}
+/**
+ * Получение хешированного пароля.
+ * @param $password - пароль
+ * @return void
+ */
+function getHashPassword($password) {
+  $hash = password_hash($password, PASSWORD_DEFAULT);
+  return $hash;
+}
+/**
+ * Проверяет стоответствует ли пароль хешу.
+ * @param $password - пароль
+ * @param $hash - хеш пароль
+ * @return Boolean
+ */
+function checkHash($password, $hash) {
+  $isVerify = password_verify($password, $hash);
+  return $isVerify;
+}
+/**
  * Проверка пользователя в бд
  * @param $linkBd - соединение с mysql
- * @param $post - $login
+ * @param $login - $login
  * @return void
  */
 function checkLoginInDB($linkBd, $login) {
@@ -34,27 +69,21 @@ function checkLoginInDB($linkBd, $login) {
     return false;
   }
   $result = mysqli_fetch_assoc($query);
-  return $result["login"];
-  // $sql = "SELECT * FROM `users` WHERE login=?";
-  // $stmt = mysqli_prepare($linkBd, $sql);
-  // if ($stmt = mysqli_prepare($linkBd, $sql)) {
-  //   mysqli_stmt_bind_param($stmt, "s", $login);
-  //   mysqli_stmt_execute($stmt);
-  //   // mysqli_stmt_bind_result($stmt, $result);
-  //   // mysqli_stmt_fetch($stmt);
-  //   mysqli_stmt_close($stmt);
-  //   var_dump($result);
-  //   return $result['login'];
-  // }
-  // var_dump( $sql);
+  return $result["login"] === $login;
 }
-function checkPasswordInDB($linkBd, $password) {
-  $sql = "SELECT * FROM `users` WHERE password='$password'";
+/**
+ * Проверка парроля пользователя в бд
+ * @param $linkBd - соединение с mysql
+ * @param $password - $password
+ * @return void
+ */
+function checkPasswordInDB($linkBd, $password, $login) {
+  $sql = "SELECT * FROM `users` WHERE login='$login'";
   if (!$query = mysqli_query($linkBd, $sql)) {
     return false;
   }
   $result = mysqli_fetch_assoc($query);
-  return $result["password"];
+  return checkHash($password, $result["password"]);
 }
 /**
  * Регистрация пользователя
@@ -62,14 +91,61 @@ function checkPasswordInDB($linkBd, $password) {
  * @param $post - $_POST
  * @return void
  */
-function signin($linkBd, $post){
+function signup($linkBd, $post){
   $login = clearStr($post["login"]);
   $password = clearStr($post["password"]);
   $password2 = clearStr($post["password2"]);
   $name = clearStr($post["name"]);
   $surname = clearStr($post["surname"]);
   $patronymic = clearStr($post["patronymic"]);
-  checkLoginInDB($linkBd, $login);
+  $minLengthText = 2;
+  $minLengthPSW = 6;
+  global $errors;
+  $errors = [];
+
+  if (mb_strlen($login) < $minLengthText) {
+    $errors["login"] = "Логин неменьше $minLengthText символов.";
+  }
+  if (mb_strlen($password) < $minLengthPSW || mb_strlen($password2) < $minLengthPSW) {
+    $errors["password"] = "Пароль неменьше $minLengthPSW символов.";
+  }
+  if (mb_strlen($name) < $minLengthText ) {
+    $errors["name"] = "Имя неменьше $minLengthText символов.";
+  }
+  if (mb_strlen( $surname) < $minLengthText ) {
+    $errors["surname"] = "Фамилия неменьше $minLengthText символов.";
+  }
+  if (mb_strlen( $patronymic) < $minLengthText ) {
+    $errors["patronymic"] = "Отчество неменьше $minLengthText символов.";
+  }
+  
+  if (count($errors) > 0) {
+    return false;
+  }
+
+  if ($password !== $password2) {
+    $errors["password"] = "Пароли не совпадают.";
+    return false;
+  }
+
+  if (checkLoginInDB($linkBd, $login) === $login) {
+    $errors["login"] = "Такой логин занят.";
+    return false;
+  }
+  
+  $hashPassword = getHashPassword($password);
+  $sql = "INSERT INTO users (login, password, name, surname, patronymic) VALUES (?, ?, ?, ?, ?)";
+  $stmt = mysqli_stmt_init($linkBd);
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    $errors["mysqli"] = "Не удалось зарегистрировать.";
+    return false;
+  } else {
+    mysqli_stmt_bind_param($stmt, "sssss", $login, $hashPassword, $name, $surname, $patronymic);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    return true;
+  }
+  return false;
 }
 /**
  * Авторизация пользователя
@@ -77,13 +153,28 @@ function signin($linkBd, $post){
  * @param $post - $_POST
  * @return void
  */
-function signup($linkBd, $post){
-  if (!empty( $post["login"]) && !empty($post["password"])) {
-    $login = clearStr($post["login"]);
-    $password = clearStr($post["password"]);
-    if (checkLoginInDB($linkBd, $login) === $login && checkPasswordInDB($linkBd, $password) === $password) {
-      return true;
-    }
+function signin($linkBd, $post){
+  $login = clearStr($post["login"]);
+  $password = clearStr($post["password"]);
+  $minLengthText = 2;
+  $minLengthPSW = 6;
+  global $errors;
+  $errors = [];
+
+  if (mb_strlen($post["login"]) < $minLengthText) {
+    $errors["login"] = "Логин неменьше $minLengthText символов.";
   }
+  if (mb_strlen($post[ "password"]) < $minLengthPSW) {
+    $errors["password"] = "Пароль неменьше $minLengthPSW символов.";
+  }
+
+  if (count($errors) > 0) {
+    return false;
+  }
+
+  if (checkLoginInDB($linkBd, $login) && checkPasswordInDB($linkBd, $password, $login)) {
+    return true;
+  }
+  $errors["enter"] = "Неверный логин или пароль.";
   return false;
 }
