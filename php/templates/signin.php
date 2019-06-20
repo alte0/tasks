@@ -4,7 +4,7 @@
   showError($errors);
   ?>
   <div class="form__row form__row_content-column">
-    <label for="login">Ваш логин:</label><input class="form__input" id="login" type="text" name="login" minlength="2" maxlength="20" required />
+    <label for="login">Ваш логин:</label><input class="form__input" id="login" type="text" name="login" minlength="2" maxlength="20" required <?= $_POST["login"] ? "value=" . $_POST["login"] : "" ?> />
   </div>
   <div class="form__row form__row_content-column">
     <label for="password">Пароль:</label><input class="form__input" id="password" type="password" name="password" minlength="6" maxlength="20" required />
