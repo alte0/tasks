@@ -1,15 +1,22 @@
 <?php
+const REGEX_USER_LOGIN = "/^[a-zA-Z][a-zA-Z0-9-_]{1,20}$/";
+const REGEX_USER_PSW = "/(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/";
+// const REGEX_USER_EMAIL = "/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,12}$/";
+const MIN_LENGTH_TEXT = 2;
+const MAX_LENGTH_TEXT = 20;
+const MIN_LENGTH_PWD = 6;
+const MAX_LENGTH_PWD = 20;
 $DB_host = '127.0.0.1';
 $DB_login = "root";
 $DB_password = "";
 $DB_name = "tasks-db";
 $errors = [];
 
-$mysqli = mysqli_connect( $DB_host, $DB_login, $DB_password, $DB_name);
+$mysqli = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
 if (!$mysqli) {
   $errorNumber = mysqli_connect_errno($mysqli);
   $errorText = mysqli_connect_error($mysqli);
-  echo "Ошибка подключения к БД. " . $errorNumber . " " . $errorText;
+  echo "Ошибка подключения к БД. $errorNumber $errorText";
   exit();
 }
 /**
@@ -99,41 +106,55 @@ function signup($linkBd, $post){
   $name = clearStr($post["name"]);
   $surname = clearStr($post["surname"]);
   $patronymic = clearStr($post["patronymic"]);
-  $minLengthText = 2;
-  $minLengthPSW = 6;
   $user = [];
   global $errors;
+  
   $errors = [];
+  $lengthLogin = mb_strlen($post["login"]);
+  $lengthPassword = mb_strlen($post["password"]);
+  $lengthPassword2 = mb_strlen($post["password"]);
+  $lengthName = mb_strlen($post["name"]);
+  $lengthSurname = mb_strlen($post["surname"]);
+  $lengthPatronymic = mb_strlen($post["patronymic"]);
 
-  if (mb_strlen($login) < $minLengthText) {
-    $errors["login"] = "Логин неменьше $minLengthText символов.";
+  if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
+    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
   }
-  if (mb_strlen($password) < $minLengthPSW || mb_strlen($password2) < $minLengthPSW) {
-    $errors["password"] = "Пароль неменьше $minLengthPSW символов.";
+
+  if ($lengthPassword < MIN_LENGTH_PWD 
+    || $lengthPassword2 < MIN_LENGTH_PWD 
+    || $lengthPassword > MAX_LENGTH_PWD 
+    || $lengthPassword2 > MAX_LENGTH_PWD) {
+    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
   }
-  if (mb_strlen($name) < $minLengthText ) {
-    $errors["name"] = "Имя неменьше $minLengthText символов.";
+
+  if ($lengthName < MIN_LENGTH_TEXT || $lengthName > MAX_LENGTH_TEXT) {
+    $errors["name"] = "Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
   }
-  if (mb_strlen( $surname) < $minLengthText ) {
-    $errors["surname"] = "Фамилия неменьше $minLengthText символов.";
+
+  if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
+    $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
   }
-  if (mb_strlen( $patronymic) < $minLengthText ) {
-    $errors["patronymic"] = "Отчество неменьше $minLengthText символов.";
+
+  if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
+    $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+  }
+
+  if (!preg_match(REGEX_USER_LOGIN, $login)) {
+    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
+  }
+
+  if (!preg_match(REGEX_USER_PSW, $password)) {
+    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
+  }
+  
+  if ($password !== $password2) {
+    $errors["password"] = "Пароли не совпадают.";
   }
   
   if (count($errors) > 0) {
     return false;
   }
-
-  if ($password !== $password2) {
-    $errors["password"] = "Пароли не совпадают.";
-    return false;
-  }
-
-  // if (checkLoginInDB($linkBd, $login) === $login) {
-  //   $errors["login"] = "Такой логин занят.";
-  //   return false;
-  // }
 
   $user["login"] = $login;
   $user["password"] = $password;
@@ -166,26 +187,24 @@ function signup($linkBd, $post){
 function signin($linkBd, $post){
   $login = clearStr($post["login"]);
   $password = clearStr($post["password"]);
-  $minLengthText = 2;
-  $minLengthPSW = 6;
   $user = [];
   global $errors;
-  $errors = [];
 
-  if (mb_strlen($post["login"]) < $minLengthText) {
-    $errors["login"] = "Логин неменьше $minLengthText символов.";
+  $errors = [];
+  $lengthLogin = mb_strlen($post["login"]);
+  $lengthPassword = mb_strlen($post["password"]);
+
+  if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
+    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
   }
-  if (mb_strlen($post[ "password"]) < $minLengthPSW) {
-    $errors["password"] = "Пароль неменьше $minLengthPSW символов.";
+  if ( $lengthPassword < MIN_LENGTH_PWD || $lengthPassword > MAX_LENGTH_PWD) {
+    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
   }
 
   if (count($errors) > 0) {
     return false;
   }
 
-  // if (checkLoginInDB($linkBd, $login) && checkPasswordInDB($linkBd, $password, $login)) {
-  //   return true;
-  // }
   $user["login"] = $login;
   $user["password"] = $password;
   if (checkUserInDB($linkBd, $user, true)) {
