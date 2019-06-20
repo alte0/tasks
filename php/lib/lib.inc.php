@@ -6,6 +6,7 @@ const MIN_LENGTH_TEXT = 2;
 const MAX_LENGTH_TEXT = 20;
 const MIN_LENGTH_PWD = 6;
 const MAX_LENGTH_PWD = 20;
+$signup = false;
 $DB_host = '127.0.0.1';
 $DB_login = "root";
 $DB_password = "";
@@ -18,6 +19,24 @@ if (!$mysqli) {
   $errorText = mysqli_connect_error($mysqli);
   echo "Ошибка подключения к БД. $errorNumber $errorText";
   exit();
+}
+/**
+ * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
+ * @param string $name Путь к файлу шаблона относительно папки templates
+ * @param array $data Ассоциативный массив с данными для шаблона
+ * @return string Итоговый HTML
+ */
+function include_template($nameTemplate, array $data = []) {
+  $pathTemplate = "templates/$nameTemplate";
+  $result = "";
+  if (!is_readable($pathTemplate)) {
+    return $result;
+  }
+  ob_start();
+  extract($data);
+  require $pathTemplate;
+  $result = ob_get_clean();
+  return $result;
 }
 /**
  * Очистка данных.
@@ -35,7 +54,7 @@ function clearStr($data) {
  * @return void
  */
 function showError($errors) {
-  if (count($errors) > 0) {
+  if (is_array($errors) && count($errors)) {
     echo "<ul>";
     foreach ($errors as $key => $value) {
       echo "<li>";
