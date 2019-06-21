@@ -31,13 +31,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 if ($_SESSION['auth']) {
-  $content = include_template('tasks.php');
+  $content = include_template('tasks.php', [
+    "errors" => $errors
+  ]);
   $title = "Tasks - Главная";
 } elseif (!$signup) {
-  $content = include_template('signin.php');
+  $content = include_template('signin.php', [
+    "errors" => $errors
+  ]);
   $title = "Tasks - Авторизация пользователя";
 } else {
-  $content = include_template('signup.php');
+  $content = include_template('signup.php', [
+    "errors" => $errors
+  ]);
   $title = "Tasks - Регистрация пользователя";
 }
 
