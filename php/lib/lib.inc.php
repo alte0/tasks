@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . "/../config/db.php";
+
 const REGEX_USER_LOGIN = "/^[a-zA-Z][a-zA-Z0-9-_]{1,20}$/";
 const REGEX_USER_PSW = "/(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/";
 // const REGEX_USER_EMAIL = "/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,12}$/";
@@ -7,10 +9,6 @@ const MAX_LENGTH_TEXT = 20;
 const MIN_LENGTH_PWD = 6;
 const MAX_LENGTH_PWD = 20;
 $signup = false;
-$DB_host = '127.0.0.1';
-$DB_login = "root";
-$DB_password = "";
-$DB_name = "tasks-db";
 $errors = [];
 
 $mysqli = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
@@ -27,7 +25,7 @@ if (!$mysqli) {
  * @return string Итоговый HTML
  */
 function include_template($nameTemplate, array $data = []) {
-  $pathTemplate = "templates/$nameTemplate";
+  $pathTemplate = "templates/$nameTemplate.php";
   $result = "";
   if (!is_readable($pathTemplate)) {
     return $result;
