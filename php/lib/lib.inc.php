@@ -41,7 +41,7 @@ function include_template($nameTemplate, array $data = []) {
 /**
  * Очистка данных.
  * @param $value
- * @return String
+ * @return string
  */
 function clearStr($data) {
   global $mysqli;
@@ -51,7 +51,6 @@ function clearStr($data) {
 /**
  * Показывает ошибки при заполнении формы.
  * @param $errors - массив с текстом ошибок в оррме.
- * @return void
  */
 function showError($errors) {
   if (is_array($errors) && count($errors)) {
@@ -67,7 +66,6 @@ function showError($errors) {
 /**
  * Получение хешированного пароля.
  * @param $password - пароль
- * @return void
  */
 function getHashPassword($password) {
   $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -77,7 +75,7 @@ function getHashPassword($password) {
  * Проверяет стоответствует ли пароль хешу.
  * @param $password - пароль
  * @param $hash - хеш пароль
- * @return Boolean
+ * @return boolean
  */
 function checkHash($password, $hash) {
   $isVerify = password_verify($password, $hash);
@@ -88,7 +86,7 @@ function checkHash($password, $hash) {
  * @param $linkBd - соединение с mysql
  * @param $user - массив с данными = ["login"=> "login","password"=> "password"]
  * @param $isPwd - Признак надо ли на проверку пароль.
- * @return void
+ * @return boolean
  */
 function checkUserInDB($linkBd, $user, $isPwd = false) {
   $login = $user["login"];
@@ -113,6 +111,107 @@ function checkUserInDB($linkBd, $user, $isPwd = false) {
   return false;
 }
 /**
+ * Валидация введеного логина
+ * @param $login - login
+ * @return boolean
+ */
+function validLogin ($login){
+  global $errors;
+
+  $lengthLogin = mb_strlen($login);
+  if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
+    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    return false;
+  } elseif (!preg_match(REGEX_USER_LOGIN, $login)) {
+    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
+    return false;
+  }
+
+  return true;
+}
+/**
+ * Валидация введеного пароля
+ * @param $login - login
+ * @return boolean
+ */
+function validPwd($password) {
+  global $errors;
+
+  $lengthPassword = mb_strlen($password);
+  if ($lengthPassword < MIN_LENGTH_PWD || $lengthPassword > MAX_LENGTH_PWD) {
+    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
+    return false;
+  } elseif (!preg_match(REGEX_USER_PSW, $password)) {
+    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
+    return false;
+  }
+
+  return true;
+}
+/**
+ * Валидация введеного имени
+ * @param $name - name
+ * @return boolean
+ */
+function validName($name) {
+  global $errors;
+
+  $lengthName = mb_strlen($name);
+  if ($lengthName < MIN_LENGTH_TEXT || $lengthName > MAX_LENGTH_TEXT) {
+    $errors["name"] = "Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    return false;
+  }
+  
+  return true;
+}
+/**
+ * Валидация введеного фамилии
+ * @param $surname - surname
+ * @return boolean
+ */
+function validSurname($surname) {
+  global $errors;
+
+  $lengthSurname = mb_strlen( $surname);
+  if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
+    $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    return false;
+  }
+  
+  return true;
+}
+/**
+ * Валидация введеного отчества
+ * @param $surname - surname
+ * @return boolean
+ */
+function validPatronymic($patronymic) {
+  global $errors;
+
+  $lengthPatronymic = mb_strlen( $patronymic);
+  if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
+    $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    return false;
+  }
+  
+  return true;
+}
+/**
+ * Валидация введенных паролей
+ * @param $surname - surname
+ * @return boolean
+ */
+function equalPwds($password, $password2) {
+  global $errors;
+
+  if ($password !== $password2) {
+    $errors["password"] = "Пароли не совпадают.";
+    return false;
+  }
+  
+  return true;
+}
+/**
  * Регистрация пользователя
  * @param $linkBd - соединение с mysql
  * @param $post - $_POST
@@ -129,51 +228,69 @@ function signup($linkBd, $post){
   global $errors;
   
   $errors = [];
-  $lengthLogin = mb_strlen($post["login"]);
-  $lengthPassword = mb_strlen($post["password"]);
-  $lengthPassword2 = mb_strlen($post["password"]);
-  $lengthName = mb_strlen($post["name"]);
-  $lengthSurname = mb_strlen($post["surname"]);
-  $lengthPatronymic = mb_strlen($post["patronymic"]);
+  // $lengthLogin = mb_strlen($login);
+  // $lengthPassword = mb_strlen($password);
+  // $lengthPassword2 = mb_strlen($password2);
+  // $lengthName = mb_strlen($name);
+  // $lengthSurname = mb_strlen($surname);
+  // $lengthPatronymic = mb_strlen($patronymic);
 
-  if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
-    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  }
+  // if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
+  //   $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+  // }
 
-  if ($lengthPassword < MIN_LENGTH_PWD 
-    || $lengthPassword2 < MIN_LENGTH_PWD 
-    || $lengthPassword > MAX_LENGTH_PWD 
-    || $lengthPassword2 > MAX_LENGTH_PWD) {
-    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
-  }
+  // if ($lengthPassword < MIN_LENGTH_PWD 
+  //   || $lengthPassword2 < MIN_LENGTH_PWD 
+  //   || $lengthPassword > MAX_LENGTH_PWD 
+  //   || $lengthPassword2 > MAX_LENGTH_PWD) {
+  //   $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
+  // }
 
-  if ($lengthName < MIN_LENGTH_TEXT || $lengthName > MAX_LENGTH_TEXT) {
-    $errors["name"] = "Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  }
+  // if ($lengthName < MIN_LENGTH_TEXT || $lengthName > MAX_LENGTH_TEXT) {
+  //   $errors["name"] = "Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+  // }
 
-  if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
-    $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  }
+  // if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
+  //   $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+  // }
 
-  if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
-    $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  }
+  // if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
+  //   $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+  // }
 
-  if (!preg_match(REGEX_USER_LOGIN, $login)) {
-    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
-  }
+  // if (!preg_match(REGEX_USER_LOGIN, $login)) {
+  //   $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
+  // }
 
-  if (!preg_match(REGEX_USER_PSW, $password)) {
-    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
-  }
-  
-  if ($password !== $password2) {
-    $errors["password"] = "Пароли не совпадают.";
-  }
-  
-  if (count($errors) > 0) {
+  // if (!preg_match(REGEX_USER_PSW, $password)) {
+  //   $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
+  // }
+
+  // if ($password !== $password2) {
+  //   $errors["password"] = "Пароли не совпадают.";
+  // }
+  // validName($name);
+  // validSurName($surname);
+  // validPatronymic($patronymic);
+  // validLogin($login);
+  // validPwd($password);
+  // validPwd($password2);
+  // equalPwds($password, $password2);
+
+  if (validName($name) && validSurName($surname) && validPatronymic($patronymic) && validLogin($login) && validPwd($password) && validPwd($password2) && equalPwds($password, $password2)) {
+    return true;
+  } else {
     return false;
   }
+  
+
+  // if ($password !== $password2) {
+  //   $errors["password"] = "Пароли не совпадают.";
+  // }
+  
+  // if (count($errors) > 0) {
+  //   return false;
+  // }
 
   $user["login"] = $login;
   $user["password"] = $password;

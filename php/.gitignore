@@ -1,0 +1,14 @@
+# Файлы и папки операционной системы
+.DS_Store
+Thumbs.db
+
+# Файлы редактора
+.idea
+*.sublime*
+.vscode
+
+# vendor файлы от composer
+vendor
+
+# файлы cache
+*.cache
