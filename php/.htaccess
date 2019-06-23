@@ -2,10 +2,13 @@
 AddDefaultCharset Off
 
 # Запретим пользователям просматривать файлы директории
-# Options All -Indexes
+Options All -Indexes
 
 <IfModule dir_module>
   # Зададим index файл который будет
   # отдаваться если запрошенный не найден
   DirectoryIndex index.php index.html
 </IfModule>
+
+# RewriteEngine on
+# RewriteRule .* router.php [L]
