@@ -34,17 +34,17 @@ if ($_SESSION['auth']) {
   $content = include_template('tasks', [
     "errors" => $errors
   ]);
-  $title = "Tasks - Главная";
+  $title = "$mainText Главная";
 } elseif (!$signup) {
   $content = include_template('signin', [
     "errors" => $errors
   ]);
-  $title = "Tasks - Авторизация пользователя";
+  $title = "$mainText Авторизация пользователя";
 } else {
   $content = include_template('signup', [
     "errors" => $errors
   ]);
-  $title = "Tasks - Регистрация пользователя";
+  $title = "$mainText Регистрация пользователя";
 }
 
 $layout = include_template('layout', [

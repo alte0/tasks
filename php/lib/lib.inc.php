@@ -8,15 +8,17 @@ const MIN_LENGTH_TEXT = 2;
 const MAX_LENGTH_TEXT = 20;
 const MIN_LENGTH_PWD = 6;
 const MAX_LENGTH_PWD = 20;
+$mainText = "Tasks -";
 $signup = false;
 $errors = [];
 
 $mysqli = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
+mysqli_set_charset($mysqli, "utf-8");
 if (!$mysqli) {
   $errorNumber = mysqli_connect_errno($mysqli);
   $errorText = mysqli_connect_error($mysqli);
-  echo "Ошибка подключения к БД. $errorNumber $errorText";
-  exit();
+  echo "Ошибка подключения к БД. $errorNumber - $errorText";
+  exit;
 }
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
@@ -37,7 +39,7 @@ function include_template($nameTemplate, array $data = []) {
   return $result;
 }
 /**
- * Очистка данных.
+ * Очистка введены данных в форме.
  * @param $value
  * @return string
  */
@@ -89,14 +91,17 @@ function checkHash($password, $hash) {
 function checkUserInDB($linkBd, $user, $isPwd = false) {
   $login = $user["login"];
   $password = $user["password"];
+  global $errors;
   
   $sql = "SELECT * FROM `users` WHERE login='$login'";
   if (!$query = mysqli_query($linkBd, $sql)) {
+    $errors["mysqli"] = "Не удалось выполнить запрос.";
     return false;
   }
   $result = mysqli_fetch_assoc($query);
 
   if ($isPwd) {
+
     if (checkHash($password, $result["password"]) && $result["login"] === $login) {
       return true;
     }
@@ -123,9 +128,11 @@ function validLogin ($login){
   } elseif (!preg_match(REGEX_USER_LOGIN, $login)) {
     $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
     return false;
+  } else {
+    return true;
   }
 
-  return true;
+  return false;
 }
 /**
  * Валидация введеного пароля
@@ -142,9 +149,11 @@ function validPwd($password) {
   } elseif (!preg_match(REGEX_USER_PSW, $password)) {
     $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
     return false;
+  } else {
+    return true;
   }
 
-  return true;
+  return false;
 }
 /**
  * Валидация введеного имени
@@ -170,7 +179,7 @@ function validName($name) {
 function validSurname($surname) {
   global $errors;
 
-  $lengthSurname = mb_strlen( $surname);
+  $lengthSurname = mb_strlen($surname);
   if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
     $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
     return false;
@@ -186,7 +195,7 @@ function validSurname($surname) {
 function validPatronymic($patronymic) {
   global $errors;
 
-  $lengthPatronymic = mb_strlen( $patronymic);
+  $lengthPatronymic = mb_strlen($patronymic);
   if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
     $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
     return false;
@@ -226,69 +235,15 @@ function signup($linkBd, $post){
   global $errors;
   
   $errors = [];
-  // $lengthLogin = mb_strlen($login);
-  // $lengthPassword = mb_strlen($password);
-  // $lengthPassword2 = mb_strlen($password2);
-  // $lengthName = mb_strlen($name);
-  // $lengthSurname = mb_strlen($surname);
-  // $lengthPatronymic = mb_strlen($patronymic);
 
-  // if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
-  //   $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  // }
-
-  // if ($lengthPassword < MIN_LENGTH_PWD 
-  //   || $lengthPassword2 < MIN_LENGTH_PWD 
-  //   || $lengthPassword > MAX_LENGTH_PWD 
-  //   || $lengthPassword2 > MAX_LENGTH_PWD) {
-  //   $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
-  // }
-
-  // if ($lengthName < MIN_LENGTH_TEXT || $lengthName > MAX_LENGTH_TEXT) {
-  //   $errors["name"] = "Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  // }
-
-  // if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
-  //   $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  // }
-
-  // if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
-  //   $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  // }
-
-  // if (!preg_match(REGEX_USER_LOGIN, $login)) {
-  //   $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
-  // }
-
-  // if (!preg_match(REGEX_USER_PSW, $password)) {
-  //   $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
-  // }
-
-  // if ($password !== $password2) {
-  //   $errors["password"] = "Пароли не совпадают.";
-  // }
-  // validName($name);
-  // validSurName($surname);
-  // validPatronymic($patronymic);
-  // validLogin($login);
-  // validPwd($password);
-  // validPwd($password2);
-  // equalPwds($password, $password2);
-
-  if (validName($name) && validSurName($surname) && validPatronymic($patronymic) && validLogin($login) && validPwd($password) && validPwd($password2) && equalPwds($password, $password2)) {
-    return true;
-  } else {
+  if (!(
+    validName($name) && validSurName($surname) &&
+    validPatronymic($patronymic) && validLogin($login) && 
+    validPwd($password) && validPwd($password2) && 
+    equalPwds($password, $password2)
+    )) {
     return false;
   }
-  
-
-  // if ($password !== $password2) {
-  //   $errors["password"] = "Пароли не совпадают.";
-  // }
-  
-  // if (count($errors) > 0) {
-  //   return false;
-  // }
 
   $user["login"] = $login;
   $user["password"] = $password;
@@ -296,7 +251,6 @@ function signup($linkBd, $post){
     $errors["login"] = "Такой логин занят.";
     return false;
   }
-
 
   $hashPassword = getHashPassword($password);
   $sql = "INSERT INTO users (login, password, name, surname, patronymic) VALUES (?, ?, ?, ?, ?)";
@@ -325,17 +279,8 @@ function signin($linkBd, $post){
   global $errors;
 
   $errors = [];
-  $lengthLogin = mb_strlen($post["login"]);
-  $lengthPassword = mb_strlen($post["password"]);
 
-  if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
-    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
-  }
-  if ( $lengthPassword < MIN_LENGTH_PWD || $lengthPassword > MAX_LENGTH_PWD) {
-    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
-  }
-
-  if (count($errors) > 0) {
+  if (!(validLogin($login) && validPwd($password))) {
     return false;
   }
 
