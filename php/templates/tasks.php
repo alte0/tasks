@@ -26,7 +26,7 @@
     $myTasks = ""; // задачи поставленные мне
     $setTasks = ""; // задачи поставленные мною
     foreach ($tasks as $task) {
-      if ($task['author'] === $_SESSION['userInfo']['name'] && !($task['executor'] === $_SESSION['userInfo']['name'])) {
+      if ($task['author_name'] === $_SESSION['userInfo']['name'] && !($task['executor_name'] === $_SESSION['userInfo']['name'])) {
         $setTasks = $setTasks . trim("
           <div class='task'>
             <div class='task__date-start'>Начало задачи: {$task['task_date_start']}
@@ -42,8 +42,8 @@
               Закончить задачу до: {$task['task_date_end']} 
               <a href=''>выполнить</a>
             </div>
-            <div class='task__author'>Назначил: {$task['author']}</div>
-            <div class='task__executor'>Испонитель: {$task['executor']}</div>
+            <div class='task__author'>Назначил: {$task['author_name']} {$task['author_surname']} {$task['author_patronymic']}</div>
+            <div class='task__executor'>Испонитель: {$task['executor_name']} {$task['executor_surname']} {$task['executor_patronymic']}</div>
           </div>
         ");
       } else {
@@ -62,8 +62,8 @@
               Закончить задачу до: {$task['task_date_end']}
               <a href=''>выполнить</a>
             </div>
-            <div class='task__author'>Назначил: {$task['author']}</div>
-            <div class='task__executor'>Испонитель: {$task['executor']}</div>
+            <div class='task__author'>Назначил: {$task['author_name']} {$task['author_surname']} {$task['author_patronymic']}</div>
+            <div class='task__executor'>Испонитель: {$task['executor_name']} {$task['executor_surname']} {$task['executor_patronymic']}</div>
           </div>
         ");
       }
