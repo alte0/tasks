@@ -7,13 +7,13 @@
   +e.LABEL.tab(for="set-tasks")
     +e.H2.title Задачи поставленные мною.
   +e.hidden-divider
-  +e.INPUT.input#set-task(type="radio", name="tasks-tab")
-  +e.LABEL.tab(for="set-task")
+  +e.INPUT.input#add-task(type="radio", name="tasks-tab")
+  +e.LABEL.tab(for="add-task")
     +e.H2.title Поставить задачу.
 
   +e.my-tasks
     - var i = 1
-    while i <= 4
+    while i <= 1
       +b.task
         +e.date-start Начало задачи: 11.06.2019
         +e.status в работе.
@@ -23,10 +23,11 @@
           p Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia voluptatem deserunt enim quibusdam itaque debitis quam cupiditate? Dolorum eius soluta cumque reprehenderit eum amet illum accusamus possimus in! Dignissimos, rerum!
         +e.date-end Закончить задачу до: 15.06.2019 
           a(href="") выполнить
+        +e.author Назначил: Попов
       
   +e.set-tasks
     - var i = 1
-    while i <= 4
+    while i <= 1
       +b.task
         +e.date-start Начало задачи: 10.06.2019
         +e.status выполнено.
@@ -35,8 +36,9 @@
           p Описание задачи #{i++}: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.
           p Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia voluptatem deserunt enim quibusdam itaque debitis quam cupiditate? Dolorum eius soluta cumque reprehenderit eum amet illum accusamus possimus in! Dignissimos, rerum!
         +e.date-end Закончить задачу до: 15.06.2019
+        +e.executor Исполнитель: Попов
 
-  +e.set-task
+  +e.add-task
     +b.FORM.form._task-add(action="", method="post")
       +e.row._label-group-two
         +e.LABEL Дата начала и окончания задачи 

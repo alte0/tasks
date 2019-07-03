@@ -26,7 +26,9 @@
       width: 100%;
     }
   }
-  &__desc {
+  &__desc,
+  &__author, 
+  &__executor {
     width: 100%;
   }
   
@@ -48,7 +50,7 @@
     }
     &__my-tasks, 
     &__set-tasks,
-    &__set-task {
+    &__add-task {
       display: none
     }
   }
@@ -56,6 +58,6 @@
 
 #my-tasks:checked ~ .tasks__my-tasks, 
 #set-tasks:checked ~ .tasks__set-tasks,
-#set-task:checked ~ .tasks__set-task {
+#add-task:checked ~ .tasks__add-task {
   display: block;
 }
