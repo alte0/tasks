@@ -10,13 +10,18 @@ const MIN_LENGTH_PWD = 6;
 const MAX_LENGTH_PWD = 20;
 $mainText = "Tasks -";
 $signup = false;
-$errors = [];
+$tasks = [];
+$userInfo = [];
+$userAll = [];
+// $_SESSION["msgs"] = ["textMsgs" => [], "msgsType" => ""];
+$msgs = ["textMsgs"=> [], "msgsType" => ""];
+// $msgs = $_SESSION["msgs"];
 
-$mysqli = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
-mysqli_set_charset($mysqli, "utf-8");
-if (!$mysqli) {
-  $errorNumber = mysqli_connect_errno($mysqli);
-  $errorText = mysqli_connect_error($mysqli);
+$dbcon = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
+mysqli_set_charset($dbcon, "utf-8");
+if (!$dbcon) {
+  $errorNumber = mysqli_connect_errno($dbcon);
+  $errorText = mysqli_connect_error($dbcon);
   echo "Ошибка подключения к БД. $errorNumber - $errorText";
   exit;
 }
@@ -40,23 +45,36 @@ function include_template($nameTemplate, array $data = []) {
 }
 /**
  * Очистка введены данных в форме.
- * @param $value
+ * @param string $value
  * @return string
  */
-function clearStr($data) {
-  global $mysqli;
-  $data = trim(strip_tags($data));
-  return mysqli_real_escape_string($mysqli, $data);
+function clearStr($value) {
+  global $dbcon;
+  $clearValue = trim(strip_tags($value));
+  return mysqli_real_escape_string($dbcon, $clearValue);
 }
 /**
  * Показывает ошибки при заполнении формы.
- * @param $errors - массив с текстом ошибок в оррме.
+ * @param array $msgs - массив с текстом ошибок в оррме.
  */
-function showError($errors) {
-  if (is_array($errors) && count($errors)) {
-    echo "<ul>";
-    foreach ($errors as $key => $value) {
-      echo "<li>";
+function showMsgs($msgs) {
+  
+  if (is_array($msgs["textMsgs"]) && count($msgs["textMsgs"])) {
+    
+    switch ($msgs["msgsType"]) {
+      case 'success':
+      $class = "msgs-list__item_success";
+      break;
+      case 'error':
+      $class = "msgs-list__item_error";
+      break;
+    }
+    
+    $arr = $msgs["textMsgs"];
+    
+    echo "<ul class='msgs-list $class'>";
+    foreach ($arr as $key => $value) {
+      echo "<li class=msgs-list__item>";
       echo "$value";
       echo "</li>";
     }
@@ -64,8 +82,28 @@ function showError($errors) {
   }
 }
 /**
+ * Установка собщения с типами "error" "success".
+ * @param string $textMsgs - текст сообшения.
+ * @param string $typeMsgs - тип сообшения.
+ */
+function setMsgs(string $textMsgs, string $typeMsgs) {
+  global $msgs;
+
+  // $_SESSION["msgs"]["textMsgs"][] = $textMsgs;
+  // $_SESSION["msgs"]["msgsType"] = $typeMsgs;
+  $msgs["textMsgs"][] = $textMsgs;
+  $msgs["msgsType"] = $typeMsgs;
+}
+/**
+ * Очистка массива сообщений.
+ */
+function clearMsgs() {
+  $_SESSION["msgs"]["textMsgs"] = [];
+  $_SESSION["msgs"]["msgsType"] = "";
+}
+/**
  * Получение хешированного пароля.
- * @param $password - пароль
+ * @param string $password - пароль
  */
 function getHashPassword($password) {
   $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -73,8 +111,8 @@ function getHashPassword($password) {
 }
 /**
  * Проверяет стоответствует ли пароль хешу.
- * @param $password - пароль
- * @param $hash - хеш пароль
+ * @param string $password - пароль
+ * @param string $hash - хеш пароль
  * @return boolean
  */
 function checkHash($password, $hash) {
@@ -83,26 +121,30 @@ function checkHash($password, $hash) {
 }
 /**
  * Проверка пользователя в бд
- * @param $linkBd - соединение с mysql
- * @param $user - массив с данными = ["login"=> "login","password"=> "password"]
- * @param $isPwd - Признак надо ли на проверку пароль.
+ * @param resource $linkBd - соединение с mysql
+ * @param array $user - массив с данными = ["login"=> "login","password"=> "password"]
+ * @param boolean $isPwd - Признак надо ли на проверку пароль.
  * @return boolean
  */
 function checkUserInDB($linkBd, $user, $isPwd = false) {
   $login = $user["login"];
   $password = $user["password"];
-  global $errors;
+  global $userInfo;
   
-  $sql = "SELECT * FROM `users` WHERE login='$login'";
+  $sql = "SELECT * FROM `users` WHERE `user_login`='$login'";
   if (!$query = mysqli_query($linkBd, $sql)) {
-    $errors["mysqli"] = "Не удалось выполнить запрос.";
+    setMsgs("Не удалось выполнить запрос.", "error");
     return false;
   }
   $result = mysqli_fetch_assoc($query);
 
   if ($isPwd) {
-
-    if (checkHash($password, $result["password"]) && $result["login"] === $login) {
+    if (checkHash($password, $result["user_password"]) && $result["user_login"] === $login) {
+      $userInfo["login"] = $result["user_login"];
+      $userInfo["id"] = $result["user_id"];
+      $userInfo["name"] = $result["user_name"];
+      $userInfo["surname"] = $result["user_surname"];
+      $userInfo["patronymic"] = $result["user_patronymic"];
       return true;
     }
 
@@ -115,18 +157,16 @@ function checkUserInDB($linkBd, $user, $isPwd = false) {
 }
 /**
  * Валидация введеного логина
- * @param $login - login
+ * @param string $login - login
  * @return boolean
  */
 function validLogin ($login){
-  global $errors;
-
   $lengthLogin = mb_strlen($login);
   if ($lengthLogin < MIN_LENGTH_TEXT || $lengthLogin > MAX_LENGTH_TEXT) {
-    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    setMsgs("Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.", "error");
     return false;
   } elseif (!preg_match(REGEX_USER_LOGIN, $login)) {
-    $errors["login"] = "Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква";
+    setMsgs("Логин от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов. Латинские буквы и цифры, символы: '_', '-' и первый символ обязательно буква", "error");
     return false;
   } else {
     return true;
@@ -136,18 +176,16 @@ function validLogin ($login){
 }
 /**
  * Валидация введеного пароля
- * @param $login - login
+ * @param string $login - login
  * @return boolean
  */
 function validPwd($password) {
-  global $errors;
-
   $lengthPassword = mb_strlen($password);
   if ($lengthPassword < MIN_LENGTH_PWD || $lengthPassword > MAX_LENGTH_PWD) {
-    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.";
+    setMsgs("Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов.", "error");
     return false;
   } elseif (!preg_match(REGEX_USER_PSW, $password)) {
-    $errors["password"] = "Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.";
+    setMsgs("Пароль от " . MIN_LENGTH_PWD . " до " . MAX_LENGTH_PWD . " символов. Строчные и прописные латинские буквы, цифры, спецсимволы.", "error");
     return false;
   } else {
     return true;
@@ -157,15 +195,13 @@ function validPwd($password) {
 }
 /**
  * Валидация введеного имени
- * @param $name - name
+ * @param string $name - name
  * @return boolean
  */
 function validName($name) {
-  global $errors;
-
   $lengthName = mb_strlen($name);
   if ($lengthName < MIN_LENGTH_TEXT || $lengthName > MAX_LENGTH_TEXT) {
-    $errors["name"] = "Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    setMsgs("Имя от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.", "error");
     return false;
   }
   
@@ -173,15 +209,13 @@ function validName($name) {
 }
 /**
  * Валидация введеного фамилии
- * @param $surname - surname
+ * @param string $surname - surname
  * @return boolean
  */
 function validSurname($surname) {
-  global $errors;
-
   $lengthSurname = mb_strlen($surname);
   if ($lengthSurname < MIN_LENGTH_TEXT || $lengthSurname > MAX_LENGTH_TEXT) {
-    $errors["surname"] = "Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    setMsgs("Фамилия от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.", "error");
     return false;
   }
   
@@ -189,15 +223,13 @@ function validSurname($surname) {
 }
 /**
  * Валидация введеного отчества
- * @param $surname - surname
+ * @param string $surname - surname
  * @return boolean
  */
 function validPatronymic($patronymic) {
-  global $errors;
-
   $lengthPatronymic = mb_strlen($patronymic);
   if ($lengthPatronymic < MIN_LENGTH_TEXT || $lengthPatronymic > MAX_LENGTH_TEXT) {
-    $errors["patronymic"] = "Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.";
+    setMsgs("Отчество от " . MIN_LENGTH_TEXT . " до " . MAX_LENGTH_TEXT . " символов.", "error");
     return false;
   }
   
@@ -205,14 +237,12 @@ function validPatronymic($patronymic) {
 }
 /**
  * Валидация введенных паролей
- * @param $surname - surname
+ * @param string $surname - surname
  * @return boolean
  */
 function equalPwds($password, $password2) {
-  global $errors;
-
   if ($password !== $password2) {
-    $errors["password"] = "Пароли не совпадают.";
+    setMsgs("Пароли не совпадают.", "error");
     return false;
   }
   
@@ -220,9 +250,9 @@ function equalPwds($password, $password2) {
 }
 /**
  * Регистрация пользователя
- * @param $linkBd - соединение с mysql
- * @param $post - $_POST
- * @return void
+ * @param resource $linkBd - соединение с mysql
+ * @param array $post - $_POST
+ * @return boolean
  */
 function signup($linkBd, $post){
   $login = clearStr($post["login"]);
@@ -232,9 +262,6 @@ function signup($linkBd, $post){
   $surname = clearStr($post["surname"]);
   $patronymic = clearStr($post["patronymic"]);
   $user = [];
-  global $errors;
-  
-  $errors = [];
 
   if (!(
     validName($name) && validSurName($surname) &&
@@ -248,15 +275,15 @@ function signup($linkBd, $post){
   $user["login"] = $login;
   $user["password"] = $password;
   if (!checkUserInDB($linkBd, $user)) {
-    $errors["login"] = "Такой логин занят.";
+    setMsgs("Такой логин занят.", "error");
     return false;
   }
 
   $hashPassword = getHashPassword($password);
-  $sql = "INSERT INTO users (login, password, name, surname, patronymic) VALUES (?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO users (user_login, user_password, user_name, user_surname, user_patronymic) VALUES (?, ?, ?, ?, ?)";
   $stmt = mysqli_stmt_init($linkBd);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
-    $errors["mysqli"] = "Не удалось зарегистрировать.";
+    setMsgs("Не удалось зарегистрировать.", "error");
     return false;
   } else {
     mysqli_stmt_bind_param($stmt, "sssss", $login, $hashPassword, $name, $surname, $patronymic);
@@ -268,27 +295,122 @@ function signup($linkBd, $post){
 }
 /**
  * Авторизация пользователя
- * @param $linkBd - соединение с mysql
- * @param $post - $_POST
- * @return void
+ * @param resource $linkBd - соединение с mysql
+ * @param array - $_POST
+ * @return boolean
  */
 function signin($linkBd, $post){
   $login = clearStr($post["login"]);
   $password = clearStr($post["password"]);
-  $user = [];
-  global $errors;
-
-  $errors = [];
 
   if (!(validLogin($login) && validPwd($password))) {
     return false;
   }
 
-  $user["login"] = $login;
-  $user["password"] = $password;
+  $userKeys = ["login", "password"];
+  $userValues = [$login, $password];
+  $user = array_combine($userKeys, $userValues);
+  
   if (checkUserInDB($linkBd, $user, true)) {
+    // clearMsgs();
     return true;
   }
-  $errors["enter"] = "Неверный логин или пароль.";
+  setMsgs("Неверный логин или пароль.", "error");
   return false;
+}
+/**
+ * Преобразовывает введеную дату пользователя в дату для mysql
+ * @param string $date
+ */
+function transformsDate($date) {
+  $arrDate = date_parse($date);
+  return "{$arrDate["year"]}.{$arrDate["month"]}.{$arrDate["day"]}";
+}
+/**
+ * Получение задач для пользователя
+ *
+ * @param resource $linkBd
+ * @param array - $_POST
+ * @return array 
+ */
+function addTask($linkBd, $post) {
+  $author = clearStr($post["author"]);
+  $executor = clearStr($post["executor"]);
+  $date = clearStr($post["date"]);
+  $title = clearStr($post["title"]);
+  $text = clearStr($post["text"]);
+  $status = "в работе";
+  $dateStart = null;
+  $dateEnd = null;
+  
+  $dates = explode(" — ", $date);
+
+  if (count($dates) === 2) {
+    $dateStart = transformsDate($dates[0]);
+    $dateEnd = transformsDate($dates[1]);
+  } else {
+    $dateStart = transformsDate($dates[0]);
+    $dateEnd = $dateStart;
+  }
+  if (!$linkBd) {
+    setMsgs("Не удалось выполнить запрос.", "error");
+  }
+
+  mysqli_query($linkBd, "START TRANSACTION");
+  $resutTask = mysqli_query($linkBd, "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`) VALUES('$title', '$text', '$status', '$dateStart', '$dateEnd')");
+  $id = mysqli_insert_id($linkBd);
+  $resutAuthor = mysqli_query($linkBd, "INSERT INTO tasks_author (user_id, task_id) VALUES('$author', '$id')");
+  $resutExecutor = mysqli_query($linkBd, "INSERT INTO tasks_executor (user_id, task_id) VALUES('$executor', '$id')");
+
+  if ($resutTask && $resutAuthor && $resutExecutor) {
+    mysqli_query($linkBd, "COMMIT");
+    setMsgs("Задача добавлена.", "success");
+    return true;
+  } else {
+    mysqli_query($linkBd, "ROLLBACK");
+    setMsgs("Не удалось добавить задачу.", "error");
+    return false;
+  }
+}
+/**
+ * Получение задач для пользователя
+ * @param resource $linkBd
+ * @return array 
+ */
+function getTasks($linkBd) {
+  if (!$linkBd) {
+    setMsgs("Не удалось выполнить запрос.", "error");
+  }
+
+  $sql = "SELECT userAuthor.user_name AS author, t.task_id, t.task_title, t.task_desc, t.task_status, DATE_FORMAT(t.task_date_start, '%d.%m.%Y') AS task_date_start, DATE_FORMAT(t.task_date_end, '%d.%m.%Y') AS task_date_end, userExecutor.user_name AS executor 
+  FROM tasks AS t 
+  JOIN tasks_author ON t.task_id = tasks_author.task_id 
+  JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id 
+  JOIN tasks_executor ON t.task_id = tasks_executor.task_id 
+  JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id";
+
+  if (!$query = mysqli_query($linkBd, $sql)) {
+    setMsgs("Не удалось выполнить запрос.", "error");
+    return [];
+  }
+  $resut = mysqli_fetch_all($query, MYSQLI_ASSOC);
+  return $resut;
+}
+/**
+ * Получение всех пользователей
+ *
+ * @param resource $linkBd
+ * @return array 
+ */
+function getUsers($linkBd) {
+  if (!$linkBd) {
+    setMsgs("Не удалось выполнить запрос.", "error");
+  }
+  $sql = "SELECT `user_id`,`user_login`,`user_name`,`user_surname`,`user_patronymic` FROM `users`";
+  if (!$query = mysqli_query($linkBd, $sql)) {
+    setMsgs("Не удалось выполнить запрос.", "error");
+    return [];
+  }
+  $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+  return $result;
 }
