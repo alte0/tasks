@@ -43,6 +43,7 @@
       +e.row._label-group-two
         +e.LABEL Дата начала и окончания задачи 
           .flatpickr
+            input.form__date(type="hidden" name="author" value="")
             +e.INPUT.date(type="text", name="text", placeholder="выберите дату или даты", data-input required)
             button(type="button" title="toggle" data-toggle="") календарь
             button(type="button" title="toggle" data-clear="") очистить
