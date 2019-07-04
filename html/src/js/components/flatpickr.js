@@ -12,4 +12,6 @@ const configFlatpickr = {
   wrap: true
 }
 
-flatpickr(dateFlatpickr, configFlatpickr)
+if (dateFlatpickr) {
+  flatpickr(dateFlatpickr, configFlatpickr)
+}
