@@ -1,42 +1,47 @@
 +b.tasks
   +e.INPUT.input#my-tasks(type="radio", name="tasks-tab" checked)
   +e.LABEL.tab(for="my-tasks")
-    +e.H2.title Мои задачи.
+    +e.H3.title Мои задачи.
   +e.hidden-divider
   +e.INPUT.input#set-tasks(type="radio", name="tasks-tab")
   +e.LABEL.tab(for="set-tasks")
-    +e.H2.title Задачи поставленные мною.
+    +e.H3.title Задачи поставленные мною.
   +e.hidden-divider
   +e.INPUT.input#add-task(type="radio", name="tasks-tab")
   +e.LABEL.tab(for="add-task")
-    +e.H2.title Поставить задачу.
+    +e.H3.title Поставить задачу.
 
   +e.my-tasks
     - var i = 1
     while i <= 1
-      +b.task
-        +e.date-start Начало задачи: 11.06.2019
-        +e.status в работе.
+      +b.SECTION.task
         +e.H3.title Загаловок задачи #{i}
         +e.desc
           p Описание задачи #{i++}: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.
-          p Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia voluptatem deserunt enim quibusdam itaque debitis quam cupiditate? Dolorum eius soluta cumque reprehenderit eum amet illum accusamus possimus in! Dignissimos, rerum!
-        +e.date-end Закончить задачу до: 15.06.2019 
-          a(href="") выполнить
-        +e.author Назначил: Попов
+        +e.FOOTER.footer
+          +e.date-start Начало задачи: 11.06.2019
+          +e.date-end Закончить задачу до: 15.06.2019 
+          +e.status Статус: в работе.
+          +e.execute
+            a(href="") Выполнить задачу
+          +e.author Назначил: Попов Павел Петрович 
+          +e.executor Испонитель: Попов Павел Петрович 
       
   +e.set-tasks
     - var i = 1
     while i <= 1
-      +b.task
-        +e.date-start Начало задачи: 10.06.2019
-        +e.status выполнено.
+      +b.SECTION.task
         +e.H3.title Загаловок задачи #{i}
         +e.desc
           p Описание задачи #{i++}: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.
-          p Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia voluptatem deserunt enim quibusdam itaque debitis quam cupiditate? Dolorum eius soluta cumque reprehenderit eum amet illum accusamus possimus in! Dignissimos, rerum!
-        +e.date-end Закончить задачу до: 15.06.2019
-        +e.executor Исполнитель: Попов
+        +e.FOOTER.footer
+          +e.date-start Начало задачи: 11.06.2019
+          +e.date-end Закончить задачу до: 15.06.2019 
+          +e.status Статус: в работе.
+          +e.execute
+            a(href="") Выполнить задачу
+          +e.author Назначил: Попов Павел Петрович 
+          +e.executor Испонитель: Попов Павел Петрович 
 
   +e.add-task
     +b.FORM.form._task-add(action="", method="post")

@@ -1,3 +1,7 @@
-$baseFont: 'Roboto Condensed', sans-serif;
-$baseFontSize: 16px;
+$baseValue: 8px;
+$baseFont: 'Roboto', sans-serif;
+$baseFontSize: $baseValue * 2;
 $baseLineHeight: 1.5;
+
+
+$grey: #f6f6f6;

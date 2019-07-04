@@ -11,13 +11,13 @@ body {
 }
 
 main {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: $baseValue * 2;
+  padding-bottom: $baseValue * 2;
 }
 
 textarea {
   resize: none;
-  padding: 8px;
+  padding: $baseValue;
   line-height: $baseLineHeight;
   min-height: $baseLineHeight * 3 * $baseFontSize;
 }
@@ -26,13 +26,14 @@ textarea {
   max-width: 1120px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: $baseValue * 2; //16
+  padding-right: $baseValue * 2;
   width: 100%;
   box-sizing: border-box;
 }
 
 .footer {
+  border-top: 2px solid #f6f6f6;
   margin-top: auto;
   text-align: center;
 }
