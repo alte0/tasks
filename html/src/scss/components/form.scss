@@ -36,6 +36,10 @@
     padding-top: $baseValue;
     padding-bottom: $baseValue;
   }
+  &__link {
+    padding-left: $baseValue;
+    padding-right: $baseValue;
+  }
 
   &__date {
     @media screen and (max-width: 320px) {

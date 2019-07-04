@@ -51,15 +51,13 @@
       }
     }
     &__my-tasks, 
-    &__set-tasks,
-    &__add-task {
+    &__set-tasks {
       display: none
     }
   }
 }
 
 #my-tasks:checked ~ .tasks__my-tasks, 
-#set-tasks:checked ~ .tasks__set-tasks,
-#add-task:checked ~ .tasks__add-task {
+#set-tasks:checked ~ .tasks__set-tasks {
   display: block;
 }

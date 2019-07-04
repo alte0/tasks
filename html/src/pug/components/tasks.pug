@@ -6,10 +6,6 @@
   +e.INPUT.input#set-tasks(type="radio", name="tasks-tab")
   +e.LABEL.tab(for="set-tasks")
     +e.H3.title Задачи поставленные мною.
-  +e.hidden-divider
-  +e.INPUT.input#add-task(type="radio", name="tasks-tab")
-  +e.LABEL.tab(for="add-task")
-    +e.H3.title Поставить задачу.
 
   +e.my-tasks
     - var i = 1
@@ -42,28 +38,4 @@
             a(href="") Выполнить задачу
           +e.author Назначил: Попов Павел Петрович 
           +e.executor Испонитель: Попов Павел Петрович 
-
-  +e.add-task
-    +b.FORM.form._task-add(action="", method="post")
-      +e.row._label-group-two
-        +e.LABEL Дата начала и окончания задачи 
-          .flatpickr
-            input.form__date(type="hidden" name="author" value="")
-            +e.INPUT.date(type="text", name="text", placeholder="выберите дату или даты", data-input required)
-            button(type="button" title="toggle" data-toggle="") календарь
-            button(type="button" title="toggle" data-clear="") очистить
-
-      +e.row._content-column
-        +e.SPAN Выберите исполнителя
-        +e.SELECT.list-users(name="executor" required)
-          option(value="" selected disabled) Не выбрано
-          option(value="") User
-      +e.row._content-column
-        +e.LABEL Загаловок задачи 
-        +e.TEXTAREA.title-add(type="date", name="title" placeholder="сделать ..." required)
-      +e.row._content-column
-        +e.LABEL Дополнительная информация по задаче
-        +e.TEXTAREA#textarea-text(name="text" placeholder="Обьяснение задачи ..." required)
-      +e.row
-        +e.BUTTON.submit(type="submit") Добавить задачу
-      
+          
