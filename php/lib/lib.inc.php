@@ -9,7 +9,6 @@ const MAX_LENGTH_TEXT = 20;
 const MIN_LENGTH_PWD = 6;
 const MAX_LENGTH_PWD = 20;
 $mainText = "Tasks -";
-$signup = false;
 $tasks = [];
 $userInfo = [];
 $userAll = [];

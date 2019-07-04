@@ -1,50 +1,59 @@
 <?php
 require "lib/lib.inc.php";
 
-if ($_GET["page"] === "signup") {
-  $signup = true;
-}
-if ($_GET["page"] === "signin") {
-  $signup = false;
-}
 session_start();
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if ($_POST["signin"] === '') {
-    if (signin($mysqli, $_POST)) {
+    if (signin($dbcon, $_POST)) {
       $_SESSION['auth'] = true;
+      $_SESSION['userInfo'] = $userInfo;
       header("Location: " . $_SERVER["REQUEST_URI"]);
       header("Location: /");
-      exit;
     }
   }
 
   if ($_POST["signup"] === '') {
-    if (signup($mysqli, $_POST)) {
+    if (signup($dbcon, $_POST)) {
       // $_SESSION['auth'] = true;
       header("Location: " . $_SERVER["REQUEST_URI"]);
       header("Location: /");
-      exit;
     } else {
       $signup = true;
     }
   }
+
+  if ($_POST["task-add"] === '') {
+    if(addTask($dbcon, $_POST)) {
+      header("Location: " . $_SERVER["REQUEST_URI"]);
+    }
+  }
 }
 
-if ($_SESSION['auth']) {
+if ($_SESSION['auth'] && $_GET["page"] == null) {
+  $tasks = getTasks($dbcon);
   $content = include_template('tasks', [
-    "errors" => $errors
+    "msgs" => $msgs,
+    "tasks" => $tasks
   ]);
   $title = "$mainText Главная";
-} elseif (!$signup) {
-  $content = include_template('signin', [
-    "errors" => $errors
+} elseif ($_GET["page"] === "add-task") {
+  $userAll = getUsers($dbcon);
+  $content = include_template('add-task',[
+    "userAll" => $userAll,
+    "msgs" => $msgs
   ]);
-  $title = "$mainText Авторизация пользователя";
-} else {
+  $title = "$mainText Добавление задачи";
+} elseif (!$_SESSION['auth'] && $_GET["page"] === "signup") {
   $content = include_template('signup', [
-    "errors" => $errors
+    "msgs" => $msgs
   ]);
   $title = "$mainText Регистрация пользователя";
+} elseif (!$_SESSION['auth'] && $_GET["page"] === "signin" || $_GET["page"] === null) {
+  $content = include_template('signin', [
+    "msgs" => $msgs
+  ]);
+  $title = "$mainText Авторизация пользователя";
 }
 
 $layout = include_template('layout', [
