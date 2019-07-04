@@ -30,30 +30,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
 }
 
-if ($_SESSION['auth'] && $_GET["page"] == null) {
-  $tasks = getTasks($dbcon);
-  $content = include_template('tasks', [
-    "msgs" => $msgs,
-    "tasks" => $tasks
-  ]);
-  $title = "$mainText Главная";
-} elseif ($_GET["page"] === "add-task") {
-  $userAll = getUsers($dbcon);
-  $content = include_template('add-task',[
-    "userAll" => $userAll,
-    "msgs" => $msgs
-  ]);
-  $title = "$mainText Добавление задачи";
-} elseif (!$_SESSION['auth'] && $_GET["page"] === "signup") {
-  $content = include_template('signup', [
-    "msgs" => $msgs
-  ]);
-  $title = "$mainText Регистрация пользователя";
-} elseif (!$_SESSION['auth'] && $_GET["page"] === "signin" || $_GET["page"] === null) {
-  $content = include_template('signin', [
-    "msgs" => $msgs
-  ]);
-  $title = "$mainText Авторизация пользователя";
+if ($_SESSION['auth']) {
+  if ($_GET["page"] === "add-task") {
+    $userAll = getUsers($dbcon);
+    $content = include_template('add-task', [
+      "userAll" => $userAll,
+      "msgs" => $msgs
+    ]);
+    $title = "$mainText Добавление задачи";
+  } else {
+    $tasks = getTasks($dbcon);
+    $content = include_template('tasks', [
+      "msgs" => $msgs,
+      "tasks" => $tasks
+    ]);
+    $title = "$mainText Главная";
+  }
+} else {
+  if ($_GET["page"] === "signup") {
+    $content = include_template('signup', [
+      "msgs" => $msgs
+    ]);
+    $title = "$mainText Регистрация пользователя";
+  } elseif ($_GET["page"] === "signin" || $_GET["page"] === null) {
+    $content = include_template('signin', [
+      "msgs" => $msgs
+    ]);
+    $title = "$mainText Авторизация пользователя";
+  }
 }
 
 $layout = include_template('layout', [
