@@ -312,7 +312,6 @@ function signin($linkBd, $post){
   $user = array_combine($userKeys, $userValues);
   
   if (checkUserInDB($linkBd, $user, true)) {
-    // clearMsgs();
     return true;
   }
   setMsgs("Неверный логин или пароль.", "error");
@@ -334,8 +333,8 @@ function transformsDate($date) {
  * @return array 
  */
 function addTask($linkBd, $post) {
-  $author = clearStr($post["author"]);
-  $executor = clearStr($post["executor"]);
+  $authorId = $_SESSION['userInfo']['id'];
+  $executorId = clearStr($post["executor"]);
   $date = clearStr($post["date"]);
   $title = clearStr($post["title"]);
   $text = clearStr($post["text"]);
@@ -358,9 +357,9 @@ function addTask($linkBd, $post) {
 
   mysqli_query($linkBd, "START TRANSACTION");
   $resutTask = mysqli_query($linkBd, "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`) VALUES('$title', '$text', '$status', '$dateStart', '$dateEnd')");
-  $id = mysqli_insert_id($linkBd);
-  $resutAuthor = mysqli_query($linkBd, "INSERT INTO tasks_author (user_id, task_id) VALUES('$author', '$id')");
-  $resutExecutor = mysqli_query($linkBd, "INSERT INTO tasks_executor (user_id, task_id) VALUES('$executor', '$id')");
+  $idTask = mysqli_insert_id($linkBd);
+  $resutAuthor = mysqli_query($linkBd, "INSERT INTO tasks_author (user_id, task_id) VALUES('$authorId', '$idTask')");
+  $resutExecutor = mysqli_query($linkBd, "INSERT INTO tasks_executor (user_id, task_id) VALUES('$executorId', '$idTask')");
 
   if ($resutTask && $resutAuthor && $resutExecutor) {
     mysqli_query($linkBd, "COMMIT");
