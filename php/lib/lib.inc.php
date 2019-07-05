@@ -445,3 +445,10 @@ function executeTask($id) {
     setMsgs("Не удалось выполнить задачу.", "error");
   }
 }
+/**
+ * Завершение сессии пользователем
+ */
+function exitUser() {
+  session_destroy();
+  header("Location: /");
+}

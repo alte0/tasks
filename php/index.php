@@ -35,6 +35,10 @@ if ($_GET["action"] === "execute" && isset($_GET["id"])) {
   header("Location: /");
 }
 
+if ($_GET["action"] === "exit") {
+  exitUser();
+}
+
 if ($_SESSION['auth']) {
   if ($_GET["page"] === "add-task") {
     $userAll = getUsers($dbcon);
