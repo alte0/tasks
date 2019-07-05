@@ -53,6 +53,14 @@ function clearStr($value) {
   return mysqli_real_escape_string($dbcon, $clearValue);
 }
 /**
+ * Очистка введены данных(ожидаем цифру).
+ * @param string $value
+ * @return string
+ */
+function clearInt($value) {
+  return abs((int)$value);
+}
+/**
  * Показывает ошибки при заполнении формы.
  * @param array $msgs - массив с текстом ошибок в оррме.
  */
@@ -337,7 +345,7 @@ function addTask($linkBd, $post) {
   $date = clearStr($post["date"]);
   $title = clearStr($post["title"]);
   $text = clearStr($post["text"]);
-  $status = "в работе";
+  $status = "в работе!";
   $dateStart = null;
   $dateEnd = null;
   
@@ -418,4 +426,22 @@ function getUsers($linkBd) {
   }
   $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
   return $result;
+}
+/**
+ * Выполнение задачи
+ * @param int - $id 
+ */
+function executeTask($id) {
+  $job = "Выполнено!";
+  $idTask = clearInt($id);
+  global $dbcon;
+  
+  if (!$dbcon) {
+    setMsgs("Не удалось выполнить запрос.", "error");
+  }
+
+  $sql = "UPDATE `tasks` SET `task_status`='$job' WHERE `task_id`=$idTask";
+  if (!mysqli_query($dbcon, $sql)) {
+    setMsgs("Не удалось выполнить задачу.", "error");
+  }
 }

@@ -30,6 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
 }
 
+if ($_GET["action"] === "execute" && isset($_GET["id"])) {
+  executeTask($_GET["id"]);
+  header("Location: /");
+}
+
 if ($_SESSION['auth']) {
   if ($_GET["page"] === "add-task") {
     $userAll = getUsers($dbcon);

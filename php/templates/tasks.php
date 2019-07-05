@@ -27,6 +27,8 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
     $myTasks = ""; // задачи поставленные мне
     $setTasks = ""; // задачи поставленные мною
     foreach ($tasks as $task) {
+      $visibleExecuteLink = $task['task_status'] === 'Выполнено!' ? "" : "<a href='?action=execute&id={$task['task_id']}'>Выполнить задачу</a>";
+
       if ($task['author_name'] === $_SESSION['userInfo']['name'] && !($task['executor_name'] === $_SESSION['userInfo']['name'])) {
 
         $setTasks = $setTasks . trim("
@@ -40,9 +42,9 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
             </div>
             <div class='task__date-end'>Закончить задачу до: {$task['task_date_end']} 
             </div>
-            <div class='task__status'>Статус: {$task['task_status']}.
+            <div class='task__status'>Статус: {$task['task_status']}
             </div>
-            <div class='task__execute'><a href='?action=execute&id={$task['task_id']}'>Выполнить задачу</a>
+            <div class='task__execute'>
             </div>
             <div class='task__author'>Назначил: {$task['author_name']} {$task['author_surname']} {$task['author_patronymic']} 
             </div>
@@ -63,9 +65,9 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
             </div>
             <div class='task__date-end'>Закончить задачу до: {$task['task_date_end']} 
             </div>
-            <div class='task__status'>Статус: {$task['task_status']}.
+            <div class='task__status'>Статус: {$task['task_status']}
             </div>
-            <div class='task__execute'><a href='?action=execute&id={$task['task_id']}'>Выполнить задачу</a>
+            <div class='task__execute'>$visibleExecuteLink
             </div>
             <div class='task__author'>Назначил: {$task['author_name']} {$task['author_surname']} {$task['author_patronymic']} 
             </div>

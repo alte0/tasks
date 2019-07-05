@@ -1,3 +1,4 @@
+<?php showMsgs($msgs); ?>
 <div class="tasks__add-task">
   <form class="form form_task-add" action="" method="post">
     <div class="form__row form__row_label-group-two">
