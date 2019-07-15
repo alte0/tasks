@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июл 03 2019 г., 13:48
+-- Время создания: Июл 15 2019 г., 09:38
 -- Версия сервера: 10.3.13-MariaDB
 -- Версия PHP: 7.3.2
 
@@ -34,17 +34,9 @@ CREATE TABLE `tasks` (
   `task_desc` varchar(255) NOT NULL,
   `task_status` varchar(20) NOT NULL,
   `task_date_start` date NOT NULL,
-  `task_date_end` date NOT NULL
+  `task_date_end` date NOT NULL,
+  `task_date_add` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `tasks`
---
-
-INSERT INTO `tasks` (`task_id`, `task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`) VALUES
-(1, 'Заголовок задачи', 'Дополнительная информация по задаче', 'в работе', '2019-07-03', '2019-07-04'),
-(3, 'Заголовок задачи', 'Дополнительная информация по задаче', 'в работе', '2019-07-06', '2019-07-11'),
-(4, 'Заголовок задачи', 'Дополнительная информация по задаче', 'в работе', '2019-07-03', '2019-07-05');
 
 -- --------------------------------------------------------
 
@@ -57,15 +49,6 @@ CREATE TABLE `tasks_author` (
   `task_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `tasks_author`
---
-
-INSERT INTO `tasks_author` (`user_id`, `task_id`) VALUES
-(1, 1),
-(1, 3),
-(1, 4);
-
 -- --------------------------------------------------------
 
 --
@@ -76,15 +59,6 @@ CREATE TABLE `tasks_executor` (
   `user_id` int(11) NOT NULL,
   `task_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `tasks_executor`
---
-
-INSERT INTO `tasks_executor` (`user_id`, `task_id`) VALUES
-(2, 1),
-(2, 3),
-(1, 4);
 
 -- --------------------------------------------------------
 
@@ -98,16 +72,9 @@ CREATE TABLE `users` (
   `user_password` varchar(60) NOT NULL,
   `user_name` varchar(20) NOT NULL,
   `user_surname` varchar(20) NOT NULL,
-  `user_patronymic` varchar(20) NOT NULL
+  `user_patronymic` varchar(20) NOT NULL,
+  `user_date_add` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`user_id`, `user_login`, `user_password`, `user_name`, `user_surname`, `user_patronymic`) VALUES
-(1, 'test', '$2y$10$BRVINB37l19DKnKZaIf8HuffY1uu0dX0ovUhNuQn3IDGijgQygOD6', 'test', 'test-test', 'test-test-test'),
-(2, 'test2', '$2y$10$RWbnZhKuFgXchhhx6begTOsKT9B7VTH1g0lXqa0gwwCTomuwPbulK', 'test2', 'test2-test2', 'test2-test2-test2');
 
 --
 -- Индексы сохранённых таблиц
@@ -147,13 +114,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
