@@ -449,6 +449,8 @@ function executeTask($id) {
  * Завершение сессии пользователем
  */
 function exitUser() {
-  session_destroy();
+  // session_destroy();
+  unset($_SESSION['userInfo']);
   header("Location: /");
+  exit;
 }
