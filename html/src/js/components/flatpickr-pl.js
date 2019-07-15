@@ -13,5 +13,8 @@ const configFlatpickr = {
 }
 
 if (dateFlatpickr) {
-  flatpickr(dateFlatpickr, configFlatpickr)
+  const fp = flatpickr(dateFlatpickr, configFlatpickr)
+  fp.config.onOpen.push(function () {
+    fp.redraw()
+  })
 }
