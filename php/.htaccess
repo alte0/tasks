@@ -1,5 +1,5 @@
 # Установка кодировки страниц сайта или off
-AddDefaultCharset Off
+AddDefaultCharset Utf-8
 
 # Запретим пользователям просматривать файлы директории
 Options All -Indexes
@@ -10,5 +10,9 @@ Options All -Indexes
   DirectoryIndex index.php index.html
 </IfModule>
 
+ErrorDocument 404 /error.php
+
 # RewriteEngine on
 # RewriteRule .* router.php [L]
+
+# RewriteRule ^reg?$ reg.php [NC, L]
