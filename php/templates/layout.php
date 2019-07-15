@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&amp;display=swap&amp;subset=cyrillic" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
   <main>
     <div class="container">
@@ -25,5 +23,4 @@
   <script src="js/vendor.bundle.js" async="async"></script>
   <script src="js/script.js" defer="defer"></script>
 </body>
-
 </html>

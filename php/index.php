@@ -6,7 +6,6 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if ($_POST["signin"] === '') {
     if (signin($dbcon, $_POST)) {
-      $_SESSION['auth'] = true;
       $_SESSION['userInfo'] = $userInfo;
       header("Location: " . $_SERVER["REQUEST_URI"]);
       header("Location: /");
@@ -15,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   if ($_POST["signup"] === '') {
     if (signup($dbcon, $_POST)) {
-      // $_SESSION['auth'] = true;
+      // $_SESSION['userInfo'] = $userInfo;
       header("Location: " . $_SERVER["REQUEST_URI"]);
       header("Location: /");
     } else {
@@ -39,7 +38,7 @@ if ($_GET["action"] === "exit") {
   exitUser();
 }
 
-if ($_SESSION['auth']) {
+if ($_SESSION['userInfo']) {
   if ($_GET["page"] === "add-task") {
     $userAll = getUsers($dbcon);
     $content = include_template('add-task', [

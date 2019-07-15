@@ -28,7 +28,8 @@
   "dependencies": {
     "flatpickr": "^4.6.1",
     "normalize.css": "^8.0.1",
-    "tinymce": "^5.0.7"
+    "tinymce": "^5.0.11",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

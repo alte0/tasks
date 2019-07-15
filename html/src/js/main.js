@@ -1,5 +1,6 @@
 import svg4everybody from 'svg4everybody'
 // require('./components/components')
-require('./components/flatpickr')
+require('./components/flatpickr-pl')
+require('./components/forms')
 
 svg4everybody()

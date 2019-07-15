@@ -333,14 +333,14 @@ function transformsDate($date) {
   return "{$arrDate["year"]}.{$arrDate["month"]}.{$arrDate["day"]}";
 }
 /**
- * Получение задач для пользователя
- *
+ * Добавление задачи для пользователя
  * @param resource $linkBd
  * @param array - $_POST
  * @return array 
  */
 function addTask($linkBd, $post) {
   $authorId = $_SESSION['userInfo']['id'];
+  $isAjax = $post["ajax"] === "yes" ? true : false;
   $executorId = clearStr($post["executor"]);
   $date = clearStr($post["date"]);
   $title = clearStr($post["title"]);
@@ -350,7 +350,7 @@ function addTask($linkBd, $post) {
   $dateEnd = null;
   
   $dates = explode(" — ", $date);
-
+  
   if (count($dates) === 2) {
     $dateStart = transformsDate($dates[0]);
     $dateEnd = transformsDate($dates[1]);
@@ -358,8 +358,13 @@ function addTask($linkBd, $post) {
     $dateStart = transformsDate($dates[0]);
     $dateEnd = $dateStart;
   }
+
   if (!$linkBd) {
     setMsgs("Не удалось выполнить запрос.", "error");
+    if ($isAjax) {
+      global $msgs;
+      echo json_encode($msgs);
+    }
   }
 
   mysqli_query($linkBd, "START TRANSACTION");
@@ -371,12 +376,24 @@ function addTask($linkBd, $post) {
   if ($resutTask && $resutAuthor && $resutExecutor) {
     mysqli_query($linkBd, "COMMIT");
     setMsgs("Задача добавлена.", "success");
+    if ($isAjax) {
+      global $msgs;
+      echo json_encode($msgs);
+    }
+
     return true;
   } else {
     mysqli_query($linkBd, "ROLLBACK");
     setMsgs("Не удалось добавить задачу.", "error");
+
+    if ($isAjax) {
+      global $msgs;
+      echo json_encode($msgs);
+    }
+    
     return false;
   }
+
 }
 /**
  * Получение задач для пользователя
@@ -407,6 +424,7 @@ function getTasks($linkBd) {
     return [];
   }
   $resut = mysqli_fetch_all($query, MYSQLI_ASSOC);
+
   return $resut;
 }
 /**

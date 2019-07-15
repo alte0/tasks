@@ -4,7 +4,7 @@
     <div class="form__row form__row_label-group-two">
       <label>Дата начала и окончания задачи
         <div class="flatpickr">
-          <input class="form__date" type="text" name="date" placeholder="выберите дату или даты" data-input="data-input" required="required" />
+          <input class="form__date" type="text" name="date" placeholder="выберите дату или даты" data-input="data-input" required="required" value="<?= date("d.m.Y"); ?>" />
           <button type="button" title="toggle" data-toggle="">календарь</button>
           <button type="button" title="toggle" data-clear="">очистить</button>
         </div>
