@@ -26,9 +26,10 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "codemirror": "^5.48.0",
     "flatpickr": "^4.6.1",
+    "froala-editor": "^3.0.3",
     "normalize.css": "^8.0.1",
-    "tinymce": "^5.0.11",
     "toastr": "^2.1.4"
   },
   "devDependencies": {
