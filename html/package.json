@@ -26,6 +26,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^12.3.1",
     "flatpickr": "^4.6.1",
     "normalize.css": "^8.0.1",
     "toastr": "^2.1.4"

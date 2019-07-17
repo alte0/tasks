@@ -19,7 +19,7 @@ textarea {
   resize: none;
   padding: $baseValue;
   line-height: $baseLineHeight;
-  min-height: $baseLineHeight * 3 * $baseFontSize;
+  min-height: $baseLineHeight * $baseFontSize * 3;
 }
 
 .container {
