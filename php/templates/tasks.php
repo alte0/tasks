@@ -30,12 +30,13 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
       $visibleExecuteLink = $task['task_status'] === 'Выполнено!' ? "" : "<a href='?action=execute&id={$task['task_id']}'>Выполнить задачу</a>";
 
       if ($task['author_name'] === $_SESSION['userInfo']['name'] && !($task['executor_name'] === $_SESSION['userInfo']['name'])) {
-
+        $TaskDesc = html_entity_decode($task['task_desc']);
+        
         $setTasks = $setTasks . trim("
         <section class='task'>
           <h3 class='task__title'>{$task['task_title']}</h3>
           <div class='task__desc'>
-            <p>{$task['task_desc']}</p>
+            $TaskDesc
           </div>
           <footer class='task__footer'>
             <div class='task__date-start'>Начало задачи: {$task['task_date_start']}
@@ -54,11 +55,13 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
         </section>
         ");
       } else {
+        $TaskDesc = html_entity_decode($task['task_desc']);
+
         $myTasks = $myTasks . trim("
         <section class='task'>
           <h3 class='task__title'>{$task['task_title']}</h3>
           <div class='task__desc'>
-            <p>{$task['task_desc']}</p>
+            $TaskDesc
           </div>
           <footer class='task__footer'>
             <div class='task__date-start'>Начало задачи: {$task['task_date_start']}

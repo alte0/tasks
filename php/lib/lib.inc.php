@@ -344,7 +344,7 @@ function addTask($linkBd, $post) {
   $executorId = clearStr($post["executor"]);
   $date = clearStr($post["date"]);
   $title = clearStr($post["title"]);
-  $text = clearStr($post["text"]);
+  $text = htmlentities($post["text"]);
   $status = "в работе!";
   $dateStart = null;
   $dateEnd = null;
