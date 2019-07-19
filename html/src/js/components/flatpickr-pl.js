@@ -11,10 +11,16 @@ const configFlatpickr = {
   weekNumbers: true,
   wrap: true
 }
+let fp
 
 if (dateFlatpickr) {
-  const fp = flatpickr(dateFlatpickr, configFlatpickr)
+  fp = flatpickr(dateFlatpickr, configFlatpickr)
   fp.config.onOpen.push(function () {
     fp.redraw()
   })
+}
+
+export const clearDataFlatpickr = function () {
+  fp.clear()
+  fp.setDate(+new Date(), true, configFlatpickr.dateFormat)
 }

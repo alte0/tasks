@@ -9,16 +9,25 @@ const config = {
 }
 let editor
 
-ClassicEditor.create(textarea, config)
-  .then(newEditor => {
-    editor = newEditor
-    return true
+const initEditor = () => {
+  ClassicEditor.create(textarea, config)
+    .then(newEditor => {
+      editor = newEditor
+      return true
+    })
+    .catch(error => {
+      console.error(error)
+    })
+  document.querySelector('[type="submit"]').addEventListener('click', () => {
+    const editorData = editor.getData()
+    textarea.innerHTML = editorData
   })
-  .catch(error => {
-    console.error(error)
-  })
+}
 
-document.querySelector('[type="submit"]').addEventListener('click', () => {
-  const editorData = editor.getData()
-  textarea.innerHTML = editorData
-})
+if (textarea) {
+  initEditor()
+}
+
+export const clearDataEditor = function () {
+  editor.setData('')
+}
