@@ -4,8 +4,12 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
 ?>
 <div class="user-menu">
   <span class="user-menu__user">Пользователь: <? print($user) ?></span>
-  <span class="user-menu__add-task"><a href="?page=add-task">Поставить задачу</a></span>
-  <span class="user-menu__exit"><a href="?action=exit">Выйти</a></span>
+  <span class="user-menu__add-task">
+    <a class="user-menu__link" href="?page=add-task">Поставить задачу</a>
+  </span>
+  <span class="user-menu__exit">
+    <a class="user-menu__link" href="?action=exit">Выйти</a>
+  </span>
 </div>
 <div class="tasks">
   <input class="tasks__input" id="my-tasks" type="radio" name="tasks-tab" checked="checked" />
@@ -31,7 +35,7 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
 
       if ($task['author_name'] === $_SESSION['userInfo']['name'] && !($task['executor_name'] === $_SESSION['userInfo']['name'])) {
         $TaskDesc = html_entity_decode($task['task_desc']);
-        
+
         $setTasks = $setTasks . trim("
         <section class='task'>
           <h3 class='task__title'>{$task['task_title']}</h3>

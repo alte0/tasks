@@ -2,13 +2,12 @@
 <div class="tasks__add-task">
   <form class="form form_task-add" action="" method="post">
     <div class="form__row form__row_label-group-two">
-      <label>Дата начала и окончания задачи
-        <div class="flatpickr">
-          <input class="form__date" type="text" name="date" placeholder="выберите дату или даты" data-input="data-input" required="required" value="<?= date("d.m.Y"); ?>" />
-          <button type="button" title="toggle" data-toggle="">календарь</button>
-          <button type="button" title="toggle" data-clear="">очистить</button>
-        </div>
-      </label>
+      <label for="date">Дата начала и окончания задачи</label>
+      <div class="flatpickr">
+        <input id="date" class="form__date" type="text" name="date" placeholder="выберите дату или даты" data-input="data-input" required="required" value="<?= date("d.m.Y"); ?>" />
+        <button type="button" title="Открыт/Закрыть календарь" data-toggle="">календарь</button>
+        <button type="button" title="Очистить календарь" data-clear="">очистить</button>
+      </div>
     </div>
     <div class="form__row form__row_content-column"><span>Выберите исполнителя</span>
       <select class="form__list-users" name="executor" required="required">

@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&amp;display=swap&amp;subset=cyrillic" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body <?= $_SESSION['userInfo'] && $_GET["page"] === null ? "class=\"bg\"" : "" ?>>
   <main>
     <div class="container">
       <?= $content ?>
