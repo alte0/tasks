@@ -1,10 +1,10 @@
 +b.FORM.form._task-add(action="", method="post")
   +e.row._label-group-two
-    +e.LABEL Дата начала и окончания задачи 
-      .flatpickr
-        +e.INPUT.date(type="text", name="text", value="19.07.2019" placeholder="выберите дату или даты", data-input required)
-        button(type="button" title="toggle" data-toggle="") календарь
-        button(type="button" title="toggle" data-clear="") очистить
+    +e.LABEL(for="date") Дата начала и окончания задачи 
+    .flatpickr
+      +e.INPUT.date(id="date", type="text", name="text", value="19.07.2019" placeholder="выберите дату или даты", data-input required)
+      button(type="button" title="Открыт/Закрыть календарь" data-toggle="") календарь
+      button(type="button" title="Очистить календарь" data-clear="") очистить
 
   +e.row._content-column
     +e.SPAN Выберите исполнителя

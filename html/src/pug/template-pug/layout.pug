@@ -4,13 +4,15 @@ include ../components/mixins/mixins.pug
 <!DOCTYPE html>
 html(lang="ru")
   include head
-  body
-    block header
-      include header
-    main
-      block content
-    block footer
-      include footer
 
-    script(src='js/vendor.bundle.js' async)
-    script(src='js/script.js' defer)
+  block body
+    body(class=classbg || '')
+      block header
+        include header
+      main
+        block content
+      block footer
+        include footer
+
+      script(src='js/vendor.bundle.js' async)
+      script(src='js/script.js' defer)

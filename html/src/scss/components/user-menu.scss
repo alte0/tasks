@@ -7,7 +7,7 @@
   @media screen and (min-width: 680px) {
     justify-content: space-between;
   }
-  // &__user {}
+  
   &__add-task {
     @media screen and (min-width: 640px) {
       margin-left: auto;
@@ -15,7 +15,23 @@
       padding-right: $baseValue;
     }
   }
-  // &__exit {
-  //   padding-left: $baseValue;
-  // }
+  &__link {
+    color: white;
+    &:hover {
+      opacity: .7;
+    }
+  }
+  position: relative;
+  color: white;
+  z-index: 0;
+  &::before {
+    position: absolute;
+    content: '';
+    background-color: $bgBllack;
+    left: -1000%;
+    right: -1000%;
+    top: - $baseValue * 2;
+    bottom: - $baseValue;
+    z-index: -1;
+  }
 }

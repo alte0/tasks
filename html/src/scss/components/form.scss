@@ -12,10 +12,7 @@
       }
     }
   }
-  // &__reg {}
-  // &_auth {
-  // }
-
+  
   &__title {
     margin-bottom: $baseValue * 5; // 40
     text-align: center;
@@ -31,8 +28,7 @@
       text-align: center;
     }
   }
-  &__input,
-  &__button {
+  &__input {
     padding-top: $baseValue;
     padding-bottom: $baseValue;
   }
@@ -43,7 +39,7 @@
 
   &__date {
     @media screen and (max-width: 320px) {
-      width: $baseValue * 35; // 280
+      width: 100%;
     }
   }
 }
