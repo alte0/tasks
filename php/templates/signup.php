@@ -5,10 +5,10 @@
     <label for="login">Ваш логин:</label><input class="form__input" id="login" type="text" name="login" minlength="2" maxlength="20" required="required" <?= $_POST["login"] ? "value=" . $_POST["login"] : "" ?> />
   </div>
   <div class="form__row form__row_content-column">
-    <label for="password">Пароль:</label><input class="form__input" id="password" type="password" name="password" minlength="6" maxlength="20" required="required" />
+    <label for="password">Пароль:</label><input class="form__input" id="password" type="password" name="password" minlength="6" maxlength="20" required="required" pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" placeholder="qSdf4t">
   </div>
   <div class="form__row form__row_content-column">
-    <label for="password2">Повторите пароль:</label><input class="form__input" id="password2" type="password" name="password2" minlength="6" maxlength="20" required="required" />
+    <label for="password2">Повторите пароль:</label><input class="form__input" id="password2" type="password" name="password2" minlength="6" maxlength="20" required="required" pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" placeholder="qSdf4t" />
   </div>
   <div class="form__row form__row_content-column">
     <label for="name">Имя:</label><input class="form__input" id="name" type="text" name="name" minlength="2" maxlength="20" required="required" <?= $_POST["name"] ? "value=" . $_POST["name"] : "" ?> />
