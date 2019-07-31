@@ -26,14 +26,18 @@ function submitOnFormTaskAdd (evt) {
         if (response.ok && response.status === 200) {
           return response.json()
         } else {
-          throw new Error(`Не удалось добавить задачу`)
+          throw new Error(`Не удалось добавить задачу на сервере`)
         }
       })
       .then(data => {
-        showMessage(data.msgsType, data.textMsgs[0])
-        formTaskAdd.reset()
-        clearDataEditor()
-        clearDataFlatpickr()
+        if (data.msgsType === `success`) {
+          showMessage(data.msgsType, data.textMsgs[0])
+          formTaskAdd.reset()
+          clearDataEditor()
+          clearDataFlatpickr()
+        } else {
+          showMessage(data.msgsType, data.textMsgs[0])
+        }
         return false
       })
       .catch(error => {
