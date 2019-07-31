@@ -17,7 +17,7 @@ $msgs = ["textMsgs"=> [], "msgsType" => ""];
 // $msgs = $_SESSION["msgs"];
 
 $dbcon = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
-mysqli_set_charset($dbcon, "utf-8");
+mysqli_set_charset($dbcon, "utf8");
 if (!$dbcon) {
   $errorNumber = mysqli_connect_errno($dbcon);
   $errorText = mysqli_connect_error($dbcon);
