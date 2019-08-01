@@ -19,7 +19,9 @@ if (dateFlatpickr) {
     fp.redraw()
   })
 }
-
+/**
+ * Очишает данные в flatpickr и устанавливает текушую дату
+ */
 export const clearDataFlatpickr = function () {
   fp.clear()
   fp.setDate(+new Date(), true, configFlatpickr.dateFormat)

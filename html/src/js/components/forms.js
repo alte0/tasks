@@ -3,7 +3,9 @@ import { clearDataEditor } from './editor'
 import { clearDataFlatpickr } from './flatpickr-pl'
 
 const formTaskAdd = document.body.querySelector(`.form_task-add`)
-
+/**
+ * ajax Добавление задачи на сервер
+ */
 function submitOnFormTaskAdd (evt) {
   evt.preventDefault()
   const method = `POST`

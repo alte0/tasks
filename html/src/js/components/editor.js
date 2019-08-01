@@ -8,7 +8,9 @@ const config = {
   language: 'ru'
 }
 let editor
-
+/**
+ * Инициализация ckeditor5
+ */
 const initEditor = () => {
   ClassicEditor.create(textarea, config)
     .then(newEditor => {
@@ -27,7 +29,9 @@ const initEditor = () => {
 if (textarea) {
   initEditor()
 }
-
+/**
+ * Очишает введеные данные в ckeditor5
+ */
 export const clearDataEditor = function () {
   editor.setData('')
 }
