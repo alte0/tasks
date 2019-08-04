@@ -6,7 +6,7 @@ const formTaskAdd = document.body.querySelector(`.form_task-add`)
 /**
  * ajax Добавление задачи на сервер
  */
-function submitOnFormTaskAdd (evt) {
+function formTaskAddSubmitHandler (evt) {
   evt.preventDefault()
   const method = `POST`
   const url = `/ajax/task-add.php`
@@ -51,5 +51,5 @@ function submitOnFormTaskAdd (evt) {
 }
 
 if (formTaskAdd) {
-  formTaskAdd.addEventListener(`submit`, submitOnFormTaskAdd)
+  formTaskAdd.addEventListener(`submit`, formTaskAddSubmitHandler)
 }
