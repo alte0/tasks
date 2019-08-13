@@ -12,9 +12,7 @@ $mainText = "Tasks -";
 $tasks = [];
 $userInfo = [];
 $userAll = [];
-// $_SESSION["msgs"] = ["textMsgs" => [], "msgsType" => ""];
 $msgs = ["textMsgs"=> [], "msgsType" => ""];
-// $msgs = $_SESSION["msgs"];
 
 $dbcon = mysqli_connect($DB_host, $DB_login, $DB_password, $DB_name);
 mysqli_set_charset($dbcon, "utf8");
@@ -43,7 +41,7 @@ function include_template($nameTemplate, array $data = []) {
   return $result;
 }
 /**
- * Очистка введены данных в форме.
+ * Очистка введеных данных в форме.
  * @param string $value
  * @return string
  */
@@ -53,7 +51,7 @@ function clearStr($value) {
   return mysqli_real_escape_string($dbcon, $clearValue);
 }
 /**
- * Очистка введены данных(ожидаем цифру).
+ * Очистка введеных данных(ожидаем цифру).
  * @param string $value
  * @return string
  */

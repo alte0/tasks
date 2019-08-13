@@ -4,7 +4,7 @@ require "lib/lib.inc.php";
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  if ($_POST["signin"] === '') {
+  if (isset($_POST["signin"]) && $_POST["signin"] === '') {
     if (signin($dbcon, $_POST)) {
       $_SESSION['userInfo'] = $userInfo;
       header("Location: " . $_SERVER["REQUEST_URI"]);
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
   }
 
-  if ($_POST["signup"] === '') {
+  if (isset($_POST["signup"]) && $_POST["signup"] === '') {
     if (signup($dbcon, $_POST)) {
       // $_SESSION['userInfo'] = $userInfo;
       header("Location: " . $_SERVER["REQUEST_URI"]);
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
   }
 
-  if ($_POST["task-add"] === '') {
+  if (isset($_POST["task-add"]) && $_POST["task-add"] === '') {
     if(addTask($dbcon, $_POST)) {
       header("Location: " . $_SERVER["REQUEST_URI"]);
     }
