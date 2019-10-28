@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../lib/lib.inc.php";
+require __DIR__ . "/../../lib/lib.inc.php";
 use PHPUnit\Framework\TestCase;
 
 class StackTest extends TestCase

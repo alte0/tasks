@@ -8,7 +8,7 @@ Thumbs.db
 .vscode
 
 # vendor файлы от composer
-vendor
+tests-phpunit/vendor
 
 # файлы cache
 *.cache
