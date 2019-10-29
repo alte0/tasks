@@ -11,13 +11,14 @@ const MAX_LENGTH_PWD = 20;
 
 $mainText = "Tasks -";
 $user = null;
-$userAll = null;
+$users = null;
 $bgClass = null;
 $today = date("d.m.Y");
+$errorsForm = [];
+$passwordSalt = "1s@d";
 
-// $_SESSION['userInfo'] && $_GET["page"] === null ? "class=\"bg\"" : "";
 if (isset($_SESSION['userInfo'])) {
   $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_SESSION['userInfo']['patronymic']}";
   $bgClass = "class=\"bg\"";
-  // $userAll = getUsers($dbcon);
+  // $users = getUsers($dbcon);
 }
