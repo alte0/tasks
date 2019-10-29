@@ -1,10 +1,9 @@
-<?php showMsgs($msgs); ?>
 <div class="tasks__add-task">
   <form class="form form_task-add" action="" method="post">
     <div class="form__row form__row_label-group-two">
       <label for="date">Дата начала и окончания задачи</label>
       <div class="flatpickr">
-        <input id="date" class="form__date" type="text" name="date" placeholder="выберите дату или даты" data-input="data-input" required="required" value="<?= date("d.m.Y"); ?>" />
+        <input id="date" class="form__date" type="text" name="date" placeholder="выберите дату или даты" data-input="data-input" required="required" value="<?= $today ?>" />
         <button type="button" title="Открыт/Закрыть календарь" data-toggle="">календарь</button>
         <button type="button" title="Очистить календарь" data-clear="">очистить</button>
       </div>
@@ -13,10 +12,13 @@
       <select class="form__list-users" name="executor" required="required">
         <option value="" selected="selected" disabled="disabled">Не выбрано</option>
         <?php
-        foreach ($userAll as $user) {
-          $textOption = $user['user_id'] === $_SESSION['userInfo']['id'] ? "Я" : "{$user['user_name']} {$user['user_surname']} {$user['user_patronymic']}";
-          print("<option value={$user['user_id']}>$textOption</option>");
-        }
+          if (isset($userAll, $_SESSION['userInfo'])) {
+            foreach ($userAll as $user) {
+              $textOption = clearStrDataTags($user['user_id'] === $_SESSION['userInfo']['id'] ? "Я" : "{$user['user_name']} {$user['user_surname']} {$user['user_patronymic']}");
+              
+              print("<option value={$user['user_id']}>$textOption</option>");
+            }
+          }
         ?>
       </select>
     </div>

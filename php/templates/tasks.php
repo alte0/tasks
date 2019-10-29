@@ -1,9 +1,5 @@
-<?php
-showMsgs($msgs);
-$user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_SESSION['userInfo']['patronymic']}"
-?>
 <div class="user-menu">
-  <span class="user-menu__user">Пользователь: <? print($user) ?></span>
+  <span class="user-menu__user">Пользователь: <?= $user ?></span>
   <span class="user-menu__add-task">
     <a class="user-menu__link" href="?page=add-task">Поставить задачу</a>
   </span>
@@ -25,7 +21,7 @@ $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_S
   </label>
 
   <?php
-  if (!$tasks) {
+  if (!isset($tasks)) {
     print_r("<div>Нет никаких задач</div>");
   } else {
     $myTasks = ""; // задачи поставленные мне

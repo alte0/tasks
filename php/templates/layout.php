@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <meta name="copyright" content="Задачи" />
-  <title><?= $title ?></title>
+  <title><?= clearStrDataTags($title) ?></title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&amp;display=swap&amp;subset=cyrillic" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body <?= $_SESSION['userInfo'] && $_GET["page"] === null ? "class=\"bg\"" : "" ?>>
+<body <?= $bgClass ?>>
   <main>
     <div class="container">
       <?= $content ?>
