@@ -39,3 +39,21 @@ function getPostVal($name)
     // htmlentities для сохранения кавычек
     return isset($_POST[$name]) ? htmlentities(trim($_POST[$name])) : "";
 }
+/**
+ * Валидация строки
+ * @param string $value - значение для валидации;
+ * @param integer $min - минимальное значение длины строки;
+ * @param integer $max - максимальное значение длины строки;
+ * @return string|null
+ */
+function validateLength(int $min, int $max, string $value)
+{
+    $length = mb_strlen($value);
+    
+    if (!($length >= $min && $length <= $max)) {
+        return "Значение должно быть от $min до $max символов";
+    }
+
+    return null;
+}
+
