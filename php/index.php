@@ -1,6 +1,5 @@
 <?php
 require "init.php";
-// require "lib/lib.inc.php";
 
 // if ($_SERVER["REQUEST_METHOD"] === "POST") {
 //   if (isset($_POST["signin"]) && $_POST["signin"] === '') {
@@ -31,10 +30,6 @@ require "init.php";
 // if ($_GET["action"] === "execute" && isset($_GET["id"])) {
 //   executeTask($_GET["id"]);
 //   header("Location: /");
-// }
-
-// if ($_GET["action"] === "exit") {
-//   exitUser();
 // }
 
 // if ($_SESSION['userInfo']) {

@@ -116,14 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $stmt = $linkDB->prepare($sql);
     $stmt->execute([$user["login"], $hashPassword, $user["name"], $user["surname"], $user["patronymic"]]);
     if ($stmt) {
-        $id = $linkDB->lastInsertId();
-        $userInfo["login"] = $user["login"];
-        $userInfo["id"] = $id;
-        $userInfo["name"] = $user["name"];
-        $userInfo["surname"] = $user["surname"];
-        $userInfo["patronymic"] = $user["patronymic"];
-        $_SESSION['userInfo'] = $userInfo;
-        // header("Location: /");
         header("Location: /signin.php");
         die;
     }

@@ -129,18 +129,19 @@ function checkUserInDB($link, $user, $isPwd = false)
     $result = $stmt->fetch();
 
     if ($isPwd && !empty($result)) {
-        var_dump($result);
-        // if (password_verify($password, $result["user_password"]) && $result["user_login"] === $login) {
-        //     global $userInfo;
-        //     $userInfo["login"] = $result["user_login"];
-        //     $userInfo["id"] = $result["user_id"];
-        //     $userInfo["name"] = $result["user_name"];
-        //     $userInfo["surname"] = $result["user_surname"];
-        //     $userInfo["patronymic"] = $result["user_patronymic"];
-        //     return true;
-        // }
+        if (password_verify($password, $result["user_password"]) && $result["user_login"] === $login) {
+            global $userInfo;
+            $id = $link->lastInsertId();
+            $userInfo["id"] = $id;
+            $userInfo["login"] = $result["user_login"];
+            $userInfo["name"] = $result["user_name"];
+            $userInfo["surname"] = $result["user_surname"];
+            $userInfo["patronymic"] = $result["user_patronymic"];
+            $_SESSION['userInfo'] = $userInfo;
+            return true;
+        }
         
-        // return false;
+        return false;
     }
 
     return empty($result);

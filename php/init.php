@@ -12,23 +12,22 @@ const MAX_LENGTH_PWD = 20;
 const REGEX_USER_LOGIN = "/^[a-zA-Z][a-zA-Z0-9-_]{1,20}$/";
 const REGEX_USER_PSW = "/(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/";
 
-$isAuth = false;
+$userDb = $dbConf["userDB"];
+$password = $dbConf["passwordDB"];
+$dsn = "mysql:dbname={$dbConf["nameDB"]};host={$dbConf["urlDB"]};charset=UTF8";
+$isAuth = isset($_SESSION['userInfo']) ? true : false;
 $mainText = "Tasks -";
-$user = null;
+$user = isset($_SESSION['userInfo']) ? "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_SESSION['userInfo']['patronymic']}" : null;
 $users = null;
-$bgClass = null;
+$bgClass = isset($_SESSION['userInfo']) ? "class=\"bg\"" : null;
 $today = date("d.m.Y");
 $errorsForm = [];
 $passwordSalt = "1s@d";
 $userInfo = [];
-
-$dsn = "mysql:dbname={$dbConf["nameDB"]};host={$dbConf["urlDB"]};charset=UTF8";
-$user = $dbConf["userDB"];
-$password = $dbConf["passwordDB"];
 $optionDB = [
   PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 ];
-$linkDB = new PDO($dsn, $user, $password, $optionDB);
+$linkDB = new PDO($dsn, $userDb, $password, $optionDB);
 
 if (!$linkDB) {
   $error = "Невозможно подключиться к MySQL " . $e->getMessage();
@@ -46,8 +45,5 @@ if (!$linkDB) {
 }
 
 if (isset($_SESSION['userInfo'])) {
-  // $isAuth = true;
-  $user = "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_SESSION['userInfo']['patronymic']}";
-  $bgClass = "class=\"bg\"";
   // $users = getUsers($dbcon);
 }
