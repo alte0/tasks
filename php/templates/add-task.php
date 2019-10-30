@@ -12,8 +12,8 @@
       <select class="form__list-users" name="executor" required="required">
         <option value="" selected="selected" disabled="disabled">Не выбрано</option>
         <?php
-          if (isset($userAll, $_SESSION['userInfo'])) {
-            foreach ($userAll as $user) {
+          if (isset($users, $_SESSION['userInfo'])) {
+            foreach ($users as $user) {
               $textOption = clearStrDataTags($user['user_id'] === $_SESSION['userInfo']['id'] ? "Я" : "{$user['user_name']} {$user['user_surname']} {$user['user_patronymic']}");
               
               print("<option value={$user['user_id']}>$textOption</option>");

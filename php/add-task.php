@@ -1,6 +1,5 @@
 <?php
 require "init.php";
-require "helpers.php";
 
 if (!isset($_SESSION['userInfo'])) {
   header("Location: /signin.php");
@@ -8,7 +7,7 @@ if (!isset($_SESSION['userInfo'])) {
 }
 
 $content = include_template('add-task', [
-  "userAll" => $userAll,
+  "users" => $users,
   'today' => $today
 ]);
 
