@@ -1,6 +1,23 @@
 <?php
 require "init.php";
-require "helpers.php";
+
+if ($isAuth) {
+    $seconds = 6;
+    header("Refresh: $seconds; url=/");
+    $error = "Вы уже зарегистрированны, через $seconds сек. вас перенаправит на главную страницу сайта.";
+    $content = include_template('error', [
+      'error' => $error
+    ]);
+
+    $layout = include_template('layout', [
+      'title' => "$mainText Задачи",
+      'bgClass' => $bgClass,
+      'content' => $content
+    ]);
+
+    print($layout);
+    die;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $user = [
@@ -34,6 +51,24 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["patronymic"]);
     },
   ];
+  
+  $rulesExtended = [
+    'login' => function () use ($user) {
+      return validateLoginRegex($user["login"]);
+    },
+    'password' => function () use ($user) {
+      return validatePassworsEqually($user["password"], $user["password2"]);
+    },
+  ];
+
+  $rulesExtendedSecond = [
+    'login' => function () use ($user, $linkDB) {
+        return checkLoginInDB($linkDB, $user);
+    },
+    'password' => function () use ($user) {
+        return validatePassworsRegex($user["password"]);
+    },
+  ];
 
   foreach ($required as $key) {
       if (empty($user[$key])) {
@@ -48,11 +83,50 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       }
   }
 
+  foreach ($user as $key => $value) {
+      if (!isset($errorsForm[$key]) && isset($rulesExtended[$key])) {
+        $ruleExtended = $rulesExtended[$key];
+        $errorsForm[$key] = $ruleExtended();
+
+        if ($key === 'password') {
+          $errorsForm['password2'] = $errorsForm['password'];
+        }
+      }
+  }
+
+  foreach ($user as $key => $value) {
+      if (!isset($errorsForm[$key]) && isset($rulesExtendedSecond[$key])) {
+        $ruleExtendedSecond = $rulesExtendedSecond[$key];
+        $errorsForm[$key] = $ruleExtendedSecond();
+        
+        if ($key === 'password') {
+            $errorsForm['password2'] = $errorsForm['password'];
+        }
+      }
+
+  }
+
   $errorsForm = array_filter($errorsForm);
 
   if (!count($errorsForm)) {
-    // header("Location: /");
-    // die;
+    $password = $passwordSalt . $user["password"];
+    $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO users (user_login, user_password, user_name, user_surname, user_patronymic) VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $linkDB->prepare($sql);
+    $stmt->execute([$user["login"], $hashPassword, $user["name"], $user["surname"], $user["patronymic"]]);
+    if ($stmt) {
+        $id = $linkDB->lastInsertId();
+        $userInfo["login"] = $user["login"];
+        $userInfo["id"] = $id;
+        $userInfo["name"] = $user["name"];
+        $userInfo["surname"] = $user["surname"];
+        $userInfo["patronymic"] = $user["patronymic"];
+        $_SESSION['userInfo'] = $userInfo;
+        // header("Location: /");
+        header("Location: /signin.php");
+        die;
+    }
   }
 }
 
@@ -71,5 +145,3 @@ $layout = include_template('layout', [
 ]);
 
 print($layout);
-var_dump($user);
-var_dump($errorsForm);

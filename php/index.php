@@ -1,6 +1,5 @@
 <?php
 require "init.php";
-require "helpers.php";
 // require "lib/lib.inc.php";
 
 // if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -68,13 +67,13 @@ require "helpers.php";
 //   }
 // }
 
-if (!isset($_SESSION['userInfo'])) {
+if (!$isAuth) {
   header("Location: /signin.php");
   die;
 }
 
 $content = include_template('tasks', [
-  'user' => $user = 'fwefwe'
+  'user' => $user
 ]);
 
 $layout = include_template('layout', [
