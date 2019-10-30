@@ -1,10 +1,10 @@
 <div class="user-menu">
   <span class="user-menu__user">Пользователь: <?= $user ?></span>
   <span class="user-menu__add-task">
-    <a class="user-menu__link" href="?page=add-task">Поставить задачу</a>
+    <a class="user-menu__link" href="/add-task.php">Поставить задачу</a>
   </span>
   <span class="user-menu__exit">
-    <a class="user-menu__link" href="?action=exit">Выйти</a>
+    <a class="user-menu__link" href="/logout.php">Выйти</a>
   </span>
 </div>
 <div class="tasks">
