@@ -27,7 +27,7 @@
     $myTasks = ""; // задачи поставленные мне
     $setTasks = ""; // задачи поставленные мною
     foreach ($tasks as $task) {
-      $visibleExecuteLink = $task['task_status'] === 'Выполнено!' ? "" : "<a href='?action=execute&id={$task['task_id']}'>Выполнить задачу</a>";
+      $visibleExecuteLink = $task['task_status'] === 'Выполнено!' ? "" : "<a href='/execute-task.php?action=execute&id={$task['task_id']}'>Выполнить задачу</a>";
 
       if ($task['author_name'] === $_SESSION['userInfo']['name'] && !($task['executor_name'] === $_SESSION['userInfo']['name'])) {
         $TaskDesc = html_entity_decode($task['task_desc']);

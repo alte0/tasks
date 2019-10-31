@@ -229,7 +229,7 @@ function addTask($link, array $user)
  * @param resource $link
  * @return array
  */
-function getTasks($link)
+function getTasks($link): array
 {
     $sql = "SELECT 
     userAuthor.user_name AS author_name, 
@@ -253,5 +253,31 @@ function getTasks($link)
     }
 
     return [];
+}
+/**
+ * Очистка введеных данных(ожидаем цифру).
+ * @param string $value
+ * @return string
+ */
+function clearInt($value) {
+  return intval($value);
+}
+/**
+ * Выполнение задачи
+ * @param resource - $link Соеинение с бд
+ * @param int|float|string - $id задачи
+ */
+function executeTask($link, $id)
+{
+    $job = "Выполнено!";
+    $idTask = abs(clearInt($id));
+
+    $sql = "UPDATE `tasks` SET `task_status`='$job' WHERE `task_id`=$idTask";
+    $query = $link->query($sql);
+    if (!$query) {
+        return false;
+    }
+    
+    return true;
 }
 
