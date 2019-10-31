@@ -1,5 +1,5 @@
 <div class="user-menu">
-  <span class="user-menu__user">Пользователь: <?= $user ?></span>
+  <span class="user-menu__user"><?= $user ?></span>
   <span class="user-menu__add-task">
     <a class="user-menu__link" href="/add-task.php">Поставить задачу</a>
   </span>
@@ -47,9 +47,9 @@
             </div>
             <div class='task__execute'>
             </div>
-            <div class='task__author'>Назначил: {$task['author_name']} {$task['author_surname']} {$task['author_patronymic']} 
+            <div class='task__author'>Назначил: {$task['author_surname']} {$task['author_name']} {$task['author_patronymic']} 
             </div>
-            <div class='task__executor'>Испонитель: {$task['executor_name']} {$task['executor_surname']} {$task['executor_patronymic']} 
+            <div class='task__executor'>Испонитель: {$task['executor_surname']} {$task['executor_name']} {$task['executor_patronymic']} 
             </div>
           </footer>
         </section>
@@ -72,9 +72,9 @@
             </div>
             <div class='task__execute'>$visibleExecuteLink
             </div>
-            <div class='task__author'>Назначил: {$task['author_name']} {$task['author_surname']} {$task['author_patronymic']} 
+            <div class='task__author'>Назначил: {$task['author_surname']} {$task['author_name']} {$task['author_patronymic']} 
             </div>
-            <div class='task__executor'>Испонитель: {$task['executor_name']} {$task['executor_surname']} {$task['executor_patronymic']} 
+            <div class='task__executor'>Испонитель: {$task['executor_surname']} {$task['executor_name']} {$task['executor_patronymic']} 
             </div>
           </footer>
         </section>

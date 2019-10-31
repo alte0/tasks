@@ -131,8 +131,7 @@ function checkUserInDB($link, $user, $isPwd = false)
     if ($isPwd && !empty($result)) {
         if (password_verify($password, $result["user_password"]) && $result["user_login"] === $login) {
             global $userInfo;
-            $id = $link->lastInsertId();
-            $userInfo["id"] = $id;
+            $userInfo["id"] = $result["user_id"];
             $userInfo["login"] = $result["user_login"];
             $userInfo["name"] = $result["user_name"];
             $userInfo["surname"] = $result["user_surname"];
@@ -145,5 +144,114 @@ function checkUserInDB($link, $user, $isPwd = false)
     }
 
     return empty($result);
+}
+/**
+ * Получение всех пользователей
+ *
+ * @param resource $linkBd
+ * @return array
+ */
+function getUsers($link)
+{
+    $sql = "SELECT `user_id`,`user_login`,`user_name`,`user_surname`,`user_patronymic` FROM `users`";
+    $query = $link->query($sql);
+    $result = $query->fetchAll();
+
+    if ($result) {
+        return $result;
+    }
+
+    return [];
+}
+/**
+ * Преобразовывает введеную дату пользователя в дату для mysql
+ * @param string $date
+ */
+function transformsDate($date)
+{
+    $arrDate = date_parse($date);
+    return "{$arrDate["year"]}.{$arrDate["month"]}.{$arrDate["day"]}";
+}
+
+/**
+ * Добавление задачи для пользователя
+ * @param resource $link
+ * @param array - $user
+ * @return array
+ */
+function addTask($link, array $user)
+{
+    $authorId = $_SESSION['userInfo']['id'];
+    $executorId = $user["executor"];
+    $date = $user["date"];
+    $title = $user["title"];
+    $text = $user["text"];
+    $status = "в работе!";
+    $dateStart = null;
+    $dateEnd = null;
+  
+    $dates = explode(" — ", $date);
+  
+    if (count($dates) === 2) {
+        $dateStart = transformsDate($dates[0]);
+        $dateEnd = transformsDate($dates[1]);
+    } else {
+        $dateStart = transformsDate($dates[0]);
+        $dateEnd = $dateStart;
+    }
+
+    $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`) VALUES(?, ?, ?, ?, ?)";
+    
+    $link->beginTransaction();
+    
+    $stmt = $link->prepare($sqlTask);
+    $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd]);
+    
+    $idTask = $link->lastInsertId();
+
+    $sqlTaskAuthor = "INSERT INTO tasks_author (user_id, task_id) VALUES('$authorId', '$idTask')";
+    $sqlTaskExecutor = "INSERT INTO tasks_executor (user_id, task_id) VALUES('$executorId', '$idTask')";
+    
+    $resutAuthor = $link->exec($sqlTaskAuthor);
+    $resutExecutor = $link->exec($sqlTaskExecutor);
+
+    if ($resutTask && $resutAuthor && $resutExecutor) {
+        $link->commit();
+        return true;
+    }
+
+    $link->rollBack();
+
+    return false;
+}
+/**
+ * Получение задач для пользователя
+ * @param resource $link
+ * @return array
+ */
+function getTasks($link)
+{
+    $sql = "SELECT 
+    userAuthor.user_name AS author_name, 
+    userAuthor.user_surname AS author_surname, 
+    userAuthor.user_patronymic AS author_patronymic, 
+    t.task_id, t.task_title, t.task_desc, t.task_status, DATE_FORMAT(t.task_date_start, '%d.%m.%Y') AS task_date_start, DATE_FORMAT(t.task_date_end, '%d.%m.%Y') AS task_date_end, 
+    userExecutor.user_name AS executor_name, 
+    userExecutor.user_surname AS executor_surname, 
+    userExecutor.user_patronymic AS executor_patronymic
+    FROM tasks AS t 
+    JOIN tasks_author ON t.task_id = tasks_author.task_id 
+    JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id 
+    JOIN tasks_executor ON t.task_id = tasks_executor.task_id 
+    JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id";
+
+    $query = $link->query($sql);
+    $result = $query->fetchAll();
+
+    if ($result) {
+        return $result;
+    }
+
+    return [];
 }
 

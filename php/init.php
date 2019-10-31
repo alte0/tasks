@@ -43,7 +43,3 @@ if (!$linkDB) {
   print($layout);
   die;
 }
-
-if (isset($_SESSION['userInfo'])) {
-  // $users = getUsers($dbcon);
-}
