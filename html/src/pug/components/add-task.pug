@@ -2,14 +2,14 @@
   +e.row._label-group-two
     +e.LABEL(for="date") Дата начала и окончания задачи 
     .flatpickr
-      +e.INPUT.date(id="date", type="text", name="text", value="19.07.2019" placeholder="выберите дату или даты", data-input required)
+      +e.INPUT.date(id="date", type="text", name="date", value="19.07.2019" placeholder="выберите дату или даты", data-input required)
       button(type="button" title="Открыт/Закрыть календарь" data-toggle="") календарь
       button(type="button" title="Очистить календарь" data-clear="") очистить
 
   +e.row._content-column
     +e.SPAN Выберите исполнителя
     +e.SELECT.list-users(name="executor" required)
-      option(value="" selected disabled) Не выбрано
+      option(value="disabled" selected disabled) Не выбрано
       option(value="1") User
   +e.row._content-column
     +e.LABEL Загаловок задачи 
