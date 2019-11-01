@@ -179,13 +179,13 @@ function transformsDate($date)
  * @param array - $user
  * @return array
  */
-function addTask($link, array $user)
+function addTask($link, array $task)
 {
     $authorId = $_SESSION['userInfo']['id'];
-    $executorId = $user["executor"];
-    $date = $user["date"];
-    $title = $user["title"];
-    $text = $user["text"];
+    $executorId = $task["executor"];
+    $date = $task["date"];
+    $title = $task["title"];
+    $text = $task["text"];
     $status = "в работе!";
     $dateStart = null;
     $dateEnd = null;
