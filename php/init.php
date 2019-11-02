@@ -18,6 +18,7 @@ $dsn = "mysql:dbname={$dbConf["nameDB"]};host={$dbConf["urlDB"]};charset=UTF8";
 $isAuth = isset($_SESSION['userInfo']) ? true : false;
 $mainText = "Tasks -";
 $user = isset($_SESSION['userInfo']) ? "{$_SESSION['userInfo']['surname']} {$_SESSION['userInfo']['name']} {$_SESSION['userInfo']['patronymic']}" : null;
+$userId = isset($_SESSION['userInfo']) ? $_SESSION['userInfo']['id'] : null;
 $users = null;
 $bgClass = isset($_SESSION['userInfo']) ? "class=\"bg\"" : null;
 $today = date("d.m.Y");

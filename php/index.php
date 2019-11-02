@@ -6,11 +6,15 @@ if (!$isAuth) {
   die;
 }
 
-$tasks = getTasks($linkDB);
+$myTasks = getMyTasks($linkDB, $userId);
 
 $content = include_template('tasks', [
+  'isLinkExecute' => true,
   'user' => $user,
-  'tasks' => $tasks
+  'tasks' => $myTasks,
+  'title' => $title = "Мои задачи.",
+  'linkHref' => $linkHref = "designated-task.php",
+  'linkText' => $linkText = "Назначенные задачи",
 ]);
 
 $layout = include_template('layout', [
