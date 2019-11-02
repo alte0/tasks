@@ -243,7 +243,8 @@ function getMyTasks($link, $userId): array
     JOIN tasks_author ON t.task_id = tasks_author.task_id 
     JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id 
     JOIN tasks_executor ON t.task_id = tasks_executor.task_id AND tasks_executor.user_id = '$userId' 
-    JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id";
+    JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
+    ORDER BY task_date_add DESC";
 
     $query = $link->query($sql);
     $result = $query->fetchAll();
@@ -274,7 +275,8 @@ function getMyDesignatedTasks($link, $userId): array
     JOIN tasks_author ON t.task_id = tasks_author.task_id 
     JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id AND tasks_author.user_id = '$userId'
     JOIN tasks_executor ON t.task_id = tasks_executor.task_id AND tasks_executor.user_id != '$userId'
-    JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id";
+    JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
+    ORDER BY task_date_add DESC";
 
     $query = $link->query($sql);
     $result = $query->fetchAll();
