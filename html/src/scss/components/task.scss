@@ -7,7 +7,7 @@
     box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);
   }
   &:not(:last-child) {
-    margin-bottom: $baseValue * 3; // 24
+    margin-bottom: $baseValue * 2; // 16
   }
   &__title {
     margin: 0;
@@ -39,28 +39,10 @@
   }
   
   &s {
-    &__tab {
-      cursor: pointer;
-    }
     &__title {
       margin-top: 0;
-      display: inline-block;
-      padding-left: $baseValue;
-      padding-right: $baseValue;
-    }
-    &__hidden-divider {
-      @media screen and (min-width: 640px) {
-        display: inline-block;
-      }
-    }
-    &__my-tasks, 
-    &__set-tasks {
-      display: none
+      margin-bottom: $baseValue * 2; // 16
+      text-align: center;
     }
   }
-}
-
-#my-tasks:checked ~ .tasks__my-tasks, 
-#set-tasks:checked ~ .tasks__set-tasks {
-  display: block;
 }
