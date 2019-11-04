@@ -1,0 +1,10 @@
++b.UL.pagination-list
+  +e.LI.item._prev: +e.A.link(href="#") <
+  - var i = 1
+  while i <= 35
+    if(i === 3)
+      +e.LI.item._active: +e.A.link(href="#") #{i}
+    else
+      +e.LI.item: +e.A.link(href="#") #{i}
+    - i++
+  +e.LI.item._next: +e.A.link(href="#") >
