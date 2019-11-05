@@ -5,7 +5,10 @@ const textarea = document.querySelector('#textarea-text')
 const config = {
   removePlugins: ['ImageUpload'],
   toolbar: ['Heading', 'bold', 'italic', '|', 'Link', 'bulletedList', 'numberedList', 'blockQuote', 'MediaEmbed', 'Undo', 'Redo'],
-  language: 'ru'
+  language: 'ru',
+  mediaEmbed: {
+    previewsInData: true
+  }
 }
 let editor
 /**
