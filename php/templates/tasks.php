@@ -2,11 +2,11 @@
   <span class="user-menu__user"><?= $user ?></span>
   <a class="user-menu__link" href="/<?= $linkHref ?>"><?= $linkText ?></a>
   <a class="user-menu__link" href="/add-task.php">Поставить задачу</a>
-  <a class="user-menu__link" href="/logout.php">Выйти</a>
+  <a class="user-menu__link user-menu__logout" href="/logout.php">Выйти</a>
 </div>
 <div class="tasks">
   <h2 class="tasks__title"><?= $title ?></h2>
-  <?php if (!isset($tasks)): ?>
+  <?php if (empty($tasks)): ?>
   <div>Нет никаких задач</div>
   <?php else: ?>
   <div class='tasks__lists'>

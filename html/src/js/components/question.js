@@ -1,4 +1,4 @@
-const myTasks = document.querySelector(`.tasks`)
+const tasks = document.querySelector(`.tasks`)
 /**
  * Нативное модальное окно с подтверждением о выполнеии задачи
  */
@@ -15,6 +15,6 @@ const linkClickHandler = (evt) => {
   }
 }
 
-if (myTasks) {
-  myTasks.addEventListener(`click`, linkClickHandler)
+if (tasks) {
+  tasks.addEventListener(`click`, linkClickHandler)
 }

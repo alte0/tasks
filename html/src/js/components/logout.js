@@ -1,4 +1,4 @@
-const logout = document.querySelector(`[href="/logout.php"]`)
+const logout = document.querySelector(`.user-menu__logout`)
 /**
  * Нативное модальное окно с подтверждением о действии
  */
