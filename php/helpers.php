@@ -21,11 +21,12 @@ function include_template(string $nameTemplate, array $data = []): string
 /**
  * Функция очистки данных от тэгов
  * @param string $str Очишаемая строка
+ * @param string $tags Тэги которые надо оставить - '<p><a>'
  * @return string Очишенная строка
  */
-function clearStrDataTags(string $str): string
+function clearStrDataTags(string $str, $tags = ''): string
 {
-    $text = strip_tags($str);
+    $text = strip_tags($str, $tags);
 
     return $text;
 }

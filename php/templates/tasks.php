@@ -12,16 +12,16 @@
   <div class='tasks__lists'>
   <?php foreach($tasks as $task): ?>
     <section class='task'>
-      <h3 class='task__title'><?= $task['task_title'] ?></h3>
+      <h3 class='task__title'><?= clearStrDataTags($task['task_title']) ?></h3>
       <div class='task__desc'>
-        <?= html_entity_decode($task['task_desc']) ?>
+        <?= clearStrDataTags(html_entity_decode($task['task_desc']), $allowTags) ?>
       </div>
       <footer class='task__footer'>
-        <div class='task__date-start'>Начало задачи: <?= $task['task_date_start'] ?>
+        <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>
         </div>
-        <div class='task__date-end'>Закончить задачу до: <?= $task['task_date_end'] ?>
+        <div class='task__date-end'>Закончить задачу до: <?= clearStrDataTags($task['task_date_end']) ?>
         </div>
-        <div class='task__status'>Статус: <?= $task['task_status'] ?>
+        <div class='task__status'>Статус: <?= clearStrDataTags($task['task_status']) ?>
         </div>
         <div class='task__execute'>
           <?php if($isLinkExecute): ?>
@@ -32,9 +32,9 @@
             ?>
           <?php endif; ?>
         </div>
-        <div class='task__author'>Назначил: <?= $task['author_surname'] ?> <?= $task['author_name'] ?> <?= $task['author_patronymic'] ?>
+        <div class='task__author'>Назначил: <?= clearStrDataTags($task['author_surname']) ?> <?= clearStrDataTags($task['author_name']) ?> <?= $task['author_patronymic'] ?>
         </div>
-        <div class='task__executor'>Испонитель: <?= $task['executor_surname'] ?> <?= $task['executor_name'] ?> <?= $task['executor_patronymic'] ?> 
+        <div class='task__executor'>Испонитель: <?= clearStrDataTags($task['executor_surname']) ?> <?= clearStrDataTags($task['executor_name']) ?> <?= clearStrDataTags($task['executor_patronymic']) ?> 
         </div>
       </footer>
     </section>

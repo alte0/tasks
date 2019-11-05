@@ -35,6 +35,7 @@ $content = include_template('tasks', [
   'title' => $title = "Мои задачи.",
   'linkHref' => $linkHref = "designated-task.php",
   'linkText' => $linkText = "Назначенные задачи",
+  'allowTags' => $allowTags,
   'pagination' => $pagination
 ]);
 

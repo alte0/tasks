@@ -19,7 +19,7 @@ CREATE TABLE `users` (
 CREATE TABLE `tasks` (
   `task_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `task_title` varchar(255) NOT NULL,
-  `task_desc` varchar(255) NOT NULL,
+  `task_desc` varchar(1000) NOT NULL,
   `task_status` varchar(20) NOT NULL,
   `task_date_start` date NOT NULL,
   `task_date_end` date NOT NULL,
