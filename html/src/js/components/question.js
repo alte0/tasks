@@ -1,4 +1,4 @@
-const myTasks = document.querySelector(`.tasks__my-tasks`)
+const myTasks = document.querySelector(`.tasks`)
 /**
  * Нативное модальное окно с подтверждением о выполнеии задачи
  */

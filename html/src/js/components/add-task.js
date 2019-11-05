@@ -3,7 +3,7 @@ import { clearDataEditor } from './editor'
 import { clearDataFlatpickr } from './flatpickr-pl'
 
 const formTaskAdd = document.body.querySelector(`.form_task-add`)
-const buttonSubmit = formTaskAdd.querySelector('.form__submit')
+let buttonSubmit
 /**
  * ajax Добавление задачи на сервер
  */
@@ -66,5 +66,6 @@ function formTaskAddSubmitHandler (evt) {
 }
 
 if (formTaskAdd) {
+  buttonSubmit = formTaskAdd.querySelector('.form__submit')
   formTaskAdd.addEventListener(`submit`, formTaskAddSubmitHandler)
 }
