@@ -1,4 +1,7 @@
 .user-menu {
+  padding: 0;
+  margin: 0;
+  list-style: none  ;
   display: flex;
   margin-bottom: $baseValue * 2;
   @media screen and (max-width: 679px) {
@@ -8,18 +11,20 @@
     justify-content: space-between;
   }
   
-  &__link {
-    color: white;
-    &:hover {
-      opacity: .7;
-    }
+  &__item {
     @media screen and (min-width: 680px) {
-      &:nth-of-type(1) {
+      &:nth-of-type(2) {
         margin-left: auto;
       }
       &:not(:last-child) {
         margin-right: $baseValue * 2;
       }
+    }
+  }
+  &__link {
+    color: white;
+    &:hover {
+      opacity: .7;
     }
   }
   position: relative;

@@ -2,8 +2,7 @@
   list-style: none;
   padding: $baseValue;
   margin: 0;
-  margin-top: $baseValue;
-  margin-bottom: $baseValue;
+  margin-top: $baseValue * 2;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
