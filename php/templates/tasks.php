@@ -19,9 +19,6 @@
   <?php foreach($tasks as $task): ?>
     <section class='task'>
       <h3 class='task__title'><?= clearStrDataTags($task['task_title']) ?></h3>
-      <div class='task__desc'>
-        <?= clearStrDataTags(html_entity_decode($task['task_desc']), $allowTags) ?>
-      </div>
       <footer class='task__footer'>
         <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>
         </div>
@@ -43,6 +40,7 @@
         <div class='task__executor'>Испонитель: <?= clearStrDataTags($task['executor_surname']) ?> <?= clearStrDataTags($task['executor_name']) ?> <?= clearStrDataTags($task['executor_patronymic']) ?> 
         </div>
       </footer>
+      <a href="/task.php?id=<?= $task['task_id'] ?>">Подробнее</a>
     </section>
   <?php endforeach; ?>
   </div>

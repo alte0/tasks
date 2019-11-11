@@ -5,7 +5,7 @@
     while i <= 4
       +b.SECTION.task
         +e.H3.title Загаловок задачи #{i}
-        +e.desc
+        //- +e.desc
           p Описание задачи #{i++}: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.
         +e.FOOTER.footer
           +e.date-start Начало задачи: 11.06.2019
@@ -15,4 +15,5 @@
             a(href="") Выполнить задачу
           +e.author Назначил: Попов Павел Петрович 
           +e.executor Испонитель: Попов Павел Петрович 
-          
+          - i++
+        a(href="#task-id") Подробнее

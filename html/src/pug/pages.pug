@@ -6,7 +6,7 @@ block header
 block content
   .container
     ul
-      each item in [{href: 'signin', title: 'Авторизация'}, {href: 'signup', title: 'Регистрация'}, {href: 'tasks', title: 'Задачи'}, {href: 'add-task', title: 'Добавить задачу'}]
+      each item in [{href: 'signin', title: 'Авторизация'}, {href: 'signup', title: 'Регистрация'}, {href: 'tasks', title: 'Задачи'}, {href: 'task', title: 'Задача'}, {href: 'add-task', title: 'Добавить задачу'}]
         li
           a(href=item.href + '.html', target="_blank") #{item.title}
 

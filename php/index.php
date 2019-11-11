@@ -46,4 +46,3 @@ $layout = include_template('layout', [
 ]);
 
 print($layout);
-// var_dump($tasks);  

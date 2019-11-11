@@ -285,4 +285,23 @@ function executeTask($link, $id)
     
     return true;
 }
+/**
+ * Получение заачи
+ * @param resource - $link Соеинение с бд
+ * @param int - $taskId задачи
+ * @return array
+ */
+function getTask($link, $sql, $taskId)
+{
+    $taskId = abs(clearInt($taskId));
+    $stmt = $link->prepare($sql);
+    $stmt->execute([$taskId]);
+    $result = $stmt->fetchAll();
+    
+    if (!empty($result)) {
+        return $result[0];
+    }
+
+    return [];
+}
 
