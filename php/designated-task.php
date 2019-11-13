@@ -6,7 +6,24 @@ if (!$isAuth) {
     die;
 }
 
-$tasks = getMyDesignatedTasks($linkDB, $sqlDesignatedTask, $userId);
+$tasks = getMyDesignatedTasks($linkDB, $sqlDesignatedTask);
+
+if (isset($task["error"])) {
+    $error = $task["error"];
+    $content = include_template('error', [
+      'error' => $error
+    ]);
+
+    $layout = include_template('layout', [
+      'title' => "$mainText Задачи",
+      'bgClass' => $bgClass,
+      'content' => $content
+    ]);
+
+    print($layout);
+    die;
+}
+
 $itemsCount = count($tasks);
 $pagesCount = ceil($itemsCount / $pageItems);
 $curPage = isset($_GET['page']) && !empty($_GET['page']) ? intval($_GET['page']) : 1;
@@ -20,7 +37,23 @@ $pages = range(1, $pagesCount);
 
 $sqlOffset = $sqlDesignatedTask. " LIMIT " . $pageItems . ' OFFSET ' . $offset;
 
-$myDesignatedTasks = getMyDesignatedTasks($linkDB, $sqlOffset, $userId);
+$myDesignatedTasks = getMyDesignatedTasks($linkDB, $sqlOffset);
+
+if (isset($myDesignatedTasks["error"])) {
+    $error = $myDesignatedTasks["error"];
+    $content = include_template('error', [
+      'error' => $error
+    ]);
+
+    $layout = include_template('layout', [
+      'title' => "$mainText Задачи",
+      'bgClass' => $bgClass,
+      'content' => $content
+    ]);
+
+    print($layout);
+    die;
+}
 
 $pagination = include_template('pagination', [
   'pagesCount' => $pagesCount,

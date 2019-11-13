@@ -7,6 +7,23 @@ if (!$isAuth) {
 }
 
 $tasks = getMyTasks($linkDB, $sqlMyTasks, $userId);
+
+if (isset($task["error"])) {
+    $error = $task["error"];
+    $content = include_template('error', [
+      'error' => $error
+    ]);
+
+    $layout = include_template('layout', [
+      'title' => "$mainText Задачи",
+      'bgClass' => $bgClass,
+      'content' => $content
+    ]);
+
+    print($layout);
+    die;
+}
+
 $itemsCount = count($tasks);
 $pagesCount = ceil($itemsCount / $pageItems);
 $curPage = isset($_GET['page']) && !empty($_GET['page']) ? intval($_GET['page']) : 1;
@@ -21,6 +38,22 @@ $pages = range(1, $pagesCount);
 $sqlOffset = $sqlMyTasks . " LIMIT " . $pageItems . ' OFFSET ' . $offset;
 
 $myTasks = getMyTasks($linkDB, $sqlOffset, $userId);
+
+if (isset($myTasks["error"])) {
+    $error = $myTasks["error"];
+    $content = include_template('error', [
+      'error' => $error
+    ]);
+
+    $layout = include_template('layout', [
+      'title' => "$mainText Задачи",
+      'bgClass' => $bgClass,
+      'content' => $content
+    ]);
+
+    print($layout);
+    die;
+}
 
 $pagination = include_template('pagination', [
   'pagesCount' => $pagesCount,

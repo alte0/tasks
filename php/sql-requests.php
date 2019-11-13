@@ -45,5 +45,4 @@ JOIN tasks_author ON t.task_id = tasks_author.task_id
 JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id
 JOIN tasks_executor ON t.task_id = tasks_executor.task_id
 JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
-WHERE t.task_id = ?
-";
+WHERE t.task_id = ?";

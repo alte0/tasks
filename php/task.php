@@ -27,8 +27,8 @@ if (!isset($_GET["id"]) || clearInt($_GET["id"]) === 0) {
 $taskId = $_GET["id"];
 $task = getTask($linkDB, $sqlTask, $taskId);
 
-if (empty($task)) {
-    $error = "Ошибка получения данных";
+if (isset($task["error"])) {
+    $error = $task["error"];
     $content = include_template('error', [
       'error' => $error
     ]);

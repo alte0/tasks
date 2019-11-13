@@ -21,6 +21,22 @@ if (!$isAuth) {
 
 $users = getUsers($linkDB);
 
+if (isset($users["error"])) {
+    $error = $users["error"];
+    $content = include_template('error', [
+      'error' => $error
+    ]);
+
+    $layout = include_template('layout', [
+      'title' => "$mainText Задачи",
+      'bgClass' => $bgClass,
+      'content' => $content
+    ]);
+
+    print($layout);
+    die;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $userForm = [
       'date' => isset($_POST["date"]) ? trim($_POST["date"]) : "",

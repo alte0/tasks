@@ -126,6 +126,11 @@ function checkUserInDB($link, $user, $isPwd = false)
     $sql = "SELECT * FROM `users` WHERE `user_login`=?";
     
     $stmt = $link->prepare($sql);
+
+    if ($stmt === false) {
+        return false;
+    }
+
     $stmt->execute([$login]);
     $result = $stmt->fetch();
 
@@ -156,14 +161,16 @@ function getUsers($link)
 {
     $sql = "SELECT `user_id`,`user_login`,`user_name`,`user_surname`,`user_patronymic` FROM `users`";
     $query = $link->query($sql);
-    $result = $query->fetchAll();
 
-    if ($result) {
-        return $result;
+    if ($query !== false) {
+        $result = $query->fetchAll();
+
+        return $result ?? [];
     }
 
-    return [];
+    return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
 }
+
 /**
  * Преобразовывает введеную дату пользователя в дату для mysql
  * @param string $date
@@ -204,8 +211,17 @@ function addTask($link, array $task)
     $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`) VALUES(?, ?, ?, ?, ?)";
     
     $link->beginTransaction();
+
+    if (!$link) {
+        return false;
+    }
     
     $stmt = $link->prepare($sqlTask);
+    
+    if (!$stmt) {
+        return false;
+    }
+
     $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd]);
     
     $idTask = $link->lastInsertId();
@@ -226,21 +242,33 @@ function addTask($link, array $task)
     return false;
 }
 /**
+ * Получение задач 
+ * @param resource $link
+ * @param string $sql
+ * @return array
+ */
+function getTasks($link, $sql): array
+{
+    $query = $link->query($sql);
+
+    if ($query !== false) {
+        $result = $query->fetchAll();
+
+        return $result ?? [];
+    }
+
+    return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
+}
+
+/**
  * Получение задач для пользователя
  * @param resource $link
  * @param string $sql
  * @return array
  */
-function getMyTasks($link, $sql, $userId): array
+function getMyTasks($link, $sql): array 
 {
-    $query = $link->query($sql);
-    $result = $query->fetchAll();
-
-    if ($result) {
-        return $result;
-    }
-
-    return [];
+    return getTasks($link, $sql);
 }
 /**
  * Получение задач поставленных пользователем
@@ -248,16 +276,9 @@ function getMyTasks($link, $sql, $userId): array
  * @param string $sql
  * @return array
  */
-function getMyDesignatedTasks($link, $sql, $userId): array
+function getMyDesignatedTasks($link, $sql): array
 {
-    $query = $link->query($sql);
-    $result = $query->fetchAll();
-
-    if ($result) {
-        return $result;
-    }
-
-    return [];
+    return getTasks($link, $sql);
 }
 /**
  * Очистка введеных данных(ожидаем цифру).
@@ -286,22 +307,27 @@ function executeTask($link, $id)
     return true;
 }
 /**
- * Получение заачи
+ * Получение задачи
  * @param resource - $link Соеинение с бд
- * @param int - $taskId задачи
+ * @param int - $taskId номер задачи
  * @return array
  */
-function getTask($link, $sql, $taskId)
+function getTask($link, $sql, $taskId): array
 {
     $taskId = abs(clearInt($taskId));
     $stmt = $link->prepare($sql);
-    $stmt->execute([$taskId]);
-    $result = $stmt->fetchAll();
     
-    if (!empty($result)) {
-        return $result[0];
-    }
+    if ($stmt !== false) {
+        $stmt->execute([$taskId]);
+        $result = $stmt->fetchAll();
+        
+        if (!empty($result)) {
+            return $result[0];
+        }
 
-    return [];
+        return ["error"=> "Такой задачи нету."];
+    }
+    
+    return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
 }
 
