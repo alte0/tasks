@@ -6,7 +6,7 @@ const formTaskAdd = document.body.querySelector(`.form_task-add`)
 /**
  * ajax Добавление задачи на сервер
  */
-function formTaskAddSubmitHandler (evt) {
+const formTaskAddSubmitHandler = (evt) => {
   evt.preventDefault()
   const buttonSubmit = formTaskAdd.querySelector('.form__submit')
   const method = `POST`
@@ -55,7 +55,7 @@ function formTaskAddSubmitHandler (evt) {
       .finally(() => {
         setTimeout(() => {
           buttonSubmit.removeAttribute('disabled')
-        }, 1900)
+        }, 2000)
       })
       .catch((e) => {
         showMessage(TypeMessage.ERROR, e)
@@ -67,4 +67,5 @@ function formTaskAddSubmitHandler (evt) {
 
 if (formTaskAdd) {
   formTaskAdd.addEventListener(`submit`, formTaskAddSubmitHandler)
+  formTaskAdd.querySelector('[name="text"]').removeAttribute('required')
 }
