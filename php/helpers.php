@@ -105,7 +105,7 @@ function validatePassworsEqually(string $value, string $value2)
  */
 function checkLoginInDB($link, array $arr)
 {
-    if (!checkUserInDB($link, $arr)) {
+    if (checkUserInDB($link, $arr)) {
         return "Такой логин уже занят!";
     }
 
@@ -149,7 +149,11 @@ function checkUserInDB($link, $user, $isPwd = false)
         return false;
     }
 
-    return empty($result);
+    if ($result["user_login"] === $login) {
+        return true;
+    }
+
+    return false;
 }
 /**
  * Получение всех пользователей
