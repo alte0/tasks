@@ -28,12 +28,13 @@
       <?= !empty($errorsForm["executor"]) ? "<div class=\"text-error\">{$errorsForm["executor"]}</div>" : "" ?>
     </div>
     <div class="form__row form__row_content-column">
-      <label>Заголовок задачи</label><textarea class="form__title-add" type="date" name="title" placeholder="сделать ..." required="required"><?= getPostVal("title") ?></textarea>
+      <label>Заголовок задачи</label>
+      <textarea class="form__title-add" type="date" name="title" maxlength="255" placeholder="сделать ..." required="required"><?= getPostVal("title") ?></textarea>
       <?= !empty($errorsForm["title"]) ? "<div class=\"text-error\">{$errorsForm["title"]}</div>" : "" ?>
     </div>
     <div class="form__row form__row_content-column">
       <label>Дополнительная информация по задаче</label>
-      <textarea id="textarea-text" name="text" placeholder="Обьяснение задачи ..." required="required"><?= getPostVal("text") ?></textarea>
+      <textarea id="textarea-text" name="text" maxlength="1000" placeholder="Обьяснение задачи ..." required="required"><?= getPostVal("text") ?></textarea>
       <?= !empty($errorsForm["text"]) ? "<div class=\"text-error\">{$errorsForm["text"]}</div>" : "" ?>
     </div>
     <div class="form__row">
