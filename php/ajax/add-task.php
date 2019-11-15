@@ -2,11 +2,11 @@
 require "../init.php";
 
 if (!$isAuth) {
-    echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы не авторизованны!"]);
-    die;
+  echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы не авторизованны!"]);
+  die;
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["add-task"])) {
   if ($_POST["add-task"] === 'ajax') {
     $userForm = [
       'date' => isset($_POST["date"]) ? trim($_POST["date"]) : "",
