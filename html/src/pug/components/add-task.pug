@@ -13,10 +13,10 @@
       option(value="1") User
   +e.row._content-column
     +e.LABEL Загаловок задачи 
-    +e.TEXTAREA.title-add(type="date", name="title" placeholder="сделать ..." required)
+    +e.TEXTAREA.title-add(type="date", name="title" maxlength="255" placeholder="сделать ..." required)
   +e.row._content-column
     +e.LABEL Дополнительная информация по задаче
-    +e.TEXTAREA#textarea-text(name="text" placeholder="Обьяснение задачи ..." required)
+    +e.TEXTAREA#textarea-text(name="text" maxlength="1000" placeholder="Обьяснение задачи ..." required)
   +e.row
     +e.BUTTON.submit(type="submit") Добавить задачу
     +e.A.link(href="/tasks.html") К списку задач
