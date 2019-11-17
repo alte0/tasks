@@ -1,8 +1,8 @@
 import flatpickr from 'flatpickr'
 import { Russian } from 'flatpickr/dist/l10n/ru'
 
-const dateFlatpickr = document.body.querySelector(`.flatpickr`)
-const configFlatpickr = {
+const DATE_FLATPICKR = document.body.querySelector(`.flatpickr`)
+const CONFIG_FLATPICKR = {
   locale: Russian,
   defaultDate: `today`,
   mode: `range`,
@@ -13,8 +13,8 @@ const configFlatpickr = {
 }
 let fp
 
-if (dateFlatpickr) {
-  fp = flatpickr(dateFlatpickr, configFlatpickr)
+if (DATE_FLATPICKR) {
+  fp = flatpickr(DATE_FLATPICKR, CONFIG_FLATPICKR)
   fp.config.onOpen.push(function () {
     fp.redraw()
   })
@@ -24,5 +24,5 @@ if (dateFlatpickr) {
  */
 export const clearDataFlatpickr = function () {
   fp.clear()
-  fp.setDate(+new Date(), true, configFlatpickr.dateFormat)
+  fp.setDate(+new Date(), true, CONFIG_FLATPICKR.dateFormat)
 }

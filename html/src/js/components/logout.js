@@ -1,14 +1,15 @@
-const logout = document.querySelector(`.user-menu__logout`)
+const LOGOUT = document.querySelector(`.user-menu__logout`)
 /**
  * Нативное модальное окно с подтверждением о действии
  */
 const linkClickHandler = (evt) => {
-  const isConfirm = confirm(`Вы действительно хотите выйти?`)
-  if (!isConfirm) {
+  const IS_QUESTION = confirm(`Вы действительно хотите выйти?`)
+
+  if (!IS_QUESTION) {
     evt.preventDefault()
   }
 }
 
-if (logout) {
-  logout.addEventListener(`click`, linkClickHandler)
+if (LOGOUT) {
+  LOGOUT.addEventListener(`click`, linkClickHandler)
 }

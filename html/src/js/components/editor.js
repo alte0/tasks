@@ -2,8 +2,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import '@ckeditor/ckeditor5-build-classic/build/translations/ru'
 import { showMessage, TypeMessage } from './show-user-message'
 
-const formTaskAdd = document.querySelector('.form_task-add')
-const config = {
+const FORM_TASK_ADD = document.querySelector('.form_task-add')
+const CONFIG = {
   removePlugins: ['ImageUpload'],
   toolbar: ['Heading', 'bold', 'italic', '|', 'Link', 'bulletedList', 'numberedList', 'blockQuote', 'MediaEmbed', 'Undo', 'Redo'],
   language: 'ru',
@@ -17,21 +17,21 @@ let editor
  * Инициализация ckeditor5
  */
 const initEditor = () => {
-  const textarea = formTaskAdd.querySelector('#textarea-text')
-  const button = formTaskAdd.querySelector('[type="submit"]')
-  const maxCharacters = 1000 || textarea.maxLength
+  const TEXTAREA = FORM_TASK_ADD.querySelector('#textarea-text')
+  const BUTTON = FORM_TASK_ADD.querySelector('[type="submit"]')
+  const MAX_CHARACTERS = 1000 || TEXTAREA.maxLength
 
-  ClassicEditor.create(textarea, config)
+  ClassicEditor.create(TEXTAREA, CONFIG)
     .then(newEditor => {
       editor = newEditor
       editor.model.document.on('change:data', () => {
-        const editorData = editor.getData()
-        textarea.innerHTML = editorData
-        const inputCharacters = textarea.textLength
-        const isDisabed = inputCharacters > maxCharacters
-        button.toggleAttribute('disabled', isDisabed)
-        if (isDisabed) {
-          showMessage(TypeMessage.WARNING, `В редакторе превышен лимит в ${maxCharacters} символов!`)
+        const EDITOR_DATA = editor.getData()
+        TEXTAREA.innerHTML = EDITOR_DATA
+        const INPUT_CHARACTERS = TEXTAREA.textLength
+        const IS_DISABED = INPUT_CHARACTERS > MAX_CHARACTERS
+        BUTTON.toggleAttribute('disabled', IS_DISABED)
+        if (IS_DISABED) {
+          showMessage(TypeMessage.WARNING, `В редакторе превышен лимит в ${MAX_CHARACTERS} символов!`)
         }
       })
       return true
@@ -39,13 +39,9 @@ const initEditor = () => {
     .catch(error => {
       console.error(error)
     })
-  // document.querySelector('[type="submit"]').addEventListener('click', () => {
-  //   const editorData = editor.getData()
-  //   textarea.innerHTML = editorData
-  // })
 }
 
-if (formTaskAdd) {
+if (FORM_TASK_ADD) {
   initEditor()
 }
 /**

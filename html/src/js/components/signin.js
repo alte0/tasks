@@ -1,7 +1,7 @@
+import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
 
 const FORM_AUTH = document.body.querySelector(`.form_auth`)
-const TIME = 3000
 /**
  * ajax signin авторизация на сайте
  */
@@ -9,27 +9,28 @@ const formSignInSubmitHandler = (evt) => {
   evt.preventDefault()
   const BUTTON_SUBMIT = FORM_AUTH.querySelector('.form__button')
   const URL = `/ajax/signin.php`
-  const FORM_DATA = new FormData(FORM_AUTH)
+  // eslint-disable-next-line prefer-const
+  let formData = new FormData(FORM_AUTH)
 
   let isSend = true
 
-  for (const field of FORM_DATA.entries()) {
+  for (const field of formData.entries()) {
     if (field[1] === '') {
       isSend = false
     }
   }
 
   if (isSend) {
-    FORM_DATA.append('signin', 'ajax')
+    formData.append('signin', 'ajax')
 
     BUTTON_SUBMIT.setAttribute('disabled', 'disabled')
 
     fetch(URL, {
       method: `POST`,
-      body: FORM_DATA
+      body: formData
     })
       .then(response => {
-        if (response.ok && response.status === 200) {
+        if (response.ok && response.status === Vars.STATUS_OK) {
           return response.json()
         } else {
           throw new Error(`Не удалось отправить данные!`)
@@ -39,8 +40,8 @@ const formSignInSubmitHandler = (evt) => {
         if (response.msgsType === `success`) {
           showMessage(response.msgsType, response.textMsgs)
           setTimeout(() => {
-            location = '/'
-          }, TIME)
+            location = '/index.php'
+          }, Vars.TIME)
         } else if (response.msgsType === `error`) {
           showMessage(response.msgsType, response.textMsgs)
         }

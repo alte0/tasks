@@ -1,41 +1,41 @@
+import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
 import { clearDataEditor } from './editor'
 import { clearDataFlatpickr } from './flatpickr-pl'
 
-const formTaskAdd = document.body.querySelector(`.form_task-add`)
+const FORM_TASK_ADD = document.body.querySelector(`.form_task-add`)
 /**
  * ajax Добавление задачи на сервер
  */
 const formTaskAddSubmitHandler = (evt) => {
   evt.preventDefault()
-  const buttonSubmit = formTaskAdd.querySelector('.form__submit')
-  const method = `POST`
-  const url = `/ajax/add-task.php`
-  const formData = new FormData(formTaskAdd)
-
+  const BUTTON_SUBMIT = FORM_TASK_ADD.querySelector('.form__submit')
+  const URL = `/ajax/add-task.php`
+  // eslint-disable-next-line prefer-const
+  let FORM_DATA = new FormData(FORM_TASK_ADD)
   let isSend = true
 
-  if (formData.get('executor') === null) {
+  if (FORM_DATA.get('executor') === null) {
     isSend = false
   }
 
-  for (const field of formData.entries()) {
+  for (const field of FORM_DATA.entries()) {
     if (field[1] === '') {
       isSend = false
     }
   }
 
   if (isSend) {
-    formData.append('add-task', 'ajax')
+    FORM_DATA.append('add-task', 'ajax')
 
-    buttonSubmit.setAttribute('disabled', 'disabled')
+    BUTTON_SUBMIT.setAttribute('disabled', 'disabled')
 
-    fetch(url, {
-      method,
-      body: formData
+    fetch(URL, {
+      method: `POST`,
+      body: FORM_DATA
     })
       .then(response => {
-        if (response.ok && response.status === 200) {
+        if (response.ok && response.status === Vars.STATUS_OK) {
           return response.json()
         } else {
           throw new Error(`Не удалось отправить данные!`)
@@ -44,7 +44,7 @@ const formTaskAddSubmitHandler = (evt) => {
       .then((response) => {
         if (response.msgsType === `success`) {
           showMessage(response.msgsType, response.textMsgs)
-          formTaskAdd.reset()
+          FORM_TASK_ADD.reset()
           clearDataEditor()
           clearDataFlatpickr()
         } else if (response.msgsType === `error`) {
@@ -54,8 +54,8 @@ const formTaskAddSubmitHandler = (evt) => {
       })
       .finally(() => {
         setTimeout(() => {
-          buttonSubmit.removeAttribute('disabled')
-        }, 2000)
+          BUTTON_SUBMIT.removeAttribute('disabled')
+        }, Vars.TIME)
       })
       .catch((e) => {
         showMessage(TypeMessage.ERROR, e)
@@ -65,7 +65,7 @@ const formTaskAddSubmitHandler = (evt) => {
   }
 }
 
-if (formTaskAdd) {
-  formTaskAdd.addEventListener(`submit`, formTaskAddSubmitHandler)
-  formTaskAdd.querySelector('[name="text"]').removeAttribute('required')
+if (FORM_TASK_ADD) {
+  FORM_TASK_ADD.addEventListener(`submit`, formTaskAddSubmitHandler)
+  FORM_TASK_ADD.querySelector('[name="text"]').removeAttribute('required')
 }
