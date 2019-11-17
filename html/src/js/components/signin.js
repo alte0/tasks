@@ -50,7 +50,7 @@ const formSignInSubmitHandler = (evt) => {
       .finally(() => {
         setTimeout(() => {
           BUTTON_SUBMIT.removeAttribute('disabled')
-        }, TIME)
+        }, Vars.TIME)
       })
       .catch((e) => {
         showMessage(TypeMessage.ERROR, e)
