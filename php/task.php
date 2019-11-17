@@ -8,7 +8,7 @@ if (!$isAuth) {
 
 if (!isset($_GET["id"]) || clearInt($_GET["id"]) === 0) {
     $seconds = 6;
-    header("Refresh: $seconds; url=/");
+    header("Refresh: $seconds; url=/index.php");
     $error = "Такой задачи не существует, через $seconds сек. вас перенаправит на главную страницу сайта.";
     $content = include_template('error', [
       'error' => $error

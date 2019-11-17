@@ -3,7 +3,7 @@ require "init.php";
 
 if ($isAuth) {
     $seconds = 6;
-    header("Refresh: $seconds; url=/");
+    header("Refresh: $seconds; url=/index.php");
     $error = "Вы уже зарегистрированны, через $seconds сек. вас перенаправит на главную страницу сайта.";
     $content = include_template('error', [
       'error' => $error

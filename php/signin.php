@@ -3,7 +3,7 @@ require "init.php";
 
 if ($isAuth) {
     $seconds = 6;
-    header("Refresh: $seconds; url=/");
+    header("Refresh: $seconds; url=/index.php");
     $error = "Вы уже зашли на сайт, через $seconds сек. вас перенаправит на главную страницу сайта.";
     $content = include_template('error', [
       'error' => $error
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     if (!count($errorsForm)) {
       if (checkUserInDB($linkDB, $user, true)) {
-        header("Location: /");
+        header("Location: /index.php");
         die;
       }
       $errorsForm["login"] = $errorsForm["password"] = "Неправльный логин или пароль!";
