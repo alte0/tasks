@@ -67,7 +67,7 @@ $content = include_template('tasks', [
   'userId' => $userId,
   'tasks' => $myDesignatedTasks,
   'title' => $title = "Я назначил задачи.",
-  'linkHref' => $linkHref = "",
+  'linkHref' => $linkHref = "index.php",
   'linkText' => $linkText = "Мои задачи",
   'allowTags' => $allowTags,
   'pagination' => $pagination,
