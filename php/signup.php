@@ -29,96 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     'patronymic' => !empty(trim($_POST["patronymic"])) ? trim($_POST["patronymic"]) : ""
   ];
 
-  $required = ['login', 'password', 'password2', 'name', 'surname', 'patronymic'];
-
-  $rules = [
-    'login' => function () use ($user) {
-        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["login"]);
-    },
-    'password' => function () use ($user) {
-        return validateLength(MIN_LENGTH_PWD, MAX_LENGTH_PWD, $user["password"]);
-    },
-    'password2' => function () use ($user) {
-        return validateLength(MIN_LENGTH_PWD, MAX_LENGTH_PWD, $user["password2"]);
-    },
-    'name' => function () use ($user) {
-        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["name"]);
-    },
-    'surname' => function () use ($user) {
-        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["surname"]);
-    },
-    'patronymic' => function () use ($user) {
-        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["patronymic"]);
-    },
-  ];
-  
-  $rulesExtended = [
-    'login' => function () use ($user) {
-      return validateLoginRegex($user["login"]);
-    },
-    'password' => function () use ($user) {
-      return validatePassworsEqually($user["password"], $user["password2"]);
-    },
-  ];
-
-  $rulesExtendedSecond = [
-    'login' => function () use ($user, $linkDB) {
-        return checkLoginInDB($linkDB, $user);
-    },
-    'password' => function () use ($user) {
-        return validatePassworsRegex($user["password"]);
-    },
-  ];
-
-  foreach ($required as $key) {
-      if (empty($user[$key])) {
-        $errorsForm[$key] = "Это поле нужно заполнить!";
-      }
-  }
-
-  foreach ($user as $key => $value) {
-      if (!isset($errorsForm[$key]) && isset($rules[$key])) {
-        $rule = $rules[$key];
-        $errorsForm[$key] = $rule();
-      }
-  }
-
-  foreach ($user as $key => $value) {
-      if (!isset($errorsForm[$key]) && isset($rulesExtended[$key])) {
-        $ruleExtended = $rulesExtended[$key];
-        $errorsForm[$key] = $ruleExtended();
-
-        if ($key === 'password') {
-          $errorsForm['password2'] = $errorsForm['password'];
-        }
-      }
-  }
-
-  foreach ($user as $key => $value) {
-      if (!isset($errorsForm[$key]) && isset($rulesExtendedSecond[$key])) {
-        $ruleExtendedSecond = $rulesExtendedSecond[$key];
-        $errorsForm[$key] = $ruleExtendedSecond();
-        
-        if ($key === 'password') {
-            $errorsForm['password2'] = $errorsForm['password'];
-        }
-      }
-
-  }
-
-  $errorsForm = array_filter($errorsForm);
-
-  if (!count($errorsForm)) {
-    $password = $passwordSalt . $user["password"];
-    $hashPassword = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO users (user_login, user_password, user_name, user_surname, user_patronymic) VALUES (?, ?, ?, ?, ?)";
-
-    $stmt = $linkDB->prepare($sql);
-    $stmt->execute([$user["login"], $hashPassword, $user["name"], $user["surname"], $user["patronymic"]]);
-    if ($stmt) {
-        header("Location: /signin.php");
-        die;
-    }
+  if (addUser($linkDB, $sqlAddUser, $user)) {
+      header("Location: /signin.php");
+      die;
   }
 }
 

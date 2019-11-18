@@ -46,3 +46,5 @@ JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id
 JOIN tasks_executor ON t.task_id = tasks_executor.task_id
 JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
 WHERE t.task_id = ?";
+
+$sqlAddUser = "INSERT INTO users (user_login, user_password, user_name, user_surname, user_patronymic) VALUES (?, ?, ?, ?, ?)";

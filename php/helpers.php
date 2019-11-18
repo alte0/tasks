@@ -334,4 +334,105 @@ function getTask($link, $sql, $taskId): array
     
     return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
 }
+/**
+ * Добавление нового пользователя
+ * @param resource - $link Соединение с бд
+ * @param string - $sql запрос
+ * @param array - $user данные пользователя
+ * @return array
+ */
+function addUser($link, $sql, $user) {
+  $required = ['login', 'password', 'password2', 'name', 'surname', 'patronymic'];
 
+  $rules = [
+    'login' => function () use ($user) {
+        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["login"]);
+    },
+    'password' => function () use ($user) {
+        return validateLength(MIN_LENGTH_PWD, MAX_LENGTH_PWD, $user["password"]);
+    },
+    'password2' => function () use ($user) {
+        return validateLength(MIN_LENGTH_PWD, MAX_LENGTH_PWD, $user["password2"]);
+    },
+    'name' => function () use ($user) {
+        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["name"]);
+    },
+    'surname' => function () use ($user) {
+        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["surname"]);
+    },
+    'patronymic' => function () use ($user) {
+        return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["patronymic"]);
+    },
+  ];
+  
+  $rulesExtended = [
+    'login' => function () use ($user) {
+        return validateLoginRegex($user["login"]);
+    },
+    'password' => function () use ($user) {
+        return validatePassworsEqually($user["password"], $user["password2"]);
+    },
+  ];
+
+  $rulesExtendedSecond = [
+    'login' => function () use ($user, $link) {
+        return checkLoginInDB($link, $user);
+    },
+    'password' => function () use ($user) {
+        return validatePassworsRegex($user["password"]);
+    },
+  ];
+
+  global $errorsForm;
+
+  foreach ($required as $key) {
+      if (empty($user[$key])) {
+          $errorsForm[$key] = "Это поле нужно заполнить!";
+      }
+  }
+
+  foreach ($user as $key => $value) {
+      if (!isset($errorsForm[$key]) && isset($rules[$key])) {
+          $rule = $rules[$key];
+          $errorsForm[$key] = $rule();
+      }
+  }
+
+  foreach ($user as $key => $value) {
+      if (!isset($errorsForm[$key]) && isset($rulesExtended[$key])) {
+          $ruleExtended = $rulesExtended[$key];
+          $errorsForm[$key] = $ruleExtended();
+
+          if ($key === 'password') {
+              $errorsForm['password2'] = $errorsForm['password'];
+          }
+      }
+  }
+
+  foreach ($user as $key => $value) {
+      if (!isset($errorsForm[$key]) && isset($rulesExtendedSecond[$key])) {
+          $ruleExtendedSecond = $rulesExtendedSecond[$key];
+          $errorsForm[$key] = $ruleExtendedSecond();
+        
+          if ($key === 'password') {
+              $errorsForm['password2'] = $errorsForm['password'];
+          }
+      }
+  }
+
+  $errorsForm = array_filter($errorsForm);
+
+  if (!count($errorsForm)) {
+        global $passwordSalt;
+
+        $password = $passwordSalt . $user["password"];
+        $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $link->prepare($sql);
+        if ($stmt && $stmt->execute([$user["login"], $hashPassword, $user["name"], $user["surname"], $user["patronymic"]])) {
+            return true;
+        }
+  }
+
+  return false;
+}

@@ -1,6 +1,8 @@
 <?php
 require "../init.php";
 
+header("Content-Type: application/json;");
+
 if (!$isAuth) {
   echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы не авторизованны!"]);
   die;
@@ -15,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["add-task"])) {
       'text' => isset($_POST["text"]) ? trim($_POST["text"]) : "",
     ];
 
-    header("Content-Type: application/json;");
 
     if (addTask($linkDB, $userForm)) {
       echo json_encode(["msgsType"=> "success", "textMsgs" => "Задача успешно добавлена!"]);

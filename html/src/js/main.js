@@ -5,5 +5,6 @@ import './components/add-task.js'
 import './components/question-complete-task'
 import './components/logout'
 import './components/signin'
+import './components/signup'
 
 // svg4everybody()
