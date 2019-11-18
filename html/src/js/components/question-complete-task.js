@@ -1,9 +1,9 @@
-const MAIN = document.querySelector(`main`)
+const TASKS = document.querySelector(`.tasks`)
 /**
  * Нативное модальное окно с подтверждением о выполнеии задачи
  */
 const linkClickHandler = (evt) => {
-  const TARGET = evt.TARGET
+  const TARGET = evt.target
   if (TARGET.tagName === `A` && TARGET.closest('.task__execute')) {
     const TASK = TARGET.closest('.task')
     const TITLE = TASK.querySelector(`.task__title`)
@@ -15,6 +15,6 @@ const linkClickHandler = (evt) => {
   }
 }
 
-if (MAIN) {
-  MAIN.addEventListener(`click`, linkClickHandler)
+if (TASKS) {
+  TASKS.addEventListener(`click`, linkClickHandler)
 }
