@@ -2,7 +2,7 @@
   <h3 class="form__title">Регистрация нового пользователя</h3>
   <div class="form__row form__row_content-column">
     <label for="login">Ваш логин:</label>
-    <input class="form__input" id="login" type="text" name="login" minlength="<?= MIN_LENGTH_TEXT ?>" maxlength="<?= MAX_LENGTH_TEXT ?>" required="required" placeholder="Td34@#_-" value="<?= getPostVal("login") ?>" />
+    <input class="form__input" id="login" type="text" name="login" minlength="<?= MIN_LENGTH_TEXT ?>" maxlength="<?= MAX_LENGTH_TEXT ?>" required="required" placeholder="Td34@_-" value="<?= getPostVal("login") ?>" />
     <?= !empty($errorsForm["login"]) ? "<div class=\"text-error\">{$errorsForm["login"]}</div>" : "" ?>
   </div>
   <div class="form__row form__row_content-column">
