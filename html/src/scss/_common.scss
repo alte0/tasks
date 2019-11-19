@@ -63,3 +63,11 @@ input {
   padding-top: $baseValue;
   padding-bottom: $baseValue;
 }
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  &:not(:hover) {
+    text-decoration: underline;
+  }
+}
