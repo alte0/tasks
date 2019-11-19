@@ -39,7 +39,7 @@
     </div>
     <div class="form__row">
       <button class="form__submit" type="submit" name="task-add">Добавить задачу</button>
-      <a class="form__link" href="/">К списку задач</a>
+      <a class="form__link" href="/index.php">К списку задач</a>
     </div>
   </form>
 </div>
