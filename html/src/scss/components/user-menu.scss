@@ -23,8 +23,10 @@
   }
   &__link {
     color: white;
+    text-decoration: none;
     &:hover {
-      opacity: .7;
+      cursor: pointer;
+      text-decoration: underline;
     }
   }
   position: relative;
