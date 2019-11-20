@@ -41,4 +41,5 @@ const linkClickHandler = (evt) => {
 if (LOGOUT) {
   LOGOUT.addEventListener(`click`, linkClickHandler)
   LOGOUT.removeAttribute('href')
+  LOGOUT.setAttribute('tabindex', '0')
 }
