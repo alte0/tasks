@@ -66,8 +66,8 @@ input {
 
 a {
   cursor: pointer;
-  text-decoration: none;
-  &:not(:hover) {
-    text-decoration: underline;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
   }
 }

@@ -1,23 +1,12 @@
-<ul class="user-menu">
-  <li class="user-menu__item"><?= clearStrDataTags($user) ?></li>
-  <li class="user-menu__item">
-    <a class="user-menu__link" href="/<?= $linkHref ?>"><?= $linkText ?></a>
-  </li>
-  <li class="user-menu__item">
-    <a class="user-menu__link" href="/add-task.php">Поставить задачу</a>
-  </li>
-  <li class="user-menu__item">
-    <a class="user-menu__link user-menu__logout" href="/logout.php">Выйти</a>
-  </li>
-</ul>
-<div class="tasks">
+<?= $userMenu ?>
+<section class="tasks">
   <h2 class="tasks__title"><?= $title ?></h2>
   <?php if (empty($tasks)): ?>
   <div>Нет никаких задач</div>
   <?php else: ?>
-  <div class='tasks__lists'>
+  <ul class='tasks__lists'>
   <?php foreach($tasks as $task): ?>
-    <section class='task'>
+    <li class='task'>
       <h3 class='task__title'><?= clearStrDataTags($task['task_title']) ?></h3>
       <footer class='task__footer'>
         <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>
@@ -41,9 +30,9 @@
         </div>
       </footer>
       <a href="/task.php?id=<?= $task['task_id'] ?>">Подробнее</a>
-    </section>
+    </li>
   <?php endforeach; ?>
-  </div>
+  </ul>
   <?php endif; ?>
   <?= $pagination ?>
-</div>
+</section>

@@ -55,6 +55,12 @@ if (isset($myTasks["error"])) {
     die;
 }
 
+$userMenu = include_template('user-menu', [
+  'user' => $user,
+  'linkHref' => "designated-task.php",
+  'linkText' => "Я назначил задачи",
+]);
+
 $pagination = include_template('pagination', [
   'pagesCount' => $pagesCount,
   'pages' => $pages,
@@ -66,9 +72,8 @@ $content = include_template('tasks', [
   'user' => $user,
   'tasks' => $myTasks,
   'title' => $title = "Мои задачи.",
-  'linkHref' => $linkHref = "designated-task.php",
-  'linkText' => $linkText = "Назначенные задачи",
   'allowTags' => $allowTags,
+  'userMenu' => $userMenu,
   'pagination' => $pagination
 ]);
 
