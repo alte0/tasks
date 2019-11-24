@@ -24,3 +24,4 @@ $optionDB = [
   PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 ];
 $allowTags = '<p><h2><h3><h4><strong><i><a><ul><ol><li><blockquote><figure><oembed><div><iframe>';
+$isClosedModeTasks = isset($_GET['mode-tasks']) && $_GET['mode-tasks'] === "closed" ? true : false;

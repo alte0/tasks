@@ -6,7 +6,7 @@ if (!$isAuth) {
   die;
 }
 
-$tasks = getMyTasks($linkDB, $sqlMyTasks, $userId);
+$tasks = getMyTasks($linkDB, $isClosedModeTasks ? $sqlMyTasksComplete : $sqlMyTasks, $userId);
 
 if (isset($task["error"])) {
     $error = $task["error"];
@@ -35,7 +35,7 @@ if ($curPage > $pagesCount && $pagesCount > 0) {
 $offset = ($curPage - 1) * $pageItems;
 $pages = range(1, $pagesCount);
 
-$sqlOffset = $sqlMyTasks . " LIMIT " . $pageItems . ' OFFSET ' . $offset;
+$sqlOffset = ($isClosedModeTasks ? $sqlMyTasksComplete : $sqlMyTasks) . " LIMIT " . $pageItems . ' OFFSET ' . $offset;
 
 $myTasks = getMyTasks($linkDB, $sqlOffset, $userId);
 
@@ -55,23 +55,36 @@ if (isset($myTasks["error"])) {
     die;
 }
 
+$linksUserMenu = [
+  [
+    'linkHref' => $isClosedModeTasks ? "index.php" : "index.php?mode-tasks=closed",
+    'linkText' => $isClosedModeTasks ? "Мои задачи" : "Выполненые задачи мною"
+  ],
+  [
+    'linkHref' => "designated-task.php",
+    'linkText' => "Я назначил задачи"
+  ]
+];
+
 $userMenu = include_template('user-menu', [
   'user' => $user,
-  'linkHref' => "designated-task.php",
-  'linkText' => "Я назначил задачи",
+  'linksUserMenu' => $linksUserMenu
 ]);
+
+$urlPagination = $isClosedModeTasks ? "?mode-tasks=closed&page=" : "?page=";
 
 $pagination = include_template('pagination', [
   'pagesCount' => $pagesCount,
   'pages' => $pages,
   'curPage' => $curPage,
+  'urlPagination' => $_SERVER["SCRIPT_NAME"] . $urlPagination,
 ]);
 
 $content = include_template('tasks', [
   'isLinkExecute' => true,
   'user' => $user,
   'tasks' => $myTasks,
-  'title' => $title = "Мои задачи.",
+  'title' => $isClosedModeTasks ? "Мои выполненные задачи." : "Мои задачи.",
   'allowTags' => $allowTags,
   'userMenu' => $userMenu,
   'pagination' => $pagination

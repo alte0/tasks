@@ -45,12 +45,27 @@ if (isset($task["error"])) {
 
 $nameTask = $task['task_title'];
 
+$linksUserMenu = [
+  [
+    'linkHref' => "index.php",
+    'linkText' => "Мои задачи"
+  ],
+  [
+    'linkHref' => "designated-task.php",
+    'linkText' => "Я назначил задачи"
+  ]
+];
+
+$userMenu = include_template('user-menu', [
+  'user' => $user,
+  'linksUserMenu' => $linksUserMenu
+]);
+
 $content = include_template('task', [
   'isLinkExecute' => $userId === $task['executor_id'],
   'user' => $user,
   'task' => $task,
-  'linkHref' => $linkHref = "",
-  'linkText' => $linkText = "Мои задачи",
+  'userMenu' => $userMenu,
   'allowTags' => $allowTags
 ]);
   

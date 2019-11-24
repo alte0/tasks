@@ -9,7 +9,7 @@ $pageNext = ($curPage + 1) > $lastPage ? $lastPage : ($curPage + 1);
     <?php if ($pagePrev ===  $curPage) : ?>
     <a class="pagination-list__link"><</a>
     <?php else : ?>
-    <a class="pagination-list__link" href="<?= $_SERVER["SCRIPT_NAME"] ?>?page=<?= $pagePrev ?>"><</a>
+    <a class="pagination-list__link" href="<?= $urlPagination . $pagePrev ?>"><</a>
     <?php endif; ?>
   </li>
   <?php foreach ($pages as $page): ?>
@@ -17,7 +17,7 @@ $pageNext = ($curPage + 1) > $lastPage ? $lastPage : ($curPage + 1);
     <?php if ((int) $page === $curPage): ?>
     <a class="pagination-list__link"><?= $page ?></a>
     <?php else: ?>
-    <a class="pagination-list__link" href="<?= $_SERVER["SCRIPT_NAME"] ?>?page=<?= $page ?>"><?= $page ?></a>
+    <a class="pagination-list__link" href="<?= $urlPagination . $page ?>"><?= $page ?></a>
     <?php endif; ?>
   </li>
   <?php endforeach; ?>
@@ -25,7 +25,7 @@ $pageNext = ($curPage + 1) > $lastPage ? $lastPage : ($curPage + 1);
     <?php if ((int) $pageNext ===  $curPage) : ?>
     <a class="pagination-list__link">></a>
     <?php else : ?>
-    <a class="pagination-list__link" href="<?= $_SERVER["SCRIPT_NAME"] ?>?page=<?= $pageNext ?>">></a>
+    <a class="pagination-list__link" href="<?= $urlPagination . $pageNext ?>">></a>
     <?php endif; ?>
   </li>
 </ul>
