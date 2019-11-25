@@ -12,8 +12,6 @@ const linkClickHandler = (evt) => {
   if (TARGET.tagName === `A` && TARGET.closest('.task__execute')) {
     evt.preventDefault()
     const TASK = TARGET.closest('.task')
-    const PARENT_LINK = TASK.querySelector(`.task__execute`)
-    const TEXT_STATUS = TASK.querySelector(`.task__status`)
     const TITLE = TASK.querySelector(`.task__title`)
     const TITLE_TEXT = TITLE.textContent
     const IS_QUESTION = confirm(`Вы хотите выполнить задачу - ${TITLE_TEXT}?`)
@@ -37,8 +35,18 @@ const linkClickHandler = (evt) => {
         .then((response) => {
           if (response.msgsType === `success`) {
             showMessage(response.msgsType, response.textMsgs)
-            PARENT_LINK.innerHTML = ''
-            TEXT_STATUS.textContent = 'Статус: Выполнено!'
+
+            if (TASKS) {
+              const LI_ITEM = TARGET.closest('.tasks__item')
+              var TASKS_LISTS = TASKS.querySelector('.tasks__lists')
+              var PAG_LIST = document.querySelector('.pagination-list')
+              LI_ITEM.parentElement.removeChild(LI_ITEM)
+            }
+
+            if (TASKS_LISTS.childElementCount === 0 && TASKS && !PAG_LIST) {
+              TASKS.removeChild(TASKS_LISTS)
+              TASKS.insertAdjacentHTML('beforeend', '<div>Нет никаких задач</div>')
+            }
           } else if (response.msgsType === `error`) {
             showMessage(response.msgsType, response.textMsgs)
           }

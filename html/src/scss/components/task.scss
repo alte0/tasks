@@ -6,12 +6,8 @@
   &:not(.task_single):hover {
     box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);
   }
-  &:not(:last-child) {
-    margin-bottom: $baseValue * 2; // 16
-  }
   &__title {
     margin: 0;
-    font-style: italic;
     text-align: center;
   }
   &__desc {
@@ -47,6 +43,11 @@
     &__lists {
       list-style: none;
       padding: 0;
+    }
+    &__item {
+      &:not(:last-child) {
+        margin-bottom: $baseValue * 2; // 16
+      }
     }
   }
 }
