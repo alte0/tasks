@@ -47,6 +47,12 @@ const linkClickHandler = (evt) => {
               TASKS.removeChild(TASKS_LISTS)
               TASKS.insertAdjacentHTML('beforeend', '<div>Нет никаких задач</div>')
             }
+
+            if (TASKS_LISTS.childElementCount === 0 && PAG_LIST) {
+              setTimeout(() => {
+                document.location.reload(true)
+              }, 2000)
+            }
           } else if (response.msgsType === `error`) {
             showMessage(response.msgsType, response.textMsgs)
           }
