@@ -25,7 +25,7 @@ if (empty($_GET["search-field"])) {
 
 if (isset($_GET["search-field"])) {
   $searchText = trim($_GET["search-field"]);
-  $tasks = getTasksSearch($linkDB, $sqlTasksSearch, $searchText);
+  $tasks = getTasksSearch($linkDB, $sqlTasksSearch, [$searchText]);
 
   if (isset($task["error"])) {
       $error = $task["error"];
@@ -56,7 +56,7 @@ if (isset($_GET["search-field"])) {
   
   $sqlOffset = $sqlTasksSearch . " LIMIT " . $pageItems . ' OFFSET ' . $offset;
   
-  $myTasks = getTasksSearch($linkDB, $sqlOffset, $searchText);
+  $myTasks = getTasksSearch($linkDB, $sqlOffset, [$searchText]);
   
   
   if (isset($myTasks["error"])) {

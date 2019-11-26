@@ -1,5 +1,25 @@
 <?php
 /**
+ * DBO->prepare и $stmt->fetchAll()
+ * @param resource - $link Соеинение с бд
+ * @param string - $sql запрос к бд
+ * @param string - $data массив с данными для $stmt->execute($data)
+ * @return array
+ */
+function dboPrepareAndFetchAll($link, $sql, array $data = []): array
+{
+    $stmt = $link->prepare($sql);
+    
+    if ($stmt !== false) {
+        $stmt->execute($data);
+        $result = $stmt->fetchAll();
+        
+        return $result ?? [];
+    }
+    
+    return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
+}
+/**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
  * @param string $nameTemplate Имя подключаемого файла шаблона из папки templates
  * @param array $data Ассоциативный массив с данными для шаблона
@@ -440,19 +460,10 @@ function addUser($link, $sql, $user) {
  * Поиск по задачам
  * @param resource - $link Соеинение с бд
  * @param string - $sql Соеинение с бд
- * @param string - $searchText текст для поиска
+ * @param string - $data для prepare
  * @return array
  */
-function getTasksSearch($link, $sql, $searchText): array
+function getTasksSearch($link, $sql, array $data): array
 {
-    $stmt = $link->prepare($sql);
-    
-    if ($stmt !== false) {
-        $stmt->execute([$searchText]);
-        $result = $stmt->fetchAll();
-        
-        return $result ?? [];
-    }
-    
-    return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
+    return dboPrepareAndFetchAll($link, $sql, $data);
 }
