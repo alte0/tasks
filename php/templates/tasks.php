@@ -1,4 +1,5 @@
 <?= $userMenu ?>
+<?= $searchForm ?>
 <section class="tasks">
   <h2 class="tasks__title"><?= $title ?></h2>
   <?php if (empty($tasks)): ?>

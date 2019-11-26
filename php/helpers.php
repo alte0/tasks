@@ -436,3 +436,23 @@ function addUser($link, $sql, $user) {
 
   return false;
 }
+/**
+ * Поиск по задачам
+ * @param resource - $link Соеинение с бд
+ * @param string - $sql Соеинение с бд
+ * @param string - $searchText текст для поиска
+ * @return array
+ */
+function getTasksSearch($link, $sql, $searchText): array
+{
+    $stmt = $link->prepare($sql);
+    
+    if ($stmt !== false) {
+        $stmt->execute([$searchText]);
+        $result = $stmt->fetchAll();
+        
+        return $result ?? [];
+    }
+    
+    return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
+}

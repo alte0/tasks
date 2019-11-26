@@ -80,6 +80,8 @@ $pagination = include_template('pagination', [
   'urlPagination' => $_SERVER["SCRIPT_NAME"] . $urlPagination,
 ]);
 
+$searchForm = include_template('search', []);
+
 $content = include_template('tasks', [
   'isLinkExecute' => true,
   'user' => $user,
@@ -87,6 +89,7 @@ $content = include_template('tasks', [
   'title' => $isClosedModeTasks ? "Мои выполненные задачи." : "Мои задачи.",
   'allowTags' => $allowTags,
   'userMenu' => $userMenu,
+  'searchForm' => $searchForm,
   'pagination' => $pagination
 ]);
 

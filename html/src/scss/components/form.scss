@@ -12,6 +12,13 @@
       }
     }
   }
+
+  &_search {
+    max-width: none;
+    & .form__title {
+      margin: 0;
+    }
+  }
   
   &__title {
     margin-bottom: $baseValue * 5; // 40
@@ -24,6 +31,9 @@
       display: flex;
       flex-direction: column;
     }
+    &_search{
+      display: flex;
+    }
     &:last-child {
       text-align: center;
     }
@@ -31,6 +41,10 @@
   &__input {
     padding-top: $baseValue;
     padding-bottom: $baseValue;
+    &_search{
+      flex-grow: 1;
+      margin-right: $baseValue;
+    }
   }
   &__link {
     padding-left: $baseValue;

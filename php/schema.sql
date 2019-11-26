@@ -25,7 +25,8 @@ CREATE TABLE `tasks` (
   `task_date_end` date NOT NULL,
   `task_date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX(`task_title`),
-  INDEX(`task_desc`)
+  INDEX(`task_desc`),
+  FULLTEXT (`task_title`, `task_desc`)
 ) 
 	ENGINE=InnoDB 
 	DEFAULT CHARSET=utf8
