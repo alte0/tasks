@@ -232,7 +232,7 @@ function addTask($link, array $task)
         $dateEnd = $dateStart;
     }
 
-    $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`) VALUES(?, ?, ?, ?, ?)";
+    $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`, `task_date_add`) VALUES(?, ?, ?, ?, ?, ?)";
     
     $link->beginTransaction();
 
@@ -246,7 +246,9 @@ function addTask($link, array $task)
         return false;
     }
 
-    $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd]);
+    global $todayAndHour;
+
+    $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd, $todayAndHour]);
     
     $idTask = $link->lastInsertId();
 
@@ -322,7 +324,9 @@ function executeTask($link, $id)
     $job = 1;
     $idTask = abs(clearInt($id));
 
-    $sql = "UPDATE `tasks` SET `task_status`='$job' WHERE `task_id`=$idTask";
+    global $todayAndHour;
+    $sql = "UPDATE `tasks` SET `task_status`='$job', `task_date_complete`='$todayAndHour' WHERE `task_id`=$idTask";
+
     $query = $link->query($sql);
     if (!$query) {
         return false;

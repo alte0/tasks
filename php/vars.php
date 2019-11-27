@@ -16,6 +16,7 @@ $userId = isset($_SESSION['userInfo']) ? $_SESSION['userInfo']['id'] : null;
 $users = null;
 $bgClass = isset($_SESSION['userInfo']) ? "class=\"bg\"" : null;
 $today = date("d.m.Y");
+$todayAndHour = date("Y-m-d H:i:s");
 $errorsForm = [];
 $passwordSalt = "1s@d";
 $userInfo = [];
