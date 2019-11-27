@@ -12,7 +12,7 @@ JOIN tasks_author ON t.task_id = tasks_author.task_id
 JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id 
 JOIN tasks_executor ON t.task_id = tasks_executor.task_id AND tasks_executor.user_id = '$userId' 
 JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
-WHERE t.task_status = 'в работе!'
+WHERE t.task_status = false
 ORDER BY task_date_add DESC";
 
 $sqlMyTasksComplete = "SELECT 
@@ -28,7 +28,7 @@ JOIN tasks_author ON t.task_id = tasks_author.task_id
 JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id 
 JOIN tasks_executor ON t.task_id = tasks_executor.task_id AND tasks_executor.user_id = '$userId' 
 JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
-WHERE t.task_status = 'Выполнено!'
+WHERE t.task_status = true
 ORDER BY task_date_add DESC";
 
 $sqlDesignatedTask= "SELECT 
@@ -45,7 +45,7 @@ JOIN tasks_author ON t.task_id = tasks_author.task_id
 JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id AND tasks_author.user_id = '$userId'
 JOIN tasks_executor ON t.task_id = tasks_executor.task_id AND tasks_executor.user_id != '$userId'
 JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
-WHERE t.task_status = 'в работе!'
+WHERE t.task_status = false
 ORDER BY task_date_add DESC";
 
 $sqlDesignatedTaskComplete= "SELECT 
@@ -62,7 +62,7 @@ JOIN tasks_author ON t.task_id = tasks_author.task_id
 JOIN users AS userAuthor ON tasks_author.user_id = userAuthor.user_id AND tasks_author.user_id = '$userId'
 JOIN tasks_executor ON t.task_id = tasks_executor.task_id AND tasks_executor.user_id != '$userId'
 JOIN users AS userExecutor ON tasks_executor.user_id = userExecutor.user_id
-WHERE t.task_status = 'Выполнено!'
+WHERE t.task_status = true
 ORDER BY task_date_add DESC";
 
 $sqlTasksSearch= "SELECT 

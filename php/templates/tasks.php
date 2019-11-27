@@ -15,12 +15,12 @@
           </div>
           <div class='task__date-end'>Закончить задачу до: <?= clearStrDataTags($task['task_date_end']) ?>
           </div>
-          <div class='task__status'>Статус: <?= clearStrDataTags($task['task_status']) ?>
+          <div class='task__status'>Статус: <?= intval(clearStrDataTags($task['task_status'])) === 0 ? "В работе" : "Выполнено" ?>
           </div>
           <div class='task__execute'>
             <?php if($isLinkExecute): ?>
               <?= 
-              $task['task_status'] === 'Выполнено!' 
+              intval($task['task_status']) === 1 
               ? "" 
               : "<a href='/execute-task.php?action=execute&id={$task['task_id']}'>Выполнить задачу</a>"
               ?>

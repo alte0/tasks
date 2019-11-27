@@ -218,7 +218,7 @@ function addTask($link, array $task)
     $date = $task["date"];
     $title = $task["title"];
     $text = $task["text"];
-    $status = "в работе!";
+    $status = 0;
     $dateStart = null;
     $dateEnd = null;
   
@@ -319,7 +319,7 @@ function clearInt($value) {
  */
 function executeTask($link, $id)
 {
-    $job = "Выполнено!";
+    $job = 1;
     $idTask = abs(clearInt($id));
 
     $sql = "UPDATE `tasks` SET `task_status`='$job' WHERE `task_id`=$idTask";

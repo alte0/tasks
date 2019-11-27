@@ -6,7 +6,8 @@ if (!$isAuth) {
     die;
 }
 
-$tasks = getMyDesignatedTasks($linkDB, $isClosedModeTasks ? $sqlDesignatedTaskComplete : $sqlDesignatedTask);
+$sql = $isClosedModeTasks ? $sqlDesignatedTaskComplete : $sqlDesignatedTask;
+$tasks = getMyDesignatedTasks($linkDB, $sql);
 
 if (isset($task["error"])) {
     $error = $task["error"];
@@ -35,7 +36,8 @@ if ($curPage > $pagesCount && $pagesCount > 0) {
 $offset = ($curPage - 1) * $pageItems;
 $pages = range(1, $pagesCount);
 
-$sqlOffset = ($isClosedModeTasks ? $sqlDesignatedTaskComplete : $sqlDesignatedTask) . " LIMIT " . $pageItems . ' OFFSET ' . $offset;
+$sqlPages = $isClosedModeTasks ? $sqlDesignatedTaskComplete : $sqlDesignatedTask;
+$sqlOffset = $sqlPages . " LIMIT " . $pageItems . ' OFFSET ' . $offset;
 
 $myDesignatedTasks = getMyDesignatedTasks($linkDB, $sqlOffset);
 
