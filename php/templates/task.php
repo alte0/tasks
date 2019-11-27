@@ -9,7 +9,7 @@
     </div>
     <div class='task__date-end'>Закончить задачу до: <?= clearStrDataTags($task['task_date_end']) ?>
     </div>
-    <div class='task__status'>Статус: <?= clearStrDataTags($task['task_status']) ?>
+    <div class='task__status'>Статус: <?= intval(clearStrDataTags($task['task_status'])) === 0 ? "В работе" : "Выполнено" ?>
     </div>
     <div class='task__execute'>
       <?php if($isLinkExecute): ?>
