@@ -85,7 +85,7 @@ $pagination = include_template('pagination', [
 $searchForm = include_template('search', []);
 
 $content = include_template('tasks', [
-  'isLinkExecute' => false,
+  'isShowLinkExecute' => false,
   'user' => $user,
   'userId' => $userId,
   'tasks' => $myDesignatedTasks,

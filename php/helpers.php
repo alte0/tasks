@@ -218,6 +218,7 @@ function addTask($link, array $task)
     $date = $task["date"];
     $title = $task["title"];
     $text = $task["text"];
+    $dateNoLimit = $task["date-no-imit"];
     $status = 0;
     $dateStart = null;
     $dateEnd = null;
@@ -232,7 +233,7 @@ function addTask($link, array $task)
         $dateEnd = $dateStart;
     }
 
-    $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`, `task_date_add`) VALUES(?, ?, ?, ?, ?, ?)";
+    $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`, `task_date_add`, `task_date_no_limit`) VALUES(?, ?, ?, ?, ?, ?, ?)";
     
     $link->beginTransaction();
 
@@ -248,7 +249,7 @@ function addTask($link, array $task)
 
     global $todayAndHour;
 
-    $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd, $todayAndHour]);
+    $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd, $todayAndHour, $dateNoLimit]);
     
     $idTask = $link->lastInsertId();
 

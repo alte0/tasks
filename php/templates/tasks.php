@@ -17,7 +17,7 @@
           <div class='task__status'>Статус: <?= intval($task['task_status']) === 0 ? "В работе" : "Выполнено" ?>
           </div>
           <div class='task__execute'>
-            <?php if($isLinkExecute): ?>
+            <?php if($isShowLinkExecute): ?>
               <?= 
               intval($task['task_status']) === 1 
               ? "" 

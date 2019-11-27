@@ -85,7 +85,7 @@ $pagination = include_template('pagination', [
 $searchForm = include_template('search', []);
 
 $content = include_template('tasks', [
-  'isLinkExecute' => true,
+  'isShowLinkExecute' => true,
   'user' => $user,
   'tasks' => $myTasks,
   'title' => $isClosedModeTasks ? "Мои выполненные задачи." : "Мои задачи.",

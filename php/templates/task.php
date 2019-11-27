@@ -8,10 +8,10 @@
     <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>
     </div>
     <div class='task__date-end'>Закончить задачу до: <?= intval($task['task_date_no_limit']) === 1 ? "без даты окончания" : clearStrDataTags($task['task_date_end']) ?></div>
-    <div class='task__status'>Статус: <?= intval(clearStrDataTags($task['task_status'])) === 0 ? "В работе" : "Выполнено" ?>
+    <div class='task__status'>Статус: <?= intval($task['task_status']) === 0 ? "В работе" : "Выполнено" ?>
     </div>
     <div class='task__execute'>
-      <?php if($isLinkExecute): ?>
+      <?php if($isShowLinkExecute): ?>
         <?= 
         intval($task['task_status']) === 1 
         ? "" 

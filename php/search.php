@@ -104,7 +104,7 @@ $pagination = include_template('pagination', [
 $searchForm = include_template('search', []);
 
 $content = include_template('tasks', [
-  'isLinkExecute' => true,
+  'isShowLinkExecute' => true,
   'user' => $user,
   'tasks' => $myTasks,
   'title' => !empty($_GET["search-field"]) ? "Результаты поиска по запросу - " .  '"' . clearStrDataTags($_GET["search-field"]) . '"' : "",

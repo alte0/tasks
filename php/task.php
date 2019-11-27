@@ -62,7 +62,7 @@ $userMenu = include_template('user-menu', [
 ]);
 
 $content = include_template('task', [
-  'isLinkExecute' => $userId === $task['executor_id'],
+  'isShowLinkExecute' => $userId === $task['executor_id'],
   'user' => $user,
   'task' => $task,
   'userMenu' => $userMenu,
