@@ -25,6 +25,7 @@ CREATE TABLE `tasks` (
   `task_date_end` date NOT NULL,
   `task_date_add` DATETIME NULL,
   `task_date_complete` DATETIME NULL,
+  `task_date_no_limit` TINYINT(1) NOT NULL,
   INDEX(`task_title`),
   INDEX(`task_desc`),
   INDEX(`task_status`),

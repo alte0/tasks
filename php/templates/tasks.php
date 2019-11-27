@@ -13,8 +13,7 @@
         <footer class='task__footer'>
           <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>
           </div>
-          <div class='task__date-end'>Закончить задачу до: <?= clearStrDataTags($task['task_date_end']) ?>
-          </div>
+          <div class='task__date-end'>Закончить задачу до: <?= intval($task['task_date_no_limit']) === 1 ? "без даты окончания" : clearStrDataTags($task['task_date_end']) ?></div>
           <div class='task__status'>Статус: <?= intval(clearStrDataTags($task['task_status'])) === 0 ? "В работе" : "Выполнено" ?>
           </div>
           <div class='task__execute'>
