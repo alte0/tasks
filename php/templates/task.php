@@ -13,7 +13,7 @@
     <div class='task__execute'>
       <?php if($isLinkExecute): ?>
         <?= 
-        $task['task_status'] === 'Выполнено!' 
+        intval($task['task_status']) === 1 
         ? "" 
         : "<a href='/execute-task.php?action=execute&id={$task['task_id']}'>Выполнить задачу</a>"
         ?>
