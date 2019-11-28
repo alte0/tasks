@@ -218,7 +218,7 @@ function addTask($link, array $task)
     $date = $task["date"];
     $title = $task["title"];
     $text = $task["text"];
-    $dateNoLimit = $task["date-no-imit"];
+    $dateNoLimit = $task["date-no-limit"];
     $status = 0;
     $dateStart = null;
     $dateEnd = null;

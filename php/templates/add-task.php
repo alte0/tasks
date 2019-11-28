@@ -9,6 +9,10 @@
       </div>
       <?= !empty($errorsForm["date"]) ? "<div class=\"text-error\">{$errorsForm["date"]}</div>" : "" ?>
     </div>
+    <div class="form__row">
+      <input type="checkbox" name="date-no-limit" id="date-no-limit" <?= isset($_POST["date-no-limit"]) ? "checked" : "" ?>/>
+      <label for="date-no-limit">Без даты окончания (дата окончания выбранная выше, будет игнорирована)</label>
+    </div>
     <div class="form__row form__row_content-column"><span>Выберите исполнителя</span>
       <select class="form__list-users" name="executor" required="required">
         <option value="no" <?= isset($_POST["executor"]) ? "" : "selected" ?> disabled>Не выбрано</option>

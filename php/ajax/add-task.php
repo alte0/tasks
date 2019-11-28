@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["add-task"])) {
       'executor' => isset($_POST["executor"]) ? trim($_POST["executor"]) : "",
       'title' => isset($_POST["title"]) ? trim($_POST["title"]) : "",
       'text' => isset($_POST["text"]) ? trim($_POST["text"]) : "",
-      'date-no-imit' => "0",
+      'date-no-limit' => !empty($_POST["date-no-limit"]) && $_POST["date-no-limit"] === "on" ? 1 : 0
     ];
 
 
