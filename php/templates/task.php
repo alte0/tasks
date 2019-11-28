@@ -1,5 +1,8 @@
 <?= $userMenu ?>
-<section class='task task_single'>
+<?php
+  $classTaskExpired = (intval($task['task_date_no_limit']) === 0 && intval($task['task_status']) === 0) && (strtotime($task['task_date_end']) < strtotime($today)) ? " task_expired" : "";
+?>
+<section class='task task_single<?= $classTaskExpired ?>'>
   <h3 class='task__title'><?= clearStrDataTags($task['task_title']) ?></h3>
   <div class='task__desc'>
     <?= clearStrDataTags(html_entity_decode($task['task_desc']), $allowTags) ?>
@@ -7,7 +10,7 @@
   <footer class='task__footer'>
     <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>
     </div>
-    <div class='task__date-end'>Закончить задачу до: <?= intval($task['task_date_no_limit']) === 1 ? "без даты окончания" : clearStrDataTags($task['task_date_end']) ?></div>
+    <div class='task__date-end'>Закончить задачу до: <?= intval($task['task_date_no_limit']) ? "без даты окончания" : clearStrDataTags($task['task_date_end']) ?></div>
     <div class='task__status'>Статус: <?= intval($task['task_status']) === 0 ? "В работе" : "Выполнено" ?>
     </div>
     <div class='task__execute'>

@@ -8,7 +8,10 @@
   <ul class='tasks__lists'>
   <?php foreach($tasks as $task): ?>
     <li class="tasks__item">
-      <section class="task">
+      <?php
+        $classTaskExpired = (intval($task['task_date_no_limit']) === 0 && intval($task['task_status']) === 0) && (strtotime($task['task_date_end']) < strtotime($today)) ? " task_expired" : "";
+      ?>
+      <section class="task<?= $classTaskExpired ?>">
         <h3 class='task__title'><?= clearStrDataTags($task['task_title']) ?></h3>
         <footer class='task__footer'>
           <div class='task__date-start'>Начало задачи: <?= clearStrDataTags($task['task_date_start']) ?>

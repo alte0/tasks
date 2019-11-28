@@ -94,6 +94,7 @@ $content = include_template('tasks', [
   'searchForm' => $searchForm,
   'allowTags' => $allowTags,
   'pagination' => $pagination,
+  'today' => $today
 ]);
 
 $layout = include_template('layout', [

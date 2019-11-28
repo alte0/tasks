@@ -66,7 +66,8 @@ $content = include_template('task', [
   'user' => $user,
   'task' => $task,
   'userMenu' => $userMenu,
-  'allowTags' => $allowTags
+  'allowTags' => $allowTags,
+  'today' => $today
 ]);
   
 $layout = include_template('layout', [
