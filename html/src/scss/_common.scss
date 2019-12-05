@@ -1,12 +1,14 @@
 html {
   min-height: 100%;
 }
+
 html,
 body {
   // height: 100%;
   display: flex;
   flex-direction: column;
 }
+
 body {
   font-family: $baseFont;
   font-size: $baseFontSize;
@@ -35,6 +37,15 @@ input {
   border-radius: $baseValue / 4;
   &:focus {
     border-color: #47a4f5
+  }
+}
+
+input:not([type="search"]) {
+  &:valid {
+    border: 2px solid green;
+  }
+  &:invalid {
+    border: 2px solid red;
   }
 }
 
