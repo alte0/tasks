@@ -1,5 +1,13 @@
 {
-    "require-dev": {
-        "phpunit/phpunit": "8"
+    "name": "alte0/tests-phpunit",
+    "description": "Tests for project",
+    "authors": [
+        {
+            "name": "Максим",
+            "email": "ctpagateji@yandex.ru"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^8.5"
     }
 }
