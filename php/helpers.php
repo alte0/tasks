@@ -171,6 +171,8 @@ function checkUserInDB($link, $user, $isPwd = false): bool
             $userInfo["surname"] = $result["user_surname"];
             $userInfo["patronymic"] = $result["user_patronymic"];
             $_SESSION['userInfo'] = $userInfo;
+            setcookie("userInfo", "{$userInfo["name"]};{$userInfo["surname"]};{$userInfo["patronymic"]};{$userInfo["id"]}", "", "/");
+
             return true;
         }
         
