@@ -1,9 +1,10 @@
 <?php
 /**
  * DBO->prepare и $stmt->fetchAll()
- * @param resource - $link Соеинение с бд
+ * 
+ * @param pdo - $link Соеинение с бд
  * @param string - $sql запрос к бд
- * @param string - $data массив с данными для $stmt->execute($data)
+ * @param array - $data массив с данными для $stmt->execute($data)
  * @return array
  */
 function dboPrepareAndFetchAll($link, $sql, array $data = []): array
@@ -21,6 +22,7 @@ function dboPrepareAndFetchAll($link, $sql, array $data = []): array
 }
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
+ * 
  * @param string $nameTemplate Имя подключаемого файла шаблона из папки templates
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
@@ -40,31 +42,32 @@ function include_template(string $nameTemplate, array $data = []): string
 }
 /**
  * Функция очистки данных от тэгов
+ * 
  * @param string $str Очишаемая строка
  * @param string $tags Тэги которые надо оставить - '<p><a>'
  * @return string Очишенная строка
  */
 function clearStrDataTags(string $str, $tags = ''): string
 {
-    $text = strip_tags($str, $tags);
-
-    return $text;
+    return strip_tags($str, $tags);
 }
 /**
  * Получения значения из $_POST для заполнеиня данных в форме.
+ * 
  * @param string $name - имя ключа из массива $_POST для получения значения;
  * @return string
  */
-function getPostVal($name)
+function getPostVal($name): string
 {
     // htmlentities для сохранения кавычек
     return isset($_POST[$name]) ? htmlentities(trim($_POST[$name])) : "";
 }
 /**
  * Валидация строки
- * @param string $value - значение для валидации;
+ * 
  * @param integer $min - минимальное значение длины строки;
  * @param integer $max - максимальное значение длины строки;
+ * @param string $value - значение для валидации;
  * @return string|null
  */
 function validateLength(int $min, int $max, string $value)
@@ -79,6 +82,7 @@ function validateLength(int $min, int $max, string $value)
 }
 /**
  * Валидация строки
+ * 
  * @param string $value - значение для валидации;
  * @return string|null
  */
@@ -92,6 +96,7 @@ function validateLoginRegex(string $value)
 }
 /**
  * Валидация строки
+ * 
  * @param string $value - значение для валидации;
  * @return string|null
  */
@@ -105,6 +110,7 @@ function validatePassworsRegex(string $value)
 }
 /**
  * Валидация строки
+ * 
  * @param string $value - значение для валидации;
  * @param string $value2 - значение для валидации;
  * @return string|null
@@ -119,8 +125,9 @@ function validatePassworsEqually(string $value, string $value2)
 }
 /**
  * Валидация строки
- * @param resource $link - соединение с БД;
- * @param array $arr - значение для валидации;
+ * 
+ * @param pdo $link - соединение с БД;
+ * @param array $arr - массив с данными для валидации;
  * @return string|null
  */
 function checkLoginInDB($link, array $arr)
@@ -133,12 +140,13 @@ function checkLoginInDB($link, array $arr)
 }
 /**
  * Проверка пользователя в бд
- * @param resource $link - соединение с mysql
+ * 
+ * @param pdo $link - соединение с mysql
  * @param array $user - массив с данными = ["login"=> "login","password"=> "password"]
  * @param boolean $isPwd - Признак надо ли на проверку пароль.
  * @return boolean 
  */
-function checkUserInDB($link, $user, $isPwd = false)
+function checkUserInDB($link, $user, $isPwd = false): boolean
 {
     $login = $user["login"];
     global $passwordSalt;
@@ -178,10 +186,10 @@ function checkUserInDB($link, $user, $isPwd = false)
 /**
  * Получение всех пользователей
  *
- * @param resource $linkBd
+ * @param pdo $link - соединение с mysql
  * @return array
  */
-function getUsers($link)
+function getUsers($link): array
 {
     $sql = "SELECT `user_id`,`user_login`,`user_name`,`user_surname`,`user_patronymic` FROM `users`";
     $query = $link->query($sql);
@@ -197,9 +205,11 @@ function getUsers($link)
 
 /**
  * Преобразовывает введеную дату пользователя в дату для mysql
- * @param string $date
+ * 
+ * @param string - $date
+ * @return  string
  */
-function transformsDate($date)
+function transformsDate($date): string
 {
     $arrDate = date_parse($date);
     return "{$arrDate["year"]}.{$arrDate["month"]}.{$arrDate["day"]}";
@@ -207,11 +217,12 @@ function transformsDate($date)
 
 /**
  * Добавление задачи для пользователя
- * @param resource $link
- * @param array - $user
+ * 
+ * @param pdo $link - соединение с mysql
+ * @param array - $task
  * @return array
  */
-function addTask($link, array $task)
+function addTask($link, array $task): array
 {
     $authorId = $_SESSION['userInfo']['id'];
     $executorId = $task["executor"];
@@ -269,8 +280,9 @@ function addTask($link, array $task)
     return false;
 }
 /**
- * Получение задач 
- * @param resource $link
+ * Получение задач
+ * 
+ * @param pdo $link - соединение с mysql
  * @param string $sql
  * @return array
  */
@@ -289,7 +301,8 @@ function getTasks($link, $sql): array
 
 /**
  * Получение задач для пользователя
- * @param resource $link
+ * 
+ * @param pdo $link - соединение с mysql
  * @param string $sql
  * @return array
  */
@@ -299,7 +312,8 @@ function getMyTasks($link, $sql): array
 }
 /**
  * Получение задач поставленных пользователем
- * @param resource $link
+ * 
+ * @param pdo $link - соединение с mysql
  * @param string $sql
  * @return array
  */
@@ -309,6 +323,7 @@ function getMyDesignatedTasks($link, $sql): array
 }
 /**
  * Очистка введеных данных(ожидаем цифру).
+ * 
  * @param string $value
  * @return string
  */
@@ -317,8 +332,10 @@ function clearInt($value) {
 }
 /**
  * Выполнение задачи
- * @param resource - $link Соеинение с бд
+ * 
+ * @param pdo $link - соединение с mysql
  * @param int|float|string - $id задачи
+ * @return boolean
  */
 function executeTask($link, $id)
 {
@@ -337,7 +354,9 @@ function executeTask($link, $id)
 }
 /**
  * Получение задачи
- * @param resource - $link Соеинение с бд
+ * 
+ * @param pdo $link - соединение с mysql
+ * @param string - $sql
  * @param int - $taskId номер задачи
  * @return array
  */
@@ -361,10 +380,11 @@ function getTask($link, $sql, $taskId): array
 }
 /**
  * Добавление нового пользователя
- * @param resource - $link Соединение с бд
+ * 
+ * @param pdo $link - соединение с mysql
  * @param string - $sql запрос
  * @param array - $user данные пользователя
- * @return array
+ * @return boolean
  */
 function addUser($link, $sql, $user) {
   $required = ['login', 'password', 'password2', 'name', 'surname', 'patronymic'];
@@ -463,9 +483,10 @@ function addUser($link, $sql, $user) {
 }
 /**
  * Поиск по задачам
- * @param resource - $link Соеинение с бд
+ * 
+ * @param pdo $link - соединение с mysql
  * @param string - $sql Соеинение с бд
- * @param string - $data для prepare
+ * @param array - $data для prepare
  * @return array
  */
 function getTasksSearch($link, $sql, array $data): array
