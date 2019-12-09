@@ -143,10 +143,10 @@ function checkLoginInDB($link, array $arr)
  * 
  * @param pdo $link - соединение с mysql
  * @param array $user - массив с данными = ["login"=> "login","password"=> "password"]
- * @param boolean $isPwd - Признак надо ли на проверку пароль.
- * @return boolean 
+ * @param bool $isPwd - Признак надо ли на проверку пароль.
+ * @return bool 
  */
-function checkUserInDB($link, $user, $isPwd = false): boolean
+function checkUserInDB($link, $user, $isPwd = false): bool
 {
     $login = $user["login"];
     global $passwordSalt;
@@ -335,9 +335,9 @@ function clearInt($value) {
  * 
  * @param pdo $link - соединение с mysql
  * @param int|float|string - $id задачи
- * @return boolean
+ * @return bool
  */
-function executeTask($link, $id)
+function executeTask($link, $id): bool
 {
     $job = 1;
     $idTask = abs(clearInt($id));
@@ -384,9 +384,10 @@ function getTask($link, $sql, $taskId): array
  * @param pdo $link - соединение с mysql
  * @param string - $sql запрос
  * @param array - $user данные пользователя
- * @return boolean
+ * @return bool
  */
-function addUser($link, $sql, $user) {
+function addUser($link, $sql, $user): bool
+{
   $required = ['login', 'password', 'password2', 'name', 'surname', 'patronymic'];
 
   $rules = [
