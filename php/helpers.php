@@ -171,7 +171,7 @@ function checkUserInDB($link, $user, $isPwd = false): bool
             $userInfo["surname"] = $result["user_surname"];
             $userInfo["patronymic"] = $result["user_patronymic"];
             $_SESSION['userInfo'] = $userInfo;
-            setcookie("userInfo", "{$userInfo["name"]};{$userInfo["surname"]};{$userInfo["patronymic"]};{$userInfo["id"]}", "", "/");
+            setcookie("userInfo", "{$userInfo["name"]};{$userInfo["surname"]};{$userInfo["patronymic"]}", "", "/");
 
             return true;
         }
@@ -222,9 +222,9 @@ function transformsDate($date): string
  * 
  * @param pdo $link - соединение с mysql
  * @param array - $task
- * @return array
+ * @return bool
  */
-function addTask($link, array $task): array
+function addTask($link, array $task): bool
 {
     $authorId = $_SESSION['userInfo']['id'];
     $executorId = $task["executor"];

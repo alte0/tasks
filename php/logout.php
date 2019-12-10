@@ -1,5 +1,8 @@
 <?php
 session_start();
-unset($_SESSION["userInfo"]);
+$_SESSION = [];
+setcookie(session_name(), "", time() - 3600);
+setcookie("userInfo", "", time() - 3600);
+session_destroy();
 header("Location: /index.php");
 die;
