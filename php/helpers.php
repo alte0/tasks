@@ -100,7 +100,7 @@ function validateLoginRegex(string $value)
  * @param string $value - значение для валидации;
  * @return string|null
  */
-function validatePassworsRegex(string $value)
+function validatePasswordsRegex(string $value)
 {
     if (!preg_match(REGEX_USER_PSW, $value)) {
         return "Строчные и прописные латинские буквы, цифры, спецсимволы.";
@@ -115,7 +115,7 @@ function validatePassworsRegex(string $value)
  * @param string $value2 - значение для валидации;
  * @return string|null
  */
-function validatePassworsEqually(string $value, string $value2)
+function validatePasswordsEqually(string $value, string $value2)
 {
     if ($value !== $value2) {
         return "Пароли не совпадают!";
@@ -418,7 +418,7 @@ function addUser($link, $sql, $user): bool
         return validateLoginRegex($user["login"]);
     },
     'password' => function () use ($user) {
-        return validatePassworsEqually($user["password"], $user["password2"]);
+        return validatePasswordsEqually($user["password"], $user["password2"]);
     },
   ];
 
@@ -427,7 +427,7 @@ function addUser($link, $sql, $user): bool
         return checkLoginInDB($link, $user);
     },
     'password' => function () use ($user) {
-        return validatePassworsRegex($user["password"]);
+        return validatePasswordsRegex($user["password"]);
     },
   ];
 
