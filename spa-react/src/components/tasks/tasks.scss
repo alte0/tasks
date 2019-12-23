@@ -1,0 +1,20 @@
+@import "../../Vars";
+
+.task {
+  &s {
+    &__title {
+      margin-top: 0;
+      margin-bottom: $baseValue * 2; // 16
+      text-align: center;
+    }
+    &__lists {
+      list-style: none;
+      padding: 0;
+    }
+    &__item {
+      &:not(:last-child) {
+        margin-bottom: $baseValue * 2; // 16
+      }
+    }
+  }
+}

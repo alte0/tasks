@@ -1,0 +1,123 @@
+@import "./Vars";
+@import "./node_modules/toastr/toastr";
+@import "./node_modules/flatpickr/dist/flatpickr";
+
+html,
+.root {
+  min-height: 100%;
+}
+
+html,
+body,
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  font-family: $baseFont;
+  font-size: $baseFontSize;
+  line-height: $baseLineHeight;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body,
+.root {
+  flex-grow: 1;
+}
+
+main {
+  padding-top: $baseValue * 2;
+  padding-bottom: $baseValue * 2;
+}
+
+textarea {
+  resize: none;
+  padding: $baseValue;
+  line-height: $baseLineHeight;
+  min-height: $baseLineHeight * $baseFontSize * 3;
+}
+
+textarea,
+select,
+input {
+  border: $baseValue / 8 solid $borderColor;
+  border-radius: $baseValue / 4;
+  &:focus {
+    border-color: #47a4f5
+  }
+}
+
+input:not([type="search"]) {
+  &:valid {
+    border: 2px solid green;
+  }
+  &:invalid {
+    border: 2px solid red;
+  }
+}
+
+.container {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $baseValue * 2; //16
+  padding-right: $baseValue * 2;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer {
+  margin-top: auto;
+  text-align: center;
+  background-color: $bgBlack;
+  color: white;
+}
+
+[type="submit"] {
+  background-color: green;
+  color: white;
+  border: $baseValue / 4 solid green;
+  border-radius: $baseValue / 4;
+  padding-top: $baseValue;
+  padding-bottom: $baseValue;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.visually-hidden {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding:0 !important;
+  border:0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+}
+
+[type="checkbox"] {
+  margin-right: $baseValue;
+}
+
+.bg {
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom right, white, white 27%, #47b784);
+    z-index: -1;
+  }
+}
