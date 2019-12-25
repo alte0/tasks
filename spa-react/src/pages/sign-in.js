@@ -1,8 +1,9 @@
 import React from "react";
 import FormSingIn from "../components/forms/form-sing-in";
 
-export default function PageSingIn() {
+const pageSingIn = () => {
     return (
         <FormSingIn/>
     )
-}
+};
+export default pageSingIn

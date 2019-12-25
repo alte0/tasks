@@ -9,12 +9,16 @@ const option = {
 };
 
 export function Tasks(props) {
+    const {
+        title,
+        tasks
+        } = props;
     return (
         <section className="tasks">
-            <h2 className="tasks__title">{props.title}</h2>
+            <h2 className="tasks__title">{title}</h2>
             <ul className="tasks__lists">
                 {
-                    props.tasks.map((task, index)=> {
+                    tasks.map((task, index)=> {
                         return (
                             <li
                                 className="tasks__item"

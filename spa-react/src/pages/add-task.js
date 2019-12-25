@@ -1,8 +1,9 @@
 import React from "react";
 import FormAddTask from "../components/forms/form-add-task";
 
-export default function PageAddTask() {
+const pageAddTask = () => {
     return (
         <FormAddTask/>
     )
-}
+};
+export default pageAddTask
