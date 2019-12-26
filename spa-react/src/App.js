@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 // import logo from './logo.svg';
 // import './App.css';
 import Container from "./components/container/container";
@@ -7,26 +7,24 @@ import FormSingUp from "./pages/sign-up";
 import FormAddTask from "./pages/add-task";
 import Task from "./pages/task";
 import Tasks from "./pages/tasks";
-import Footer from './components/footer/footer'
+import Footer from './components/footer/footer';
+import {getCookie} from  "./helpers/helpers";
 
 import 'normalize.css';
 
 require('./Common.scss');
 
-class App extends Component {
+class App extends PureComponent {
     constructor(props) {
         super(props);
 
         this.initialState = {
             activePage: this._getUserSingIn() ? 4 : 1,
-            user: {
-                name: '',
-                surname: '',
-                patronymic: '',
-            }
         };
 
         this.state = this.initialState;
+
+        this._changeActivePage = this._changeActivePage.bind(this);
     }
 
     render() {
@@ -34,8 +32,7 @@ class App extends Component {
             <React.Fragment>
                 <main className="bg">
                     <Container>
-                        {/*{this._getPage(this.state.activePage)}*/}
-                        {this._getPage(5)}
+                        {this._getPage(this.state.activePage)}
                     </Container>
                 </main>
                 <Footer />
@@ -44,20 +41,27 @@ class App extends Component {
     }
 
     _getUserSingIn() {
-        return true;
+        return getCookie("userInfo") && getCookie("FakePhpSession");
     }
+
+    _changeActivePage(page) {
+        this.setState({
+            activePage: page
+        })
+    }
+
     _getPage(page) {
         switch (page) {
             case 1:
-                return <PageSingIn/>;
+                return <PageSingIn changeActivePage={this._changeActivePage}/>;
             case 2:
-                return <FormSingUp/>;
+                return <FormSingUp changeActivePage={this._changeActivePage}/>;
             case 3:
-                return <FormAddTask/>;
+                return <FormAddTask changeActivePage={this._changeActivePage}/>;
             case 4:
-                return <Tasks user={this.state.user}/>;
+                return <Tasks changeActivePage={this._changeActivePage}/>;
             case 5:
-                return <Task user={this.state.user}/>;
+                return <Task changeActivePage={this._changeActivePage}/>;
             default:
                 return null;
         }

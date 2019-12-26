@@ -10,7 +10,6 @@ toastr.options = {
     onclick: null,
     showDuration: `300`,
     hideDuration: `1000`,
-    timeOut: `5000`,
     extendedTimeOut: `1000`,
     showEasing: `swing`,
     hideEasing: `linear`,
@@ -22,8 +21,10 @@ toastr.options = {
  * @param {String} type (`info`, `success`, `warning`, `error`)
  * @param {String} message `text`
  * @param {String} title `text`
+ * @param {Number} time
  */
-const showMessage = (type, message, title = ``) => {
+const showMessage = (type, message, title = ``, time= 5000) => {
+    toastr.options.timeOut = time;
     if (title) {
         toastr[type](message, title)
     } else {

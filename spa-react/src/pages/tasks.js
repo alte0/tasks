@@ -7,10 +7,9 @@ import {tasks} from "../mocks/mocks";
 const title = "Мои задачи.";
 
 const pageTasks = (props) => {
-    const {user} = props;
     return (
         <React.Fragment>
-            <UserMenu user={user}/>
+            <UserMenu changeActivePage={props.changeActivePage}/>
             <SearchByTasks/>
             <Tasks
                 tasks={tasks}

@@ -1,9 +1,9 @@
 import React from "react";
 import FormSingUp from "../components/forms/form-sing-up";
 
-const pageSingUp = () => {
+const pageSingUp = (props) => {
     return (
-        <FormSingUp/>
+        <FormSingUp changeActivePage={props.changeActivePage}/>
     )
 };
 export default pageSingUp

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import "./forms.scss"
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
-import {ConfMinAndMax} from "../../vars/vars";
+import {ConfMinAndMax, ConfTimes} from "../../vars/vars";
 import {showMessage, TypeMessage} from "../../plugins/show-message";
 
 
@@ -19,14 +19,15 @@ class FormSingUp extends Component {
         };
         this.state = this.initialState;
 
-        this.handleLoginChange = this.handleLoginChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handlePassword2Change = this.handlePassword2Change.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleSurnameChange = this.handleSurnameChange.bind(this);
+        this._handleLoginChange = this._handleLoginChange.bind(this);
+        this._handlePasswordChange = this._handlePasswordChange.bind(this);
+        this._handlePassword2Change = this._handlePassword2Change.bind(this);
+        this._handleNameChange = this._handleNameChange.bind(this);
+        this._handleSurnameChange = this._handleSurnameChange.bind(this);
         this.handlePatronymicChange = this.handlePatronymicChange.bind(this);
-        this.handleSubmitForm = this.handleSubmitForm.bind(this);
-        this.onBlurInput = this.onBlurInput.bind(this);
+        this._handleSubmitForm = this._handleSubmitForm.bind(this);
+        this._onBlurInput = this._onBlurInput.bind(this);
+        this._handleClick = this._handleClick.bind(this);
     }
 
     validateForm(state) {
@@ -42,7 +43,7 @@ class FormSingUp extends Component {
         return isValidLogin && isValidPassword && isValidPassword2 && isValidEquallyPassword && isValidName && isValidSurname && isValidPatronymic;
     }
 
-    handleLoginChange(evt) {
+    _handleLoginChange(evt) {
         const value = evt.target.value;
         this.setState({
             login: value,
@@ -50,7 +51,7 @@ class FormSingUp extends Component {
         });
     }
 
-    handlePasswordChange(evt) {
+    _handlePasswordChange(evt) {
         const value = evt.target.value;
         this.setState({
             password: value,
@@ -58,7 +59,7 @@ class FormSingUp extends Component {
         });
     }
 
-    handlePassword2Change(evt) {
+    _handlePassword2Change(evt) {
         const value = evt.target.value;
         this.setState({
             password2: value,
@@ -66,7 +67,7 @@ class FormSingUp extends Component {
         });
     }
 
-    handleNameChange(evt) {
+    _handleNameChange(evt) {
         const value = evt.target.value;
         this.setState({
             name: value,
@@ -74,7 +75,7 @@ class FormSingUp extends Component {
         });
     }
 
-    handleSurnameChange(evt) {
+    _handleSurnameChange(evt) {
         const value = evt.target.value;
         this.setState({
             surname: value,
@@ -90,23 +91,37 @@ class FormSingUp extends Component {
         });
     }
 
-    handleSubmitForm(evt) {
+    _handleSubmitForm(evt) {
         evt.preventDefault();
         console.log(evt.target);
         console.log(new FormData(evt.target));
-        alert('fake data');
+        this.setState({validForm: false});
+        showMessage(TypeMessage.SUCCESS,
+            `Вы зарегистрированны!<br/>Через ${ConfTimes.REDIRECTION_SIGN_IN_TIME/1000} секунд, Вас перенаправит на страницу входа.`,
+            "",
+            ConfTimes.REDIRECTION_SIGN_IN_TIME);
+        setTimeout(()=> {
+            const page = 1;
+            this.props.changeActivePage(page);
+        }, ConfTimes.REDIRECTION_SIGN_IN_TIME);
     }
 
-    onBlurInput() {
+    _onBlurInput() {
         if (this.state.password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && this.state.password !== this.state.password2) {
             showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль!"`);
         }
     }
 
+    _handleClick(evt) {
+        evt.preventDefault();
+        const page = 1;
+        this.props.changeActivePage(page);
+    }
+
     render() {
         return (
             <form
-                onSubmit={this.handleSubmitForm}
+                onSubmit={this._handleSubmitForm}
                 className="form form_reg"
                 method="post">
                 <h3 className="form__title">Регистрация нового пользователя
@@ -115,7 +130,7 @@ class FormSingUp extends Component {
                     <label htmlFor="login">Ваш логин:</label>
                     <input
                         value={this.state.login}
-                        onChange={this.handleLoginChange}
+                        onChange={this._handleLoginChange}
                         className="form__input"
                         id="login" type="text" name="login"
                         minLength={ConfMinAndMax.MIN_LENGTH_LOGIN}
@@ -126,7 +141,7 @@ class FormSingUp extends Component {
                     <label htmlFor="password">Пароль:</label>
                     <input
                         value={this.state.password}
-                        onChange={this.handlePasswordChange}
+                        onChange={this._handlePasswordChange}
                         className="form__input"
                         id="password" type="password" name="password"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
@@ -137,8 +152,8 @@ class FormSingUp extends Component {
                     <label htmlFor="password2">Повторите пароль:</label>
                     <input
                         value={this.state.password2}
-                        onChange={this.handlePassword2Change}
-                        onBlur={this.onBlurInput}
+                        onChange={this._handlePassword2Change}
+                        onBlur={this._onBlurInput}
                         className="form__input"
                         id="password2" type="password" name="password2"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
@@ -149,7 +164,7 @@ class FormSingUp extends Component {
                     <label htmlFor="name">Имя:</label>
                     <input
                         value={this.state.name}
-                        onChange={this.handleNameChange}
+                        onChange={this._handleNameChange}
                         className="form__input"
                         id="name" type="text" name="name"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
@@ -160,7 +175,7 @@ class FormSingUp extends Component {
                     <label htmlFor="surname">Фамилия:</label>
                     <input
                         value={this.state.surname}
-                        onChange={this.handleSurnameChange}
+                        onChange={this._handleSurnameChange}
                         className="form__input"
                         id="surname" type="text" name="surname"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
@@ -185,7 +200,10 @@ class FormSingUp extends Component {
                         type="submit">Зарегистрироваться</button>
                 </div>
                 <div className="form__row">
-                    <a className="form__link-signup" href="/signin.html">Авторизоваться</a>
+                    <a
+                        className="form__link-signup"
+                        onClick={this._handleClick}
+                        href="/signin.html">Авторизоваться</a>
                 </div>
             </form>
         )

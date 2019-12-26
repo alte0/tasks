@@ -22,69 +22,17 @@ class FormAddTask extends Component {
         this.inputDatesRef = React.createRef();
         this.textareaRef = React.createRef();
 
-        this.handleDatesChange = this.handleDatesChange.bind(this);
-        this.handleDateNoLimitChange = this.handleDateNoLimitChange.bind(this);
-        this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.handleTitleTaskChange = this.handleTitleTaskChange.bind(this);
-        this.handleDescTaskChange = this.handleDescTaskChange.bind(this);
-    }
-
-    validateForm(state) {
-        const {selectedDates, valueSelect, titleTask, descTask} = state;
-        const isValidValueSelect = valueSelect !== "disabled";
-        const isValidTitleTask= checkLengthMinMaxStr(titleTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_TITLE);
-        const isValidDescTask = checkLengthMinMaxStr(descTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_DESK);
-
-        return selectedDates && isValidValueSelect && isValidTitleTask && isValidDescTask;
-    }
-
-    handleDatesChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            selectedDates: value,
-            validForm: this.validateForm(Object.assign(this.state, {selectedDates: value}))
-        });
-    }
-
-    handleDateNoLimitChange() {
-        this.setState({
-            isCheckedDateNoLimit: !this.state.isCheckedDateNoLimit
-        });
-    }
-
-    handleTitleTaskChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            titleTask: value,
-            validForm: this.validateForm(Object.assign(this.state, {titleTask: value}))
-        });
-    }
-
-    handleDescTaskChange(data) {
-        this.setState({
-            descTask: data,
-            validForm: this.validateForm(Object.assign(this.state, {descTask: data}))
-        });
-    }
-
-    handleSelectChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            valueSelect: value,
-            validForm: this.validateForm(Object.assign(this.state, {valueSelect: value}))
-        });
-    }
-
-    handleSubmitForm(evt) {
-        evt.preventDefault();
-        console.log(evt.target);
-        console.log(new FormData(evt.target));
-        alert('fake data');
+        this._handleDatesChange = this._handleDatesChange.bind(this);
+        this._handleDateNoLimitChange = this._handleDateNoLimitChange.bind(this);
+        this._handleSelectChange = this._handleSelectChange.bind(this);
+        this._handleTitleTaskChange = this._handleTitleTaskChange.bind(this);
+        this._handleDescTaskChange = this._handleDescTaskChange.bind(this);
+        this._handleClick = this._handleClick.bind(this);
     }
 
     componentDidMount() {
         initFlatpickr(this.inputDatesRef.current);
-        initEditor(this.textareaRef.current, this.handleDescTaskChange);
+        initEditor(this.textareaRef.current, this._handleDescTaskChange);
     }
 
     render() {
@@ -100,7 +48,7 @@ class FormAddTask extends Component {
                         className="flatpickr">
                         <input
                             className="form__date"
-                            onInput={this.handleDatesChange}
+                            onInput={this._handleDatesChange}
                             id="date" type="text" name="date"
                             placeholder="выберите дату или даты" data-input="data-input" required="required"/>
                         <button type="button" title="Открыт/Закрыть календарь" data-toggle="">календарь</button>
@@ -109,7 +57,7 @@ class FormAddTask extends Component {
                 </div>
                 <div className="form__row">
                     <input
-                        onChange={this.handleDateNoLimitChange}
+                        onChange={this._handleDateNoLimitChange}
                         checked={this.state.isCheckedDateNoLimit}
                         type="checkbox" name="date-no-limit" id="date-no-limit"/>
                     <label htmlFor="date-no-limit">Без даты окончания (дата окончания выбранная выше, будет игнорирована)</label>
@@ -118,7 +66,7 @@ class FormAddTask extends Component {
                     <span>Выберите исполнителя</span>
                     <select
                         value={this.state.valueSelect}
-                        onChange={this.handleSelectChange}
+                        onChange={this._handleSelectChange}
                         className="form__list-users" name="executor" required="required">
                         <option value="disabled" disabled="disabled">Не выбрано</option>
                         <option value="1">User</option>
@@ -128,7 +76,7 @@ class FormAddTask extends Component {
                     <label>Загаловок задачи</label>
                     <textarea
                         value={this.state.titleTask}
-                        onChange={this.handleTitleTaskChange}
+                        onChange={this._handleTitleTaskChange}
                         className="form__title-add" type="date" name="title" maxLength="255" placeholder="сделать ..." required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
@@ -136,7 +84,7 @@ class FormAddTask extends Component {
                     <textarea
                         ref={this.textareaRef}
                         value={this.state.descTask}
-                        onChange={this.handleDescTaskChange}
+                        onChange={this._handleDescTaskChange}
                         id="textarea-text" name="text" maxLength="1000" placeholder="Обьяснение задачи ..." required="required" />
                 </div>
                 <div className="form__row">
@@ -144,10 +92,72 @@ class FormAddTask extends Component {
                         disabled={!this.state.validForm}
                         className="form__submit"
                         type="submit">Добавить задачу</button>
-                    <a className="form__link" href="/tasks.html">К списку задач</a>
+                    <a
+                        className="form__link"
+                        onClick={this._handleClick}
+                        href="/tasks.html">К списку задач</a>
                 </div>
             </form>
         )
+    }
+
+    _validateForm(state) {
+        const {selectedDates, valueSelect, titleTask, descTask} = state;
+        const isValidValueSelect = valueSelect !== "disabled";
+        const isValidTitleTask= checkLengthMinMaxStr(titleTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_TITLE);
+        const isValidDescTask = checkLengthMinMaxStr(descTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_DESK);
+
+        return selectedDates && isValidValueSelect && isValidTitleTask && isValidDescTask;
+    }
+
+    _handleDatesChange(evt) {
+        const value = evt.target.value;
+        this.setState({
+            selectedDates: value,
+            validForm: this._validateForm(Object.assign(this.state, {selectedDates: value}))
+        });
+    }
+
+    _handleDateNoLimitChange() {
+        this.setState({
+            isCheckedDateNoLimit: !this.state.isCheckedDateNoLimit
+        });
+    }
+
+    _handleTitleTaskChange(evt) {
+        const value = evt.target.value;
+        this.setState({
+            titleTask: value,
+            validForm: this._validateForm(Object.assign(this.state, {titleTask: value}))
+        });
+    }
+
+    _handleDescTaskChange(data) {
+        this.setState({
+            descTask: data,
+            validForm: this._validateForm(Object.assign(this.state, {descTask: data}))
+        });
+    }
+
+    _handleSelectChange(evt) {
+        const value = evt.target.value;
+        this.setState({
+            valueSelect: value,
+            validForm: this._validateForm(Object.assign(this.state, {valueSelect: value}))
+        });
+    }
+
+    handleSubmitForm(evt) {
+        evt.preventDefault();
+        console.log(evt.target);
+        console.log(new FormData(evt.target));
+        alert('fake data');
+    }
+
+    _handleClick(evt) {
+        evt.preventDefault();
+        const page = 4;
+        this.props.changeActivePage(page);
     }
 }
 
