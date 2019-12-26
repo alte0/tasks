@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import "./forms.scss";
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
-import {ConfMinAndMax, ConfTimes} from "../../vars/vars";
-import {showMessage, TypeMessage} from "../../plugins/show-message";
+import {ConfMinAndMax} from "../../vars/vars";
 
 class FormSingIn extends Component {
     constructor(props) {
