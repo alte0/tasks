@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import "./forms.scss";
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMax} from "../../vars/vars";
+import {getCookie} from "../../helpers/helpers";
 
 class FormSingIn extends Component {
     constructor(props) {
@@ -93,10 +94,20 @@ class FormSingIn extends Component {
         evt.preventDefault();
         console.log(evt.target);
         console.log(new FormData(evt.target));
-        const page = 4;
-        this.props.changeActivePage(page);
         document.cookie = "userInfo=Пётр,Петрович,Петров; path=/; max-age=300";
         document.cookie = "FakePhpSession=iigubyguybguywg; path=/; max-age=300";
+        if (getCookie("userInfo")) {
+            const userInfo = getCookie("userInfo").split(",");
+            const user = {
+                name: userInfo[0],
+                surname: userInfo[1],
+                patronymic: userInfo[2]
+            };
+            this.props.changeUserData(user);
+            console.log('changeUserData');
+        }
+        const page = 4;
+        this.props.changeActivePage(page);
     }
 
     _handleClick(evt) {

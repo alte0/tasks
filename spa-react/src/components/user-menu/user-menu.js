@@ -1,35 +1,13 @@
-import React, {PureComponent} from "react";
+import React, {Component} from "react";
 import "./user-menu.scss"
 import PropTypes from "prop-types";
-import {getCookie} from "../../helpers/helpers";
 
-class UserMenu extends PureComponent {
+class UserMenu extends Component {
     constructor(props) {
         super(props);
-        this.initialState = {
-            user: {
-                name: '',
-                surname: '',
-                patronymic: '',
-            }
-        };
 
-        this.state = this.initialState;
         this._handleClick = this._handleClick.bind(this);
         this._handleAddTaskClick = this._handleAddTaskClick.bind(this);
-    }
-
-    componentDidMount() {
-        if (getCookie("userInfo")){
-            const userInfo = getCookie("userInfo").split(",");
-            this.setState({
-                user: {
-                    name: userInfo[0],
-                    surname: userInfo[1],
-                    patronymic: userInfo[2]
-                }
-            });
-        }
     }
 
     _handleAddTaskClick(evt) {
@@ -52,8 +30,8 @@ class UserMenu extends PureComponent {
     render() {
         return (
             <nav className="user-menu">
-                <span className="user-menu__user-name">{`${this.state.user.name} ${this.state.user.surname} ${this.state.user.patronymic}`}</span>
-                <a className="user-menu__link" href="/designated-task.php">Я назначил задачу</a>
+                <span className="user-menu__user-name">{`${this.props.userData.name} ${this.props.userData.surname} ${this.props.userData.patronymic}`}</span>
+                <a className="user-menu__link" href="/designated-task">Я назначил задачу</a>
                 <a
                     className="user-menu__link"
                     onClick={this._handleAddTaskClick}

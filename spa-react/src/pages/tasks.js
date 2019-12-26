@@ -9,7 +9,10 @@ const title = "Мои задачи.";
 const pageTasks = (props) => {
     return (
         <React.Fragment>
-            <UserMenu changeActivePage={props.changeActivePage}/>
+            <UserMenu
+                changeActivePage={props.changeActivePage}
+                userData={props.userData}
+            />
             <SearchByTasks/>
             <Tasks
                 tasks={tasks}

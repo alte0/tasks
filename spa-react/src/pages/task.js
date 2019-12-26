@@ -11,7 +11,10 @@ const option = {
 const PageTask = (props) => {
     return (
         <React.Fragment>
-            <UserMenu changeActivePage={props.changeActivePage}/>
+            <UserMenu
+                changeActivePage={props.changeActivePage}
+                userData={props.userData}
+            />
             <Task isMore={option.isMore} isShowDesc={option.isShowDesc} data={tasks[0]}/>
         </React.Fragment>
     )

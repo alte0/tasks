@@ -20,11 +20,30 @@ class App extends PureComponent {
 
         this.initialState = {
             activePage: this._getUserSingIn() ? 4 : 1,
+            user: {
+                name: '',
+                surname: '',
+                patronymic: ''
+            }
         };
 
         this.state = this.initialState;
 
         this._changeActivePage = this._changeActivePage.bind(this);
+        this._changeUserData = this._changeUserData.bind(this);
+    }
+
+    componentDidMount() {
+        if (getCookie("userInfo")){
+            const userInfo = getCookie("userInfo").split(",");
+            this.setState({
+                user: {
+                    name: userInfo[0],
+                    surname: userInfo[1],
+                    patronymic: userInfo[2]
+                }
+            });
+        }
     }
 
     render() {
@@ -50,16 +69,28 @@ class App extends PureComponent {
         })
     }
 
+    _changeUserData(user) {
+        this.setState({
+            user
+        })
+    }
+
     _getPage(page) {
         switch (page) {
             case 1:
-                return <PageSingIn changeActivePage={this._changeActivePage}/>;
+                return <PageSingIn
+                    changeActivePage={this._changeActivePage}
+                    changeUserData={this._changeUserData}
+                />;
             case 2:
                 return <FormSingUp changeActivePage={this._changeActivePage}/>;
             case 3:
                 return <FormAddTask changeActivePage={this._changeActivePage}/>;
             case 4:
-                return <Tasks changeActivePage={this._changeActivePage}/>;
+                return <Tasks
+                    changeActivePage={this._changeActivePage}
+                    userData={this.state.user}
+                    />;
             case 5:
                 return <Task changeActivePage={this._changeActivePage}/>;
             default:
