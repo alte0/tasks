@@ -103,8 +103,8 @@ class FormSingIn extends Component {
                 surname: userInfo[1],
                 patronymic: userInfo[2]
             };
-            this.props.changeUserData(user);
-            console.log('changeUserData');
+            this.props.getUserData(user);
+            this.props.getTasksData();
         }
         const page = 4;
         this.props.changeActivePage(page);

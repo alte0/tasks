@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import "./task.scss";
 import {hasDateExpired} from "../../helpers/helpers"
 
-export function Task(props) {
+export const Task = (props) => {
     const {
         isShowDesc,
         isMore,
-        data
+        task
     } = props;
     const {
         dateEnd,
@@ -17,7 +17,8 @@ export function Task(props) {
         status,
         author,
         executor,
-        } = data;
+        id
+        } = task;
     return (
         <section className={`task ${hasDateExpired(dateEnd) ? `task_expired` : ``} ${isShowDesc ? `task_single` : ''}`}>
             <h3 className="task__title">{title}</h3>
@@ -46,7 +47,10 @@ export function Task(props) {
             </footer>
             {
                 isMore ?
-                    <a href="/?taskId=1">Подробнее</a>
+                    <a
+                        data-id={id}
+                        onClick={props.handleClickMore}
+                        href={`/?taskId=${id}`}>Подробнее</a>
                     : ''
             }
         </section>
@@ -55,14 +59,16 @@ export function Task(props) {
 Task.propTypes = {
     isShowDesc: PropTypes.bool.isRequired,
     isMore: PropTypes.bool.isRequired,
-    data: PropTypes.shape({
+    task: PropTypes.shape({
         dateEnd: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         dateStart: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
         author: PropTypes.string.isRequired,
-        executor: PropTypes.string.isRequired
-    })
+        executor: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired
+    }).isRequired,
+    handleClickMore: PropTypes.func
 };
 export default Task
 

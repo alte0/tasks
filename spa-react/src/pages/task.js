@@ -1,7 +1,6 @@
 import React from "react";
 import Task from "../components/task/task"
 import UserMenu from "../components/user-menu/user-menu";
-import {tasks} from "../mocks/mocks";
 
 const option = {
     isMore: false,
@@ -13,9 +12,15 @@ const PageTask = (props) => {
         <React.Fragment>
             <UserMenu
                 changeActivePage={props.changeActivePage}
-                userData={props.userData}
+                handleAddTaskClick={props.handleAddTaskClick}
+                handleClickExit={props.handleClickExit}
+                user={props.user}
             />
-            <Task isMore={option.isMore} isShowDesc={option.isShowDesc} data={tasks[0]}/>
+            <Task
+                isMore={option.isMore}
+                isShowDesc={option.isShowDesc}
+                task={props.task}
+            />
         </React.Fragment>
     )
 };

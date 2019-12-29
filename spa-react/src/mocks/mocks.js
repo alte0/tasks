@@ -7,6 +7,7 @@ export const tasks = [
         status: "В работе",
         author: "Попов Павел Петрович",
         executor: "Попов Павел Петрович",
+        id: 1
     },
     {
         title: "Задача 2",
@@ -16,5 +17,36 @@ export const tasks = [
         status: "В работе",
         author: "Попов Павел Петрович",
         executor: "Попов Павел Петрович",
-    }
+        id: 2
+    },
+    {
+        title: "Задача 3",
+        desc: "Описание задачи: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.",
+        dateStart:" 2019-12-29",
+        dateEnd: "2019-12-29",
+        status: "В работе",
+        author: "Попов Павел Петрович",
+        executor: "Попов Павел Петрович",
+        id: 3
+    },
+    {
+        title: "Задача 4",
+        desc: "Описание задачи: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.",
+        dateStart:" 2019-12-29",
+        dateEnd: "2019-12-30",
+        status: "В работе",
+        author: "Попов Павел Петрович",
+        executor: "Попов Павел Петрович",
+        id: 4
+    },
+    {
+        title: "Задача 5",
+        desc: "Описание задачи: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias quidem officia quisquam optio, nam itaque, id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provident blanditiis voluptas.",
+        dateStart:" 2019-12-29",
+        dateEnd: "2019-12-31",
+        status: "В работе",
+        author: "Попов Павел Петрович",
+        executor: "Попов Павел Петрович",
+        id: 5
+    },
 ];

@@ -2,7 +2,6 @@ import React from "react";
 import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
 import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
-import {tasks} from "../mocks/mocks";
 
 const title = "Мои задачи.";
 
@@ -11,12 +10,15 @@ const pageTasks = (props) => {
         <React.Fragment>
             <UserMenu
                 changeActivePage={props.changeActivePage}
-                userData={props.userData}
+                handleAddTaskClick={props.handleAddTaskClick}
+                handleClickExit={props.handleClickExit}
+                user={props.user}
             />
             <SearchByTasks/>
             <Tasks
-                tasks={tasks}
+                tasks={props.tasks}
                 title={title}
+                handleClickMore={props.handleClickMore}
             />
         </React.Fragment>
     )

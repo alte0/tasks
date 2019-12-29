@@ -8,7 +8,8 @@ import FormAddTask from "./pages/add-task";
 import Task from "./pages/task";
 import Tasks from "./pages/tasks";
 import Footer from './components/footer/footer';
-import {getCookie} from  "./helpers/helpers";
+import {getCookie, getTask} from  "./helpers/helpers";
+import {getTasks} from "./data/data";
 
 import 'normalize.css';
 
@@ -24,13 +25,17 @@ class App extends PureComponent {
                 name: '',
                 surname: '',
                 patronymic: ''
-            }
+            },
+            tasks: [],
+            task: {}
         };
 
         this.state = this.initialState;
 
         this._changeActivePage = this._changeActivePage.bind(this);
-        this._changeUserData = this._changeUserData.bind(this);
+        this._getUserData = this._getUserData.bind(this);
+        this._getTasksData = this._getTasksData.bind(this);
+        this._handleClickMore = this._handleClickMore.bind(this);
     }
 
     componentDidMount() {
@@ -41,7 +46,8 @@ class App extends PureComponent {
                     name: userInfo[0],
                     surname: userInfo[1],
                     patronymic: userInfo[2]
-                }
+                },
+                tasks: getTasks()
             });
         }
     }
@@ -69,10 +75,43 @@ class App extends PureComponent {
         })
     }
 
-    _changeUserData(user) {
+    _getUserData(user) {
         this.setState({
             user
         })
+    }
+
+    _getTasksData() {
+        this.setState({
+            tasks: getTasks()
+        })
+    }
+
+    _handleClickMore(evt) {
+        evt.preventDefault();
+        const id = evt.target.dataset.id;
+
+        this.setState((state) => ({
+                task: getTask(state.tasks, id),
+                activePage: 5
+            }))
+    }
+
+    _handleAddTaskClick(evt) {
+        evt.preventDefault();
+        const page = 3;
+        this._changeActivePage(page);
+    }
+
+    _handleClickExit(evt) {
+        evt.preventDefault();
+        const isQuestion = window.confirm(`Вы действительно хотите выйти?`);
+        if (isQuestion) {
+            document.cookie = "userInfo=; path=/; max-age=-1";
+            document.cookie = "FakePhpSession=; path=/; max-age=-1";
+            const page = 1;
+            this._changeActivePage(page);
+        }
     }
 
     _getPage(page) {
@@ -80,7 +119,8 @@ class App extends PureComponent {
             case 1:
                 return <PageSingIn
                     changeActivePage={this._changeActivePage}
-                    changeUserData={this._changeUserData}
+                    getUserData={this._getUserData}
+                    getTasksData={this._getTasksData}
                 />;
             case 2:
                 return <FormSingUp changeActivePage={this._changeActivePage}/>;
@@ -89,10 +129,20 @@ class App extends PureComponent {
             case 4:
                 return <Tasks
                     changeActivePage={this._changeActivePage}
-                    userData={this.state.user}
+                    tasks={this.state.tasks}
+                    user={this.state.user}
+                    handleClickMore={this._handleClickMore}
+                    handleAddTaskClick={this._handleAddTaskClick}
+                    handleClickExit={this._handleClickExit}
                     />;
             case 5:
-                return <Task changeActivePage={this._changeActivePage}/>;
+                return <Task
+                    changeActivePage={this._changeActivePage}
+                    handleAddTaskClick={this._handleAddTaskClick}
+                    handleClickExit={this._handleClickExit}
+                    user={this.state.user}
+                    task={this.state.task}
+                />;
             default:
                 return null;
         }

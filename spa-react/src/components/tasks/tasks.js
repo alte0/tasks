@@ -8,7 +8,7 @@ const option = {
     isShowDesc: false
 };
 
-export function Tasks(props) {
+export const Tasks = (props) => {
     const {
         title,
         tasks
@@ -18,15 +18,16 @@ export function Tasks(props) {
             <h2 className="tasks__title">{title}</h2>
             <ul className="tasks__lists">
                 {
-                    tasks.map((task, index)=> {
+                    tasks.map((task)=> {
                         return (
                             <li
                                 className="tasks__item"
-                                key={index}>
+                                key={task.id}>
                                 <Task
                                     isMore={option.isMore}
                                     isShowDesc={option.isShowDesc}
-                                    data={task}
+                                    task={task}
+                                    handleClickMore={props.handleClickMore}
                                 />
                             </li>
                         )
@@ -35,10 +36,11 @@ export function Tasks(props) {
             </ul>
         </section>
     )
-}
+};
 
 Tasks.propTypes = {
     title: PropTypes.string.isRequired,
-    tasks: PropTypes.array.isRequired
+    tasks: PropTypes.array.isRequired,
+    handleClickMore: PropTypes.func
 };
 export default Tasks

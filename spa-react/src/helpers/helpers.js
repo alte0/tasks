@@ -18,10 +18,24 @@ export const hasDateExpired = (dateTask) => {
     const date = new Date(dateTask).getTime();
     return today >= date;
 };
+/**
+ * Получение Cookie по имени
+ * @param name - имя Cookie
+ * @returns {any}
+ */
 export const getCookie = (name) => {
     let matches = document.cookie.match(new RegExp(
         // eslint-disable-next-line no-useless-escape
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
+};
+/**
+ * Получение задачи по её id
+ * @param tasks
+ * @param idTask - id задачи
+ * @returns {Object}
+ */
+export const getTask = (tasks, idTask) => {
+    return tasks.find((task) => task.id === (+idTask));
 };
