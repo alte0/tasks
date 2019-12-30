@@ -13,12 +13,6 @@ class FormSingIn extends Component {
             validForm: false
         };
         this.state = this.initialState;
-
-        this._handleLoginChange = this._handleLoginChange.bind(this);
-        this._handlePasswordChange = this._handlePasswordChange.bind(this);
-        this._validateForm = this._validateForm.bind(this);
-        this._handleSubmitForm = this._handleSubmitForm.bind(this);
-        this._handleClick = this._handleClick.bind(this);
     }
 
     render() {
@@ -66,31 +60,31 @@ class FormSingIn extends Component {
         )
     }
 
-    _validateForm(state) {
+    _validateForm = (state) => {
         const {login, password} = state;
         const isValidLogin = checkLengthMinMaxStr(login, ConfMinAndMax.MIN_LENGTH_LOGIN, ConfMinAndMax.MAX_LENGTH_LOGIN);
         const isValidPassword = checkLengthMinMaxStr(password, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
 
         return isValidLogin && isValidPassword;
-    }
+    };
 
-    _handleLoginChange(evt) {
+    _handleLoginChange = (evt) => {
         const value = evt.target.value;
         this.setState({
             login: value,
             validForm: this._validateForm(Object.assign(this.state, {login: value}))
         });
-    }
+    };
 
-    _handlePasswordChange(evt) {
+    _handlePasswordChange = (evt) => {
         const value = evt.target.value;
         this.setState({
             password: value,
             validForm: this._validateForm(Object.assign(this.state, {password: value}))
         });
-    }
+    };
 
-    _handleSubmitForm(evt) {
+    _handleSubmitForm = (evt) => {
         evt.preventDefault();
         console.log(evt.target);
         console.log(new FormData(evt.target));
@@ -108,9 +102,9 @@ class FormSingIn extends Component {
         }
         const page = 4;
         this.props.changeActivePage(page);
-    }
+    };
 
-    _handleClick(evt) {
+    _handleClick = (evt) => {
         evt.preventDefault();
         const page = 2;
         this.props.changeActivePage(page);

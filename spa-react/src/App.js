@@ -36,6 +36,8 @@ class App extends PureComponent {
         this._getUserData = this._getUserData.bind(this);
         this._getTasksData = this._getTasksData.bind(this);
         this._handleClickMore = this._handleClickMore.bind(this);
+        this._handleAddTaskClick = this._handleAddTaskClick.bind(this);
+        this._handleClickExit = this._handleClickExit.bind(this);
     }
 
     componentDidMount() {

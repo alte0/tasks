@@ -4,7 +4,6 @@ import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMax, ConfTimes} from "../../vars/vars";
 import {showMessage, TypeMessage} from "../../plugins/show-message";
 
-
 class FormSingUp extends Component {
     constructor(props) {
         super(props);
@@ -18,104 +17,6 @@ class FormSingUp extends Component {
             validForm: false
         };
         this.state = this.initialState;
-
-        this._handleLoginChange = this._handleLoginChange.bind(this);
-        this._handlePasswordChange = this._handlePasswordChange.bind(this);
-        this._handlePassword2Change = this._handlePassword2Change.bind(this);
-        this._handleNameChange = this._handleNameChange.bind(this);
-        this._handleSurnameChange = this._handleSurnameChange.bind(this);
-        this.handlePatronymicChange = this.handlePatronymicChange.bind(this);
-        this._handleSubmitForm = this._handleSubmitForm.bind(this);
-        this._onBlurInput = this._onBlurInput.bind(this);
-        this._handleClick = this._handleClick.bind(this);
-    }
-
-    validateForm(state) {
-        const {login, password, password2, name, surname, patronymic} = state;
-        const isValidLogin = checkLengthMinMaxStr(login, ConfMinAndMax.MIN_LENGTH_LOGIN, ConfMinAndMax.MAX_LENGTH_LOGIN);
-        const isValidPassword = checkLengthMinMaxStr(password, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
-        const isValidPassword2 = checkLengthMinMaxStr(password2, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
-        const isValidEquallyPassword = password === password2;
-        const isValidName = checkLengthMinMaxStr(name, ConfMinAndMax.MIN_LENGTH_TEXT, ConfMinAndMax.MAX_LENGTH_TEXT);
-        const isValidSurname = checkLengthMinMaxStr(surname, ConfMinAndMax.MIN_LENGTH_TEXT, ConfMinAndMax.MAX_LENGTH_TEXT);
-        const isValidPatronymic = checkLengthMinMaxStr(patronymic, ConfMinAndMax.MIN_LENGTH_TEXT, ConfMinAndMax.MAX_LENGTH_TEXT);
-
-        return isValidLogin && isValidPassword && isValidPassword2 && isValidEquallyPassword && isValidName && isValidSurname && isValidPatronymic;
-    }
-
-    _handleLoginChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            login: value,
-            validForm: this.validateForm(Object.assign(this.state, {login: value}))
-        });
-    }
-
-    _handlePasswordChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            password: value,
-            validForm: this.validateForm(Object.assign(this.state, {password: value}))
-        });
-    }
-
-    _handlePassword2Change(evt) {
-        const value = evt.target.value;
-        this.setState({
-            password2: value,
-            validForm: this.validateForm(Object.assign(this.state, {password2: value}))
-        });
-    }
-
-    _handleNameChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            name: value,
-            validForm: this.validateForm(Object.assign(this.state, {name: value}))
-        });
-    }
-
-    _handleSurnameChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            surname: value,
-            validForm: this.validateForm(Object.assign(this.state, {surname: value}))
-        });
-    }
-
-    handlePatronymicChange(evt) {
-        const value = evt.target.value;
-        this.setState({
-            patronymic: value,
-            validForm: this.validateForm(Object.assign(this.state, {patronymic: value}))
-        });
-    }
-
-    _handleSubmitForm(evt) {
-        evt.preventDefault();
-        console.log(evt.target);
-        console.log(new FormData(evt.target));
-        this.setState({validForm: false});
-        showMessage(TypeMessage.SUCCESS,
-            `Вы зарегистрированны!<br/>Через ${ConfTimes.REDIRECTION_SIGN_IN_TIME/1000} секунд, Вас перенаправит на страницу входа.`,
-            "",
-            ConfTimes.REDIRECTION_SIGN_IN_TIME);
-        setTimeout(()=> {
-            const page = 1;
-            this.props.changeActivePage(page);
-        }, ConfTimes.REDIRECTION_SIGN_IN_TIME);
-    }
-
-    _onBlurInput() {
-        if (this.state.password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && this.state.password !== this.state.password2) {
-            showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль!"`);
-        }
-    }
-
-    _handleClick(evt) {
-        evt.preventDefault();
-        const page = 1;
-        this.props.changeActivePage(page);
     }
 
     render() {
@@ -203,10 +104,98 @@ class FormSingUp extends Component {
                     <a
                         className="form__link-signup"
                         onClick={this._handleClick}
-                        href="/signin.html">Авторизоваться</a>
+                        href="/signin">Авторизоваться</a>
                 </div>
             </form>
         )
     }
+
+    _validateForm = (state) => {
+        const {login, password, password2, name, surname, patronymic} = state;
+        const isValidLogin = checkLengthMinMaxStr(login, ConfMinAndMax.MIN_LENGTH_LOGIN, ConfMinAndMax.MAX_LENGTH_LOGIN);
+        const isValidPassword = checkLengthMinMaxStr(password, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
+        const isValidPassword2 = checkLengthMinMaxStr(password2, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
+        const isValidEquallyPassword = password === password2;
+        const isValidName = checkLengthMinMaxStr(name, ConfMinAndMax.MIN_LENGTH_TEXT, ConfMinAndMax.MAX_LENGTH_TEXT);
+        const isValidSurname = checkLengthMinMaxStr(surname, ConfMinAndMax.MIN_LENGTH_TEXT, ConfMinAndMax.MAX_LENGTH_TEXT);
+        const isValidPatronymic = checkLengthMinMaxStr(patronymic, ConfMinAndMax.MIN_LENGTH_TEXT, ConfMinAndMax.MAX_LENGTH_TEXT);
+
+        return isValidLogin && isValidPassword && isValidPassword2 && isValidEquallyPassword && isValidName && isValidSurname && isValidPatronymic;
+    };
+
+    _handleLoginChange = (evt) => {
+        const value = evt.target.value;
+        this.setState({
+            login: value,
+            validForm: this._validateForm(Object.assign(this.state, {login: value}))
+        });
+    };
+
+    _handlePasswordChange = (evt) => {
+        const value = evt.target.value;
+        this.setState({
+            password: value,
+            validForm: this._validateForm(Object.assign(this.state, {password: value}))
+        });
+    };
+
+    _handlePassword2Change = (evt) => {
+        const value = evt.target.value;
+        this.setState({
+            password2: value,
+            validForm: this._validateForm(Object.assign(this.state, {password2: value}))
+        });
+    };
+
+    _handleNameChange = (evt) => {
+        const value = evt.target.value;
+        this.setState({
+            name: value,
+            validForm: this._validateForm(Object.assign(this.state, {name: value}))
+        });
+    };
+
+    _handleSurnameChange = (evt) => {
+        const value = evt.target.value;
+        this.setState({
+            surname: value,
+            validForm: this._validateForm(Object.assign(this.state, {surname: value}))
+        });
+    };
+
+    handlePatronymicChange = (evt) => {
+        const value = evt.target.value;
+        this.setState({
+            patronymic: value,
+            validForm: this._validateForm(Object.assign(this.state, {patronymic: value}))
+        });
+    };
+
+    _handleSubmitForm = (evt) => {
+        evt.preventDefault();
+        console.log(evt.target);
+        console.log(new FormData(evt.target));
+        this.setState({validForm: false});
+        showMessage(TypeMessage.SUCCESS,
+            `Вы зарегистрированны!<br/>Через ${ConfTimes.REDIRECTION_SIGN_IN_TIME/1000} секунд, Вас перенаправит на страницу входа.`,
+            "",
+            ConfTimes.REDIRECTION_SIGN_IN_TIME);
+        setTimeout(()=> {
+            const page = 1;
+            this.props.changeActivePage(page);
+        }, ConfTimes.REDIRECTION_SIGN_IN_TIME);
+    };
+
+    _onBlurInput = () => {
+        if (this.state.password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && this.state.password !== this.state.password2) {
+            showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль!"`);
+        }
+    };
+
+    _handleClick = (evt) => {
+        evt.preventDefault();
+        const page = 1;
+        this.props.changeActivePage(page);
+    };
 }
 export default FormSingUp

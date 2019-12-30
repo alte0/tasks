@@ -21,13 +21,6 @@ class FormAddTask extends Component {
 
         this.inputDatesRef = React.createRef();
         this.textareaRef = React.createRef();
-
-        this._handleDatesChange = this._handleDatesChange.bind(this);
-        this._handleDateNoLimitChange = this._handleDateNoLimitChange.bind(this);
-        this._handleSelectChange = this._handleSelectChange.bind(this);
-        this._handleTitleTaskChange = this._handleTitleTaskChange.bind(this);
-        this._handleDescTaskChange = this._handleDescTaskChange.bind(this);
-        this._handleClick = this._handleClick.bind(this);
     }
 
     componentDidMount() {
@@ -101,64 +94,64 @@ class FormAddTask extends Component {
         )
     }
 
-    _validateForm(state) {
+    _validateForm = (state) => {
         const {selectedDates, valueSelect, titleTask, descTask} = state;
         const isValidValueSelect = valueSelect !== "disabled";
         const isValidTitleTask= checkLengthMinMaxStr(titleTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_TITLE);
         const isValidDescTask = checkLengthMinMaxStr(descTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_DESK);
 
         return selectedDates && isValidValueSelect && isValidTitleTask && isValidDescTask;
-    }
+    };
 
-    _handleDatesChange(evt) {
+    _handleDatesChange = (evt) => {
         const value = evt.target.value;
         this.setState({
             selectedDates: value,
             validForm: this._validateForm(Object.assign(this.state, {selectedDates: value}))
         });
-    }
+    };
 
-    _handleDateNoLimitChange() {
+    _handleDateNoLimitChange = () => {
         this.setState({
             isCheckedDateNoLimit: !this.state.isCheckedDateNoLimit
         });
-    }
+    };
 
-    _handleTitleTaskChange(evt) {
+    _handleTitleTaskChange = (evt) => {
         const value = evt.target.value;
         this.setState({
             titleTask: value,
             validForm: this._validateForm(Object.assign(this.state, {titleTask: value}))
         });
-    }
+    };
 
-    _handleDescTaskChange(data) {
+    _handleDescTaskChange = (data) => {
         this.setState({
             descTask: data,
             validForm: this._validateForm(Object.assign(this.state, {descTask: data}))
         });
-    }
+    };
 
-    _handleSelectChange(evt) {
+    _handleSelectChange = (evt) => {
         const value = evt.target.value;
         this.setState({
             valueSelect: value,
             validForm: this._validateForm(Object.assign(this.state, {valueSelect: value}))
         });
-    }
+    };
 
-    handleSubmitForm(evt) {
+    handleSubmitForm = (evt) => {
         evt.preventDefault();
         console.log(evt.target);
         console.log(new FormData(evt.target));
         alert('fake data');
-    }
+    };
 
-    _handleClick(evt) {
+    _handleClick = (evt) => {
         evt.preventDefault();
         const page = 4;
         this.props.changeActivePage(page);
-    }
+    };
 }
 
 export default FormAddTask
