@@ -13,27 +13,32 @@ export const Tasks = (props) => {
         title,
         tasks
         } = props;
+
     return (
         <section className="tasks">
             <h2 className="tasks__title">{title}</h2>
-            <ul className="tasks__lists">
-                {
-                    tasks.map((task)=> {
-                        return (
-                            <li
-                                className="tasks__item"
-                                key={task.id}>
-                                <Task
-                                    isMore={option.isMore}
-                                    isShowDesc={option.isShowDesc}
-                                    task={task}
-                                    handleClickMore={props.handleClickMore}
-                                />
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+            {
+                tasks.length ?
+                    <ul className="tasks__lists">
+                        {
+                            tasks.map((task)=> {
+                                return (
+                                    <li
+                                        className="tasks__item"
+                                        key={task.id}>
+                                        <Task
+                                            isMore={option.isMore}
+                                            isShowDesc={option.isShowDesc}
+                                            task={task}
+                                            handleClickMore={props.handleClickMore}
+                                        />
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul> :
+                    <div>Нет никаких задач</div>
+            }
         </section>
     )
 };
