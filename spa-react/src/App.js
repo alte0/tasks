@@ -21,37 +21,31 @@ class App extends PureComponent {
 
         this.initialState = {
             activePage: this._getUserSingIn() ? 4 : 1,
+            itemsTasks: 3,
+            pagesCount: 0,
+            pageCurrent: 1,
             user: {
                 name: '',
                 surname: '',
                 patronymic: ''
             },
             tasks: [],
+            showTasks: [],
             task: {}
         };
 
         this.state = this.initialState;
 
         this._changeActivePage = this._changeActivePage.bind(this);
-        this._getUserData = this._getUserData.bind(this);
-        this._getTasksData = this._getTasksData.bind(this);
+        this._getDataForApp = this._getDataForApp.bind(this);
         this._handleClickMore = this._handleClickMore.bind(this);
         this._handleAddTaskClick = this._handleAddTaskClick.bind(this);
         this._handleClickExit = this._handleClickExit.bind(this);
+        this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
     }
 
     componentDidMount() {
-        if (getCookie("userInfo")){
-            const userInfo = getCookie("userInfo").split(",");
-            this.setState({
-                user: {
-                    name: userInfo[0],
-                    surname: userInfo[1],
-                    patronymic: userInfo[2]
-                },
-                tasks: getTasks()
-            });
-        }
+        this._getDataForApp();
     }
 
     render() {
@@ -67,6 +61,41 @@ class App extends PureComponent {
         );
     }
 
+    _getDataForApp(){
+        if (getCookie("userInfo")){
+            const userInfo = getCookie("userInfo").split(",");
+            const tasks = getTasks();
+
+            const length = tasks.length;
+            let showTasks;
+
+            if (length) {
+                showTasks = tasks.slice((this.state.pageCurrent - 1) * this.state.itemsTasks, this.state.pageCurrent * this.state.itemsTasks)
+            }
+
+            this.setState((state) => ({
+                user: {
+                    name: userInfo[0],
+                    surname: userInfo[1],
+                    patronymic: userInfo[2]
+                },
+                tasks: tasks,
+                showTasks: showTasks,
+                pagesCount: Math.ceil((length / state.itemsTasks))
+            }))
+        }
+    }
+
+    _handleClickChangePagePagination(evt) {
+        evt.preventDefault();
+        const pageIdPag = +evt.target.dataset.pageIdPag;
+
+        this.setState((state) => ({
+            showTasks: state.tasks.slice((pageIdPag - 1) * state.itemsTasks, pageIdPag * state.itemsTasks),
+            pageCurrent: pageIdPag
+        }));
+    }
+
     _getUserSingIn() {
         return getCookie("userInfo") && getCookie("FakePhpSession");
     }
@@ -74,18 +103,6 @@ class App extends PureComponent {
     _changeActivePage(page) {
         this.setState({
             activePage: page
-        })
-    }
-
-    _getUserData(user) {
-        this.setState({
-            user
-        })
-    }
-
-    _getTasksData() {
-        this.setState({
-            tasks: getTasks()
         })
     }
 
@@ -121,8 +138,7 @@ class App extends PureComponent {
             case 1:
                 return <PageSingIn
                     changeActivePage={this._changeActivePage}
-                    getUserData={this._getUserData}
-                    getTasksData={this._getTasksData}
+                    getData={this._getDataForApp}
                 />;
             case 2:
                 return <FormSingUp changeActivePage={this._changeActivePage}/>;
@@ -132,10 +148,15 @@ class App extends PureComponent {
                 return <Tasks
                     changeActivePage={this._changeActivePage}
                     tasks={this.state.tasks}
+                    showTasks={this.state.showTasks}
+                    itemsTasks={this.state.itemsTasks}
+                    pages={this.state.pagesCount}
+                    pageCurrent={this.state.pageCurrent}
                     user={this.state.user}
                     handleClickMore={this._handleClickMore}
                     handleAddTaskClick={this._handleAddTaskClick}
                     handleClickExit={this._handleClickExit}
+                    handleClickChangePagePagination={this._handleClickChangePagePagination}
                     />;
             case 5:
                 return <Task

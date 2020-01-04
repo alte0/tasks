@@ -91,17 +91,10 @@ class FormSingIn extends Component {
         document.cookie = "userInfo=Пётр,Петрович,Петров; path=/; max-age=300";
         document.cookie = "FakePhpSession=iigubyguybguywg; path=/; max-age=300";
         if (getCookie("userInfo")) {
-            const userInfo = getCookie("userInfo").split(",");
-            const user = {
-                name: userInfo[0],
-                surname: userInfo[1],
-                patronymic: userInfo[2]
-            };
-            this.props.getUserData(user);
-            this.props.getTasksData();
+            this.props.getData();
+            const page = 4;
+            this.props.changeActivePage(page);
         }
-        const page = 4;
-        this.props.changeActivePage(page);
     };
 
     _handleClick = (evt) => {

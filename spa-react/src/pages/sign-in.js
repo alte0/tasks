@@ -5,8 +5,7 @@ const pageSingIn = (props) => {
     return (
         <FormSingIn
             changeActivePage={props.changeActivePage}
-            getUserData={props.getUserData}
-            getTasksData={props.getTasksData}
+            getData={props.getData}
         />
     )
 };
