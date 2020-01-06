@@ -92,15 +92,13 @@ class FormSingIn extends Component {
         document.cookie = "FakePhpSession=iigubyguybguywg; path=/; max-age=300";
         if (getCookie("userInfo")) {
             this.props.getData();
-            const page = 4;
-            this.props.changeActivePage(page);
+            this.props.changeActivePage("screen-tasks");
         }
     };
 
     _handleClick = (evt) => {
         evt.preventDefault();
-        const page = 2;
-        this.props.changeActivePage(page);
+        this.props.changeActivePage("screen-sing-up");
     }
 }
 export default FormSingIn

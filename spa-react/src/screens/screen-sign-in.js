@@ -1,7 +1,7 @@
 import React from "react";
 import FormSingIn from "../components/forms/form-sing-in";
 
-const pageSingIn = (props) => {
+const ScreenSingIn = (props) => {
     return (
         <FormSingIn
             changeActivePage={props.changeActivePage}
@@ -9,4 +9,4 @@ const pageSingIn = (props) => {
         />
     )
 };
-export default pageSingIn
+export default ScreenSingIn

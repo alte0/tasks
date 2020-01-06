@@ -1,9 +1,9 @@
 import React from "react";
 import FormAddTask from "../components/forms/form-add-task";
 
-const pageAddTask = (props) => {
+const ScreenAddTask = (props) => {
     return (
         <FormAddTask changeActivePage={props.changeActivePage}/>
     )
 };
-export default pageAddTask
+export default ScreenAddTask

@@ -7,7 +7,7 @@ const option = {
     isShowDesc: true
 };
 
-const PageTask = (props) => {
+const ScreenTask = (props) => {
     return (
         <React.Fragment>
             <UserMenu
@@ -25,4 +25,4 @@ const PageTask = (props) => {
     )
 };
 
-export default PageTask
+export default ScreenTask

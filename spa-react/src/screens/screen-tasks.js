@@ -6,7 +6,7 @@ import Pagination from "../components/pagination/pagination";
 
 const title = "Мои задачи.";
 
-const pageTasks = (props) => {
+const ScreenTasks = (props) => {
     return (
         <React.Fragment>
             <UserMenu
@@ -35,4 +35,4 @@ const pageTasks = (props) => {
     )
 };
 
-export default pageTasks
+export default ScreenTasks

@@ -181,8 +181,7 @@ class FormSingUp extends Component {
             "",
             ConfTimes.REDIRECTION_SIGN_IN_TIME);
         setTimeout(()=> {
-            const page = 1;
-            this.props.changeActivePage(page);
+            this.props.changeActivePage("screen-sing-in");
         }, ConfTimes.REDIRECTION_SIGN_IN_TIME);
     };
 
@@ -194,8 +193,7 @@ class FormSingUp extends Component {
 
     _handleClick = (evt) => {
         evt.preventDefault();
-        const page = 1;
-        this.props.changeActivePage(page);
+        this.props.changeActivePage("screen-sing-in");
     };
 }
 export default FormSingUp

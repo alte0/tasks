@@ -149,8 +149,7 @@ class FormAddTask extends Component {
 
     _handleClick = (evt) => {
         evt.preventDefault();
-        const page = 4;
-        this.props.changeActivePage(page);
+        this.props.changeActivePage("screen-tasks");
     };
 }
 

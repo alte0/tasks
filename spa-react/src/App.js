@@ -2,11 +2,11 @@ import React, {PureComponent} from 'react';
 // import logo from './logo.svg';
 // import './App.css';
 import Container from "./components/container/container";
-import PageSingIn from "./pages/sign-in";
-import FormSingUp from "./pages/sign-up";
-import FormAddTask from "./pages/add-task";
-import Task from "./pages/task";
-import Tasks from "./pages/tasks";
+import ScreenSingIn from "./screens/screen-sign-in";
+import ScreenSingUp from "./screens/screen-sign-up";
+import ScreenAddTask from "./screens/screen-add-task";
+import ScreenTask from "./screens/screen-task";
+import ScreenTasks from "./screens/screen-tasks";
 import Footer from './components/footer/footer';
 import {getCookie, getTask} from  "./helpers/helpers";
 import {getTasks} from "./data/data";
@@ -20,7 +20,7 @@ class App extends PureComponent {
         super(props);
 
         this.initialState = {
-            activePage: this._getUserSingIn() ? 4 : 1,
+            activeScreen: this._getUserSingIn() ? "screen-tasks" : "screen-sing-in",
             itemsTasks: 3,
             pagesCount: 0,
             pageCurrent: 1,
@@ -36,7 +36,7 @@ class App extends PureComponent {
 
         this.state = this.initialState;
 
-        this._changeActivePage = this._changeActivePage.bind(this);
+        this._changeActiveScreen = this._changeActiveScreen.bind(this);
         this._getDataForApp = this._getDataForApp.bind(this);
         this._handleClickMore = this._handleClickMore.bind(this);
         this._handleAddTaskClick = this._handleAddTaskClick.bind(this);
@@ -53,7 +53,7 @@ class App extends PureComponent {
             <React.Fragment>
                 <main className="bg">
                     <Container>
-                        {this._getPage(this.state.activePage)}
+                        {this._getPage(this.state.activeScreen)}
                     </Container>
                 </main>
                 <Footer />
@@ -100,9 +100,9 @@ class App extends PureComponent {
         return getCookie("userInfo") && getCookie("FakePhpSession");
     }
 
-    _changeActivePage(page) {
+    _changeActiveScreen(screen) {
         this.setState({
-            activePage: page
+            activeScreen: screen
         })
     }
 
@@ -112,14 +112,13 @@ class App extends PureComponent {
 
         this.setState((state) => ({
                 task: getTask(state.tasks, id),
-                activePage: 5
+                activeScreen: "screen-task"
             }))
     }
 
     _handleAddTaskClick(evt) {
         evt.preventDefault();
-        const page = 3;
-        this._changeActivePage(page);
+        this._changeActiveScreen("screen-add-task");
     }
 
     _handleClickExit(evt) {
@@ -128,25 +127,24 @@ class App extends PureComponent {
         if (isQuestion) {
             document.cookie = "userInfo=; path=/; max-age=-1";
             document.cookie = "FakePhpSession=; path=/; max-age=-1";
-            const page = 1;
-            this._changeActivePage(page);
+            this._changeActiveScreen("screen-sing-in");
         }
     }
 
     _getPage(page) {
         switch (page) {
-            case 1:
-                return <PageSingIn
-                    changeActivePage={this._changeActivePage}
+            case "screen-sing-in":
+                return <ScreenSingIn
+                    changeActivePage={this._changeActiveScreen}
                     getData={this._getDataForApp}
                 />;
-            case 2:
-                return <FormSingUp changeActivePage={this._changeActivePage}/>;
-            case 3:
-                return <FormAddTask changeActivePage={this._changeActivePage}/>;
-            case 4:
-                return <Tasks
-                    changeActivePage={this._changeActivePage}
+            case "screen-sing-up":
+                return <ScreenSingUp changeActivePage={this._changeActiveScreen}/>;
+            case "screen-add-task":
+                return <ScreenAddTask changeActivePage={this._changeActiveScreen}/>;
+            case "screen-tasks":
+                return <ScreenTasks
+                    changeActivePage={this._changeActiveScreen}
                     tasks={this.state.tasks}
                     showTasks={this.state.showTasks}
                     itemsTasks={this.state.itemsTasks}
@@ -158,9 +156,9 @@ class App extends PureComponent {
                     handleClickExit={this._handleClickExit}
                     handleClickChangePagePagination={this._handleClickChangePagePagination}
                     />;
-            case 5:
-                return <Task
-                    changeActivePage={this._changeActivePage}
+            case "screen-task":
+                return <ScreenTask
+                    changeActivePage={this._changeActiveScreen}
                     handleAddTaskClick={this._handleAddTaskClick}
                     handleClickExit={this._handleClickExit}
                     user={this.state.user}
