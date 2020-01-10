@@ -23,14 +23,13 @@ class App extends PureComponent {
             activeScreen: this._getUserSingIn() ? "screen-tasks" : "screen-sing-in",
             itemsTasks: 3,
             pagesCount: 0,
-            pageCurrent: 1,
+            pageCurrentPagination: 1,
             user: {
                 name: '',
                 surname: '',
                 patronymic: ''
             },
             tasks: [],
-            showTasks: [],
             task: {}
         };
 
@@ -49,11 +48,13 @@ class App extends PureComponent {
     }
 
     render() {
+        const screen = this._getPage(this.state);
+
         return (
             <React.Fragment>
                 <main className="bg">
                     <Container>
-                        {this._getPage(this.state.activeScreen)}
+                        { screen }
                     </Container>
                 </main>
                 <Footer />
@@ -65,35 +66,26 @@ class App extends PureComponent {
         if (getCookie("userInfo")){
             const userInfo = getCookie("userInfo").split(",");
             const tasks = getTasks();
+            const lengthTasks = tasks.length;
+            const {itemsTasks } = this.state;
 
-            const length = tasks.length;
-            let showTasks;
-
-            if (length) {
-                showTasks = tasks.slice((this.state.pageCurrent - 1) * this.state.itemsTasks, this.state.pageCurrent * this.state.itemsTasks)
-            }
-
-            this.setState((state) => ({
+            this.setState({
                 user: {
                     name: userInfo[0],
                     surname: userInfo[1],
                     patronymic: userInfo[2]
                 },
                 tasks: tasks,
-                showTasks: showTasks,
-                pagesCount: Math.ceil((length / state.itemsTasks))
-            }))
+                pagesCount: Math.ceil((lengthTasks / itemsTasks))
+            })
         }
     }
 
     _handleClickChangePagePagination(evt) {
         evt.preventDefault();
-        const pageIdPag = +evt.target.dataset.pageIdPag;
-
-        this.setState((state) => ({
-            showTasks: state.tasks.slice((pageIdPag - 1) * state.itemsTasks, pageIdPag * state.itemsTasks),
-            pageCurrent: pageIdPag
-        }));
+        this.setState({
+            pageCurrentPagination: +evt.target.dataset.pageIdPag
+        });
     }
 
     _getUserSingIn() {
@@ -131,8 +123,18 @@ class App extends PureComponent {
         }
     }
 
-    _getPage(page) {
-        switch (page) {
+    _getPage(state) {
+        const {
+            activeScreen,
+            tasks,
+            task,
+            itemsTasks,
+            pagesCount,
+            pageCurrentPagination,
+            user,
+        } = state;
+
+        switch (activeScreen) {
             case "screen-sing-in":
                 return <ScreenSingIn
                     changeActivePage={this._changeActiveScreen}
@@ -145,12 +147,11 @@ class App extends PureComponent {
             case "screen-tasks":
                 return <ScreenTasks
                     changeActivePage={this._changeActiveScreen}
-                    tasks={this.state.tasks}
-                    showTasks={this.state.showTasks}
-                    itemsTasks={this.state.itemsTasks}
-                    pages={this.state.pagesCount}
-                    pageCurrent={this.state.pageCurrent}
-                    user={this.state.user}
+                    tasks={tasks}
+                    itemsTasks={itemsTasks}
+                    pagesCount={pagesCount}
+                    pageCurrentPagination={pageCurrentPagination}
+                    user={user}
                     handleClickMore={this._handleClickMore}
                     handleAddTaskClick={this._handleAddTaskClick}
                     handleClickExit={this._handleClickExit}
@@ -161,14 +162,13 @@ class App extends PureComponent {
                     changeActivePage={this._changeActiveScreen}
                     handleAddTaskClick={this._handleAddTaskClick}
                     handleClickExit={this._handleClickExit}
-                    user={this.state.user}
-                    task={this.state.task}
+                    user={user}
+                    task={task}
                 />;
             default:
                 return null;
         }
     };
-
 }
 
 export default App;

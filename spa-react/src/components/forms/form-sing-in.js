@@ -70,18 +70,18 @@ class FormSingIn extends Component {
 
     _handleLoginChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             login: value,
-            validForm: this._validateForm(Object.assign(this.state, {login: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {login: value}))
+        }));
     };
 
     _handlePasswordChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             password: value,
-            validForm: this._validateForm(Object.assign(this.state, {password: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {password: value}))
+        }));
     };
 
     _handleSubmitForm = (evt) => {

@@ -88,7 +88,7 @@ class FormAddTask extends Component {
                     <a
                         className="form__link"
                         onClick={this._handleClick}
-                        href="/tasks.html">К списку задач</a>
+                        href="/tasks">К списку задач</a>
                 </div>
             </form>
         )
@@ -105,39 +105,39 @@ class FormAddTask extends Component {
 
     _handleDatesChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             selectedDates: value,
-            validForm: this._validateForm(Object.assign(this.state, {selectedDates: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {selectedDates: value}))
+        }));
     };
 
     _handleDateNoLimitChange = () => {
-        this.setState({
-            isCheckedDateNoLimit: !this.state.isCheckedDateNoLimit
-        });
+        this.setState((state) => ({
+            isCheckedDateNoLimit: !state.isCheckedDateNoLimit
+        }));
     };
 
     _handleTitleTaskChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             titleTask: value,
-            validForm: this._validateForm(Object.assign(this.state, {titleTask: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {titleTask: value}))
+        }));
     };
 
     _handleDescTaskChange = (data) => {
-        this.setState({
+        this.setState((state) => ({
             descTask: data,
-            validForm: this._validateForm(Object.assign(this.state, {descTask: data}))
-        });
+            validForm: this._validateForm(Object.assign(state, {descTask: data}))
+        }));
     };
 
     _handleSelectChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             valueSelect: value,
-            validForm: this._validateForm(Object.assign(this.state, {valueSelect: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {valueSelect: value}))
+        }));
     };
 
     handleSubmitForm = (evt) => {

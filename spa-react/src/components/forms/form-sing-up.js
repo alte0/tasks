@@ -125,50 +125,50 @@ class FormSingUp extends Component {
 
     _handleLoginChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             login: value,
-            validForm: this._validateForm(Object.assign(this.state, {login: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {login: value}))
+        }));
     };
 
     _handlePasswordChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             password: value,
-            validForm: this._validateForm(Object.assign(this.state, {password: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {password: value}))
+        }));
     };
 
     _handlePassword2Change = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             password2: value,
-            validForm: this._validateForm(Object.assign(this.state, {password2: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {password2: value}))
+        }));
     };
 
     _handleNameChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             name: value,
-            validForm: this._validateForm(Object.assign(this.state, {name: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {name: value}))
+        }));
     };
 
     _handleSurnameChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             surname: value,
-            validForm: this._validateForm(Object.assign(this.state, {surname: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {surname: value}))
+        }));
     };
 
     handlePatronymicChange = (evt) => {
         const value = evt.target.value;
-        this.setState({
+        this.setState((state) => ({
             patronymic: value,
-            validForm: this._validateForm(Object.assign(this.state, {patronymic: value}))
-        });
+            validForm: this._validateForm(Object.assign(state, {patronymic: value}))
+        }));
     };
 
     _handleSubmitForm = (evt) => {
@@ -186,7 +186,8 @@ class FormSingUp extends Component {
     };
 
     _onBlurInput = () => {
-        if (this.state.password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && this.state.password !== this.state.password2) {
+        const {password, password2} = this.state;
+        if (password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && password !== password2) {
             showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль!"`);
         }
     };

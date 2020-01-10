@@ -7,25 +7,34 @@ import Pagination from "../components/pagination/pagination";
 const title = "Мои задачи.";
 
 const ScreenTasks = (props) => {
+    const {
+        tasks,
+        pageCurrentPagination,
+        pagesCount,
+        itemsTasks,
+        user
+        } = props;
+    const visibleTasks = tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks);
+
     return (
         <React.Fragment>
             <UserMenu
                 changeActivePage={props.changeActivePage}
                 handleAddTaskClick={props.handleAddTaskClick}
                 handleClickExit={props.handleClickExit}
-                user={props.user}
+                user={user}
             />
             <SearchByTasks/>
             <Tasks
-                tasks={props.showTasks}
+                tasks={visibleTasks}
                 title={title}
                 handleClickMore={props.handleClickMore}
             />
             {
-                props.tasks.length > props.itemsTasks ?
+                tasks.length > itemsTasks ?
                     <Pagination
-                        pages={props.pages}
-                        pageCurrent={props.pageCurrent}
+                        pagesCount={pagesCount}
+                        pageCurrentPagination={pageCurrentPagination}
                         handleClickChangePagePagination={props.handleClickChangePagePagination}
                     />
                     :
