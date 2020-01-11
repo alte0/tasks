@@ -7,6 +7,7 @@ import ScreenSingUp from "./screens/screen-sign-up";
 import ScreenAddTask from "./screens/screen-add-task";
 import ScreenTask from "./screens/screen-task";
 import ScreenTasks from "./screens/screen-tasks";
+import ScreenDesignatedTasks from "./screens/designated-tasks";
 import Footer from './components/footer/footer';
 import {getCookie, getTask} from  "./helpers/helpers";
 import {getTasks} from "./data/data";
@@ -38,7 +39,7 @@ class App extends PureComponent {
         this._changeActiveScreen = this._changeActiveScreen.bind(this);
         this._getDataForApp = this._getDataForApp.bind(this);
         this._handleClickMore = this._handleClickMore.bind(this);
-        this._handleAddTaskClick = this._handleAddTaskClick.bind(this);
+        this._handleClickUserOtherLinks = this._handleClickUserOtherLinks.bind(this);
         this._handleClickExit = this._handleClickExit.bind(this);
         this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
     }
@@ -48,7 +49,7 @@ class App extends PureComponent {
     }
 
     render() {
-        const screen = this._getPage(this.state);
+        const screen = this._getScreen(this.state);
 
         return (
             <React.Fragment>
@@ -108,9 +109,9 @@ class App extends PureComponent {
             }))
     }
 
-    _handleAddTaskClick(evt) {
+    _handleClickUserOtherLinks(evt) {
         evt.preventDefault();
-        this._changeActiveScreen("screen-add-task");
+        this._changeActiveScreen(evt.target.dataset.screen);
     }
 
     _handleClickExit(evt) {
@@ -123,7 +124,7 @@ class App extends PureComponent {
         }
     }
 
-    _getPage(state) {
+    _getScreen(state) {
         const {
             activeScreen,
             tasks,
@@ -141,9 +142,13 @@ class App extends PureComponent {
                     getData={this._getDataForApp}
                 />;
             case "screen-sing-up":
-                return <ScreenSingUp changeActivePage={this._changeActiveScreen}/>;
+                return <ScreenSingUp
+                    changeActivePage={this._changeActiveScreen}
+                />;
             case "screen-add-task":
-                return <ScreenAddTask changeActivePage={this._changeActiveScreen}/>;
+                return <ScreenAddTask
+                    changeActivePage={this._changeActiveScreen}
+                />;
             case "screen-tasks":
                 return <ScreenTasks
                     changeActivePage={this._changeActiveScreen}
@@ -153,14 +158,27 @@ class App extends PureComponent {
                     pageCurrentPagination={pageCurrentPagination}
                     user={user}
                     handleClickMore={this._handleClickMore}
-                    handleAddTaskClick={this._handleAddTaskClick}
+                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
+                    handleClickExit={this._handleClickExit}
+                    handleClickChangePagePagination={this._handleClickChangePagePagination}
+                    />;
+            case "designated-tasks":
+                return <ScreenDesignatedTasks
+                    changeActivePage={this._changeActiveScreen}
+                    tasks={tasks}
+                    itemsTasks={itemsTasks}
+                    pagesCount={pagesCount}
+                    pageCurrentPagination={pageCurrentPagination}
+                    user={user}
+                    handleClickMore={this._handleClickMore}
+                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
                     handleClickChangePagePagination={this._handleClickChangePagePagination}
                     />;
             case "screen-task":
                 return <ScreenTask
                     changeActivePage={this._changeActiveScreen}
-                    handleAddTaskClick={this._handleAddTaskClick}
+                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
                     user={user}
                     task={task}

@@ -8,13 +8,19 @@ const option = {
 };
 
 const ScreenTask = (props) => {
+    const links = [
+        {textLink: "Мои задачи", href: "/", dataScreen: "screen-tasks"},
+        {textLink: "Поставить задачу", href: "/add-task", dataScreen: "screen-add-task"},
+    ];
+
     return (
         <React.Fragment>
             <UserMenu
                 changeActivePage={props.changeActivePage}
-                handleAddTaskClick={props.handleAddTaskClick}
+                handleClickUserOtherLinks={props.handleClickUserOtherLinks}
                 handleClickExit={props.handleClickExit}
                 user={props.user}
+                links={links}
             />
             <Task
                 isMore={option.isMore}
