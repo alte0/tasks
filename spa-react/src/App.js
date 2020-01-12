@@ -10,7 +10,7 @@ import ScreenTasks from "./screens/screen-tasks";
 import ScreenDesignatedTasks from "./screens/designated-tasks";
 import Footer from './components/footer/footer';
 import {getCookie, getTask} from  "./helpers/helpers";
-import {getTasks} from "./data/data";
+import {getMyTasks, getDesignatedTasksTasks} from "./data/data";
 
 import 'normalize.css';
 
@@ -66,18 +66,21 @@ class App extends PureComponent {
     _getDataForApp(){
         if (getCookie("userInfo")){
             const userInfo = getCookie("userInfo").split(",");
-            const tasks = getTasks();
+            const tasks = getMyTasks();
             const lengthTasks = tasks.length;
-            const {itemsTasks } = this.state;
 
-            this.setState({
-                user: {
-                    name: userInfo[0],
-                    surname: userInfo[1],
-                    patronymic: userInfo[2]
-                },
-                tasks: tasks,
-                pagesCount: Math.ceil((lengthTasks / itemsTasks))
+            this.setState((state) => {
+                const {itemsTasks} = state;
+
+                return {
+                    user: {
+                        name: userInfo[0],
+                        surname: userInfo[1],
+                        patronymic: userInfo[2]
+                    },
+                    tasks: tasks,
+                    pagesCount: Math.ceil((lengthTasks / itemsTasks))
+                }
             })
         }
     }
@@ -111,6 +114,19 @@ class App extends PureComponent {
 
     _handleClickUserOtherLinks(evt) {
         evt.preventDefault();
+        const dataScreen = evt.target.dataset.screen;
+        const tasks = dataScreen === "designated-tasks" ? getDesignatedTasksTasks() : getMyTasks();
+        const lengthTasks = tasks.length;
+
+        this.setState((state) => {
+            const {itemsTasks} = state;
+
+            return {
+                tasks: tasks,
+                pagesCount: Math.ceil((lengthTasks / itemsTasks)),
+                pageCurrentPagination: 1
+            }
+        });
         this._changeActiveScreen(evt.target.dataset.screen);
     }
 

@@ -1,3 +1,4 @@
-import {tasks} from "../mocks/mocks";
+import {myTasks, designatedTasks} from "../mocks/mocks";
 
-export const getTasks = () => tasks;
+export const getMyTasks = () => myTasks;
+export const getDesignatedTasksTasks = () => designatedTasks;
