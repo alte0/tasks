@@ -100,7 +100,7 @@ export const designatedTasks = [
         status: "В работе",
         author: "Попов Павел Петрович",
         executor: "Попов Павел Петрович",
-        id: 4
+        id: 5
     },
     {
         title: "Задача 66",
@@ -110,7 +110,7 @@ export const designatedTasks = [
         status: "В работе",
         author: "Попов Павел Петрович",
         executor: "Попов Павел Петрович",
-        id: 4
+        id: 6
     },
     {
         title: "Задача 77",
@@ -120,6 +120,6 @@ export const designatedTasks = [
         status: "В работе",
         author: "Попов Павел Петрович",
         executor: "Попов Павел Петрович",
-        id: 4
+        id: 7
     },
 ];

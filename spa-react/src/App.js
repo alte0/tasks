@@ -115,7 +115,7 @@ class App extends PureComponent {
     _handleClickUserOtherLinks(evt) {
         evt.preventDefault();
         const dataScreen = evt.target.dataset.screen;
-        const tasks = dataScreen === "designated-tasks" ? getDesignatedTasksTasks() : getMyTasks();
+        const tasks = dataScreen === "screen-designated-tasks" ? getDesignatedTasksTasks() : getMyTasks();
         const lengthTasks = tasks.length;
 
         this.setState((state) => {
@@ -178,7 +178,7 @@ class App extends PureComponent {
                     handleClickExit={this._handleClickExit}
                     handleClickChangePagePagination={this._handleClickChangePagePagination}
                     />;
-            case "designated-tasks":
+            case "screen-designated-tasks":
                 return <ScreenDesignatedTasks
                     changeActivePage={this._changeActiveScreen}
                     tasks={tasks}
