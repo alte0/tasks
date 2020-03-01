@@ -1,0 +1,13 @@
+.textarea {
+  border: $baseValue / 8 solid $borderColor;
+  border-radius: $baseValue / 4;
+
+  resize: none;
+  padding: $baseValue;
+  line-height: $baseLineHeight;
+  min-height: $baseLineHeight * $baseFontSize * 3;
+
+  &:focus {
+    border-color: #47a4f5
+  }
+}

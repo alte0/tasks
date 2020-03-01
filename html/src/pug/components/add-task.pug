@@ -1,25 +1,26 @@
+h2.visually-hidden Форма добавления задачи
 +b.FORM.form._task-add(action="", method="post")
   +e.row._label-group-two
-    +e.LABEL(for="date") Дата начала и окончания задачи 
+    +e.LABEL(for="date") Дата начала и окончания задачи
     .flatpickr
-      +e.INPUT.date(id="date", type="text", name="date", value="19.07.2019" placeholder="выберите дату или даты", data-input required)
+      +e.INPUT.date.input(id="date", type="text", name="date", value="19.07.2019" placeholder="выберите дату или даты", data-input required)
       button(type="button" title="Открыт/Закрыть календарь" data-toggle="") календарь
       button(type="button" title="Очистить календарь" data-clear="") очистить
 
   +e.row
-    +e.INPUT(type="checkbox", name="date-no-limit", id="date-no-limit")
+    +e.INPUT.checkbox(type="checkbox", name="date-no-limit", id="date-no-limit")
     label(for="date-no-limit") Без даты окончания (дата окончания выбранная выше, будет игнорирована)
   +e.row._content-column
     +e.SPAN Выберите исполнителя
-    +e.SELECT.list-users(name="executor" required)
+    +e.SELECT.select(name="executor" required)
       option(value="disabled" selected disabled) Не выбрано
       option(value="1") User
   +e.row._content-column
-    +e.LABEL Загаловок задачи 
-    +e.TEXTAREA.title-add(type="date", name="title" maxlength="255" placeholder="сделать ..." required)
+    +e.LABEL Загаловок задачи
+    +e.TEXTAREA.title-add.textarea(type="date", name="title" maxlength="255" placeholder="сделать ..." required)
   +e.row._content-column
     +e.LABEL Дополнительная информация по задаче
     +e.TEXTAREA#textarea-text(name="text" maxlength="1000" placeholder="Обьяснение задачи ..." required)
-  +e.row
-    +e.BUTTON.submit(type="submit") Добавить задачу
+  +e.row._text-center
+    +e.BUTTON.submit.submit(type="submit") Добавить задачу
     +e.A.link(href="/tasks.html") К списку задач

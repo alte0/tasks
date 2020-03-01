@@ -1,13 +1,12 @@
-+b.FORM.form._auth(action="", method="post")
++b.FORM.form._center._auth(action="", method="post")
   +e.H3.title Авторизация
   +e.row._content-column
     label(for="login") Ваш логин:
-    +e.INPUT.input#login(type="text", name="login", minlength="2", maxlength="20",  required)
+    +e.INPUT.input#login.input(type="text", name="login", minlength="2", maxlength="20", required)
   +e.row._content-column
     label(for="password") Пароль:
-    +e.INPUT.input#password(type="password", name="password", minlength="6", maxlength="20", required)
+    +e.INPUT.input#password.input(type="password", name="password", minlength="6", maxlength="20", required)
   +e.row._content-column
-    +e.BUTTON.button(type="submit") Войти
-  +e.row
-    +e.A.link-signup(href="/signup.html") Зарегистрироваться
-    
+    +e.BUTTON.button.submit(type="submit") Войти
+  +e.row._text-center
+    +e.A.link-signup.link(href="/signup.html") Зарегистрироваться

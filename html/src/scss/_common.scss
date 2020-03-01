@@ -4,7 +4,6 @@ html {
 
 html,
 body {
-  // height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -16,84 +15,4 @@ body {
   overflow-x: hidden;
   position: relative;
   flex-grow: 1;
-}
-
-main {
-  padding-top: $baseValue * 2;
-  padding-bottom: $baseValue * 2;
-}
-
-textarea {
-  resize: none;
-  padding: $baseValue;
-  line-height: $baseLineHeight;
-  min-height: $baseLineHeight * $baseFontSize * 3;
-}
-
-textarea,
-select,
-input {
-  border: $baseValue / 8 solid $borderColor;
-  border-radius: $baseValue / 4;
-  &:focus {
-    border-color: #47a4f5
-  }
-}
-
-input:not([type="search"]) {
-  &:valid {
-    border: 2px solid green;
-  }
-  &:invalid {
-    border: 2px solid red;
-  }
-}
-
-.container {
-  max-width: 1120px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: $baseValue * 2; //16
-  padding-right: $baseValue * 2;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.footer {
-  margin-top: auto;
-  text-align: center;
-  background-color: $bgBllack;
-  color: white;
-}
-
-[type="submit"] {
-  background-color: green;
-  color: white;
-  border: $baseValue / 4 solid green;
-  border-radius: $baseValue / 4;
-  padding-top: $baseValue;
-  padding-bottom: $baseValue;
-}
-
-a {
-  cursor: pointer;
-  text-decoration: underline;
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.visually-hidden {
-  position: absolute !important;
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
-  padding:0 !important;
-  border:0 !important;
-  height: 1px !important; 
-  width: 1px !important; 
-  overflow: hidden;
-}
-
-[type="checkbox"] {
-  margin-right: $baseValue;
 }
