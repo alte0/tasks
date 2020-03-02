@@ -5,7 +5,8 @@ import "./tasks.scss";
 
 const option = {
     isMore: true,
-    isShowDesc: false
+    isShowDesc: false,
+    isTasks: true
 };
 
 export const Tasks = (props) => {
@@ -24,11 +25,12 @@ export const Tasks = (props) => {
                             tasks.map((task)=> {
                                 return (
                                     <li
-                                        className="tasks__item"
+                                        className={`tasks__item ${option.isTasks ? 'task' : ''}`}
                                         key={task.id}>
                                         <Task
                                             isMore={option.isMore}
                                             isShowDesc={option.isShowDesc}
+                                            isTasks={option.isTasks}
                                             task={task}
                                             handleClickMore={props.handleClickMore}
                                         />

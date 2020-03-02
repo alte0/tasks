@@ -23,7 +23,7 @@ class FormSingUp extends Component {
         return (
             <form
                 onSubmit={this._handleSubmitForm}
-                className="form form_reg"
+                className="form form_center form_reg"
                 method="post">
                 <h3 className="form__title">Регистрация нового пользователя
                 </h3>
@@ -32,7 +32,7 @@ class FormSingUp extends Component {
                     <input
                         value={this.state.login}
                         onChange={this._handleLoginChange}
-                        className="form__input"
+                        className="form__input input"
                         id="login" type="text" name="login"
                         minLength={ConfMinAndMax.MIN_LENGTH_LOGIN}
                         maxLength={ConfMinAndMax.MAX_LENGTH_LOGIN}
@@ -43,7 +43,7 @@ class FormSingUp extends Component {
                     <input
                         value={this.state.password}
                         onChange={this._handlePasswordChange}
-                        className="form__input"
+                        className="form__input input"
                         id="password" type="password" name="password"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
                         maxLength={ConfMinAndMax.MAX_LENGTH_PASSWORD}
@@ -55,7 +55,7 @@ class FormSingUp extends Component {
                         value={this.state.password2}
                         onChange={this._handlePassword2Change}
                         onBlur={this._onBlurInput}
-                        className="form__input"
+                        className="form__input input"
                         id="password2" type="password" name="password2"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
                         maxLength={ConfMinAndMax.MAX_LENGTH_PASSWORD}
@@ -66,7 +66,7 @@ class FormSingUp extends Component {
                     <input
                         value={this.state.name}
                         onChange={this._handleNameChange}
-                        className="form__input"
+                        className="form__input input"
                         id="name" type="text" name="name"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
                         maxLength={ConfMinAndMax.MAX_LENGTH_TEXT}
@@ -77,7 +77,7 @@ class FormSingUp extends Component {
                     <input
                         value={this.state.surname}
                         onChange={this._handleSurnameChange}
-                        className="form__input"
+                        className="form__input input"
                         id="surname" type="text" name="surname"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
                         maxLength={ConfMinAndMax.MAX_LENGTH_TEXT}
@@ -88,7 +88,7 @@ class FormSingUp extends Component {
                     <input
                         value={this.state.patronymic}
                         onChange={this.handlePatronymicChange}
-                        className="form__input"
+                        className="form__input input"
                         id="patronymic" type="text" name="patronymic"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
                         maxLength={ConfMinAndMax.MAX_LENGTH_TEXT}
@@ -97,12 +97,12 @@ class FormSingUp extends Component {
                 <div className="form__row form__row_content-column">
                     <button
                         disabled={!this.state.validForm}
-                        className="form__button"
+                        className="form__button submit"
                         type="submit">Зарегистрироваться</button>
                 </div>
-                <div className="form__row">
+                <div className="form__row form__row_text-center">
                     <a
-                        className="form__link-signup"
+                        className="form__link-signup link"
                         onClick={this._handleClick}
                         href="/signin">Авторизоваться</a>
                 </div>

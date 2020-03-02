@@ -1,11 +1,13 @@
 @import "../../Vars";
-@import "./button";
+@import "./submit";
 
 .form {
-  max-width: $baseValue * 40; // 320
-  margin-left: auto;
-  margin-right: auto;
-  
+  &_center {
+    max-width: $baseValue * 40; // 320
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   &_task-add {
     max-width: none;
     & label {
@@ -22,11 +24,13 @@
       margin: 0;
     }
   }
-  
+
   &__title {
     margin-bottom: $baseValue * 5; // 40
     text-align: center;
+    margin-top: 0;
   }
+
   &__row {
     margin-bottom: $baseValue * 3; // 24
     &_content-column,
@@ -37,10 +41,11 @@
     &_search{
       display: flex;
     }
-    &:last-child {
+    &_text-center {
       text-align: center;
     }
   }
+
   &__input {
     padding-top: $baseValue;
     padding-bottom: $baseValue;
@@ -49,6 +54,19 @@
       margin-right: $baseValue;
     }
   }
+
+  &__checkbox {
+    margin-right: $baseValue;
+  }
+
+  &__select {
+    border: $baseValue / 8 solid $borderColor;
+    border-radius: $baseValue / 4;
+    &:focus {
+      border-color: #47a4f5
+    }
+  }
+
   &__link {
     padding-left: $baseValue;
     padding-right: $baseValue;

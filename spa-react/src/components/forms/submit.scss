@@ -1,0 +1,19 @@
+.submit {
+  background-color: green;
+  border: $baseValue / 4 solid green;
+  border-radius: $baseValue / 4;
+  color: white;
+  cursor: pointer;
+  padding-top: $baseValue;
+  padding-bottom: $baseValue;
+  &:hover,
+  &:focus {
+    background-color: rgba(0, 128, 0, 0.8);
+    border-color: rgba(0, 128, 0, 0.8);
+  }
+  &:disabled {
+    background-color: rgba(0, 128, 0, 0.5);
+    border-color: rgba(0, 128, 0, 0.5);
+    cursor: no-drop;
+  }
+}

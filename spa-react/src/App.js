@@ -1,6 +1,4 @@
 import React, {PureComponent} from 'react';
-// import logo from './logo.svg';
-// import './App.css';
 import Container from "./components/container/container";
 import ScreenSingIn from "./screens/screen-sign-in";
 import ScreenSingUp from "./screens/screen-sign-up";
@@ -53,7 +51,7 @@ class App extends PureComponent {
 
         return (
             <React.Fragment>
-                <main className="bg">
+                <main className="bg main">
                     <Container>
                         { screen }
                     </Container>

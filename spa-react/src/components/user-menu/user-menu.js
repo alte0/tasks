@@ -15,7 +15,7 @@ const UserMenu = (props) => {
             {
                 props.links.map((item, index) => {
                     return (
-                        <a className="user-menu__link"
+                        <a className="user-menu__link link"
                            key={item.dataScreen + index}
                            href={item.href}
                             data-screen={item.dataScreen}
@@ -29,7 +29,7 @@ const UserMenu = (props) => {
             {/*    onClick={props.handleAddTaskClick}*/}
             {/*    href="/add-task">Поставить задачу</a>*/}
             <a
-                className="user-menu__link user-menu__logout"
+                className="user-menu__link user-menu__logout link"
                 onClick={props.handleClickExit}
                 href="/logout">Выйти</a>
         </nav>

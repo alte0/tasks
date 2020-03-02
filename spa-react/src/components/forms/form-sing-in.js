@@ -19,7 +19,7 @@ class FormSingIn extends Component {
         return (
             <form
                 onSubmit={this._handleSubmitForm}
-                className="form form_auth"
+                className="form form_center form_auth"
                 method="post">
                 <h3 className="form__title">Авторизация</h3>
                 <div className="form__row form__row_content-column">
@@ -27,7 +27,7 @@ class FormSingIn extends Component {
                     <input
                         value={this.state.login}
                         onChange={this._handleLoginChange}
-                        className="form__input"
+                        className="form__input input"
                         id="login" type="text" name="login"
                         minLength={ConfMinAndMax.MIN_LENGTH_LOGIN}
                         maxLength={ConfMinAndMax.MAX_LENGTH_LOGIN}
@@ -38,7 +38,7 @@ class FormSingIn extends Component {
                     <input
                         value={this.state.password}
                         onChange={this._handlePasswordChange}
-                        className="form__input"
+                        className="form__input input"
                         id="password" type="password" name="password"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
                         maxLength={ConfMinAndMax.MAX_LENGTH_PASSWORD}
@@ -46,13 +46,13 @@ class FormSingIn extends Component {
                 </div>
                 <div className="form__row form__row_content-column">
                     <button
-                        className="form__button"
+                        className="form__button submit"
                         disabled={!this.state.validForm}
                         type="submit">Войти</button>
                 </div>
-                <div className="form__row">
+                <div className="form__row form__row_text-center">
                     <a
-                        className="form__link-signup"
+                        className="form__link-signup link"
                         onClick={this._handleClick}
                         href="/signup.html">Зарегистрироваться</a>
                 </div>

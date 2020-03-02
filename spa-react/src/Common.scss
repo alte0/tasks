@@ -27,35 +27,9 @@ body,
   flex-grow: 1;
 }
 
-main {
+.main {
   padding-top: $baseValue * 2;
   padding-bottom: $baseValue * 2;
-}
-
-textarea {
-  resize: none;
-  padding: $baseValue;
-  line-height: $baseLineHeight;
-  min-height: $baseLineHeight * $baseFontSize * 3;
-}
-
-textarea,
-select,
-input {
-  border: $baseValue / 8 solid $borderColor;
-  border-radius: $baseValue / 4;
-  &:focus {
-    border-color: #47a4f5
-  }
-}
-
-input:not([type="search"]) {
-  &:valid {
-    border: 2px solid green;
-  }
-  &:invalid {
-    border: 2px solid red;
-  }
 }
 
 .container {
@@ -68,23 +42,6 @@ input:not([type="search"]) {
   box-sizing: border-box;
 }
 
-[type="submit"] {
-  background-color: green;
-  color: white;
-  border: $baseValue / 4 solid green;
-  border-radius: $baseValue / 4;
-  padding-top: $baseValue;
-  padding-bottom: $baseValue;
-}
-
-a {
-  cursor: pointer;
-  text-decoration: underline;
-  &:hover {
-    text-decoration: none;
-  }
-}
-
 .visually-hidden {
   position: absolute !important;
   clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
@@ -94,10 +51,6 @@ a {
   height: 1px !important;
   width: 1px !important;
   overflow: hidden;
-}
-
-[type="checkbox"] {
-  margin-right: $baseValue;
 }
 
 .bg {
@@ -113,4 +66,51 @@ a {
     background: linear-gradient(to bottom right, white, white 27%, #47b784);
     z-index: -1;
   }
+}
+
+.media {
+  margin: 0;
+  margin-bottom: $baseValue;
+}
+
+.textarea {
+  border: $baseValue / 8 solid $borderColor;
+  border-radius: $baseValue / 4;
+
+  resize: none;
+  padding: $baseValue;
+  line-height: $baseLineHeight;
+  min-height: $baseLineHeight * $baseFontSize * 3;
+
+  &:focus {
+    border-color: #47a4f5
+  }
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.input {
+  border: $baseValue / 8 solid $borderColor;
+  border-radius: $baseValue / 4;
+  &:focus {
+    outline: 2px solid #47a4f5
+  }
+
+  &:valid {
+    border-bottom: 2px solid green;
+  }
+  &:invalid {
+    border-bottom: 2px solid red;
+  }
+}
+
+.ck-editor__editable_inline {
+  min-height: $baseLineHeight * $baseFontSize * 3;
+  padding: $baseValue !important;
 }

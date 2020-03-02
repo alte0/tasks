@@ -40,7 +40,7 @@ class FormAddTask extends Component {
                         ref={this.inputDatesRef}
                         className="flatpickr">
                         <input
-                            className="form__date"
+                            className="form__date input"
                             onInput={this._handleDatesChange}
                             id="date" type="text" name="date"
                             placeholder="выберите дату или даты" data-input="data-input" required="required"/>
@@ -50,6 +50,7 @@ class FormAddTask extends Component {
                 </div>
                 <div className="form__row">
                     <input
+                        className="form__checkbox"
                         onChange={this._handleDateNoLimitChange}
                         checked={this.state.isCheckedDateNoLimit}
                         type="checkbox" name="date-no-limit" id="date-no-limit"/>
@@ -60,7 +61,7 @@ class FormAddTask extends Component {
                     <select
                         value={this.state.valueSelect}
                         onChange={this._handleSelectChange}
-                        className="form__list-users" name="executor" required="required">
+                        className="form__select" name="executor" required="required">
                         <option value="disabled" disabled="disabled">Не выбрано</option>
                         <option value="1">User</option>
                     </select>
@@ -70,23 +71,24 @@ class FormAddTask extends Component {
                     <textarea
                         value={this.state.titleTask}
                         onChange={this._handleTitleTaskChange}
-                        className="form__title-add" type="date" name="title" maxLength="255" placeholder="сделать ..." required="required" />
+                        className="form__title-add textarea" type="date" name="title" maxLength="255" placeholder="сделать ..." required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label>Дополнительная информация по задаче</label>
                     <textarea
+                        className="textarea"
                         ref={this.textareaRef}
                         value={this.state.descTask}
                         onChange={this._handleDescTaskChange}
                         id="textarea-text" name="text" maxLength="1000" placeholder="Обьяснение задачи ..." required="required" />
                 </div>
-                <div className="form__row">
+                <div className="form__row form__row_text-center">
                     <button
                         disabled={!this.state.validForm}
-                        className="form__submit"
+                        className="form__submit submit"
                         type="submit">Добавить задачу</button>
                     <a
-                        className="form__link"
+                        className="form__link link"
                         onClick={this._handleClick}
                         href="/tasks">К списку задач</a>
                 </div>
