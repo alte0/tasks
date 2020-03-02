@@ -18,7 +18,7 @@
         <?= 
         intval($task['task_status']) === 1 
         ? "" 
-        : "<a href='/execute-task.php?action=execute&id={$task['task_id']}'>Выполнить задачу</a>"
+        : "<a class='link' href='/execute-task.php?action=execute&id={$task['task_id']}'>Выполнить задачу</a>"
         ?>
       <?php endif; ?>
     </div>

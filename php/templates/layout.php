@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <meta name="copyright" content="Задачи" />
   <title><?= clearStrDataTags($title) ?></title>
-  <link rel="dns-prefetch"/>
-  <link rel="preconnect"/>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&amp;display=swap&amp;subset=cyrillic" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body <?= $bgClass ?>>
-  <main>
+  <main class="main">
     <div class="container">
       <?= $content ?>
     </div>
