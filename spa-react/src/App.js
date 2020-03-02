@@ -5,7 +5,9 @@ import ScreenSingUp from "./screens/screen-sign-up";
 import ScreenAddTask from "./screens/screen-add-task";
 import ScreenTask from "./screens/screen-task";
 import ScreenTasks from "./screens/screen-tasks";
-import ScreenDesignatedTasks from "./screens/designated-tasks";
+import ScreenMyTasksDone from "./screens/screen-my-tasks-done";
+import ScreenDesignatedTasks from "./screens/screen-designated-tasks";
+import ScreenDesignatedTasksDone from "./screens/screen-designated-tasks-done";
 import Footer from './components/footer/footer';
 import {getCookie, getTask} from  "./helpers/helpers";
 import {getMyTasks, getDesignatedTasksTasks} from "./data/data";
@@ -176,8 +178,34 @@ class App extends PureComponent {
                     handleClickExit={this._handleClickExit}
                     handleClickChangePagePagination={this._handleClickChangePagePagination}
                     />;
+            case "screen-my-tasks-done":
+                return <ScreenMyTasksDone
+                    changeActivePage={this._changeActiveScreen}
+                    tasks={tasks}
+                    itemsTasks={itemsTasks}
+                    pagesCount={pagesCount}
+                    pageCurrentPagination={pageCurrentPagination}
+                    user={user}
+                    handleClickMore={this._handleClickMore}
+                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
+                    handleClickExit={this._handleClickExit}
+                    handleClickChangePagePagination={this._handleClickChangePagePagination}
+                    />;
             case "screen-designated-tasks":
                 return <ScreenDesignatedTasks
+                    changeActivePage={this._changeActiveScreen}
+                    tasks={tasks}
+                    itemsTasks={itemsTasks}
+                    pagesCount={pagesCount}
+                    pageCurrentPagination={pageCurrentPagination}
+                    user={user}
+                    handleClickMore={this._handleClickMore}
+                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
+                    handleClickExit={this._handleClickExit}
+                    handleClickChangePagePagination={this._handleClickChangePagePagination}
+                    />;
+            case "screen-designated-tasks-done":
+                return <ScreenDesignatedTasksDone
                     changeActivePage={this._changeActiveScreen}
                     tasks={tasks}
                     itemsTasks={itemsTasks}

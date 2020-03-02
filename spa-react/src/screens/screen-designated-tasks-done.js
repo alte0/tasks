@@ -4,7 +4,7 @@ import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
 import Pagination from "../components/pagination/pagination";
 
-const title = "Я назначил задачи.";
+const title = "Выполненные задачи другими.";
 
 const ScreenDesignatedTasks = (props) => {
     const {
@@ -16,8 +16,8 @@ const ScreenDesignatedTasks = (props) => {
         } = props;
     const visibleTasks = tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks);
     const links = [
-        {textLink: "Мои задачи", href: "/designated-task", dataScreen: "screen-tasks"},
-        {textLink: "Поставить задачу", href: "/add-task", dataScreen: "screen-add-task"},
+        { textLink: "Выполненые задачи другими", href: "/designated-task-done", dataScreen: "screen-designated-tasks-done"},
+        { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks"},
     ];
 
     return (

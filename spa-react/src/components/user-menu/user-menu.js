@@ -23,11 +23,12 @@ const UserMenu = (props) => {
                     )
                 })
             }
-            {/*<a className="user-menu__link" href="/designated-task">Я назначил задачу</a>*/}
-            {/*<a*/}
-            {/*    className="user-menu__link"*/}
-            {/*    onClick={props.handleAddTaskClick}*/}
-            {/*    href="/add-task">Поставить задачу</a>*/}
+            {/* <a className="user-menu__link" href="/designated-task">Я назначил задачу</a>*/}
+            <a
+               className="user-menu__link link"
+               onClick={props.handleClickUserOtherLinks}
+               data-screen="screen-add-task"
+               href="/add-task">Поставить задачу</a>
             <a
                 className="user-menu__link user-menu__logout link"
                 onClick={props.handleClickExit}
