@@ -73,7 +73,16 @@ class App extends PureComponent {
         if (getCookie("userInfo")){
             const userInfo = getCookie("userInfo").split(",");
 
-            this.setState({loading: true});
+            this.setState((state) => {
+                return {
+                    user: {
+                        name: userInfo[0],
+                        surname: userInfo[1],
+                        patronymic: userInfo[2]
+                    },
+                    loading: true
+                }
+            });
 
             getMyTasks()
                 .then(tasks => {
@@ -83,11 +92,6 @@ class App extends PureComponent {
                         const { itemsTasks } = state;
 
                         return {
-                            user: {
-                                name: userInfo[0],
-                                surname: userInfo[1],
-                                patronymic: userInfo[2]
-                            },
                             tasks: tasks,
                             pagesCount: Math.ceil((lengthTasks / itemsTasks))
                         }
