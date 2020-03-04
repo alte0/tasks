@@ -23,7 +23,8 @@ body {
 }
 
 body,
-.root {
+.root,
+.main {
   flex-grow: 1;
 }
 
@@ -113,4 +114,8 @@ body,
 .ck-editor__editable_inline {
   min-height: $baseLineHeight * $baseFontSize * 3;
   padding: $baseValue !important;
+}
+
+.flex {
+  display: flex;
 }

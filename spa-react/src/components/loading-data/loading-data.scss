@@ -1,0 +1,97 @@
+.loader-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-grow: 1;
+  font-family: "Roboto", sans-serif;
+}
+.loader {
+  display: flex;
+  font-size: 2em;
+  
+  @media (max-width: 440px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.dots {
+  display: flex;
+  position: relative;
+  top: 20px;
+  left: -10px;
+  width: 100px;
+  animation: dots 3s ease infinite 1s;
+}
+.dots div {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
+  border-radius: 100%;
+  background-color: black;
+}
+.dot:nth-child(1) {
+  width: 0px;
+  height: 0px;
+  margin: 5px;
+  margin-right: 15px;
+  animation: show-dot 3s ease-out infinite 1s;
+}
+.dot:nth-child(4) {
+  background-color: transparent;
+  animation: dot-fall-left 3s linear infinite 1s;
+}
+.dot:nth-child(4):before {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
+  border-radius: 100%;
+  background-color: black;
+  content: '';
+  animation: dot-fall-top 3s cubic-bezier(0.46, 0.02, 0.94, 0.54) infinite 1s;
+}
+
+@keyframes dots {
+  0% {
+    left: -10px;
+  }
+  20%,100% {
+    left: 10px;
+  }
+}
+
+@keyframes show-dot {
+  0%,20% {
+    width: 0px;
+    height: 0px;
+    margin: 5px;
+    margin-right: 15px;
+  }
+  30%,100% {
+    width: 10px;
+    height: 10px;
+    margin: 0px;
+    margin-right: 10px;
+  }
+}
+
+@keyframes dot-fall-left {
+  0%, 5% {
+    left: 0px;
+  }
+  100% {
+    left: 200px;
+  }
+}
+
+@keyframes dot-fall-top {
+  0%, 5% {
+    top: 0px;
+  }
+  30%,100% {
+    top: 50vh;
+  }
+}

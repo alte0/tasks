@@ -9,6 +9,7 @@ import ScreenMyTasksDone from "./screens/screen-my-tasks-done";
 import ScreenDesignatedTasks from "./screens/screen-designated-tasks";
 import ScreenDesignatedTasksDone from "./screens/screen-designated-tasks-done";
 import Footer from './components/footer/footer';
+import LoadingData from './components/loading-data/loading-data'
 import {getCookie, getTask} from  "./helpers/helpers";
 import {getMyTasks, getDesignatedTasksTasks} from "./data/data";
 
@@ -25,6 +26,7 @@ class App extends PureComponent {
             itemsTasks: 3,
             pagesCount: 0,
             pageCurrentPagination: 1,
+            loading: false,
             user: {
                 name: '',
                 surname: '',
@@ -53,10 +55,14 @@ class App extends PureComponent {
 
         return (
             <React.Fragment>
-                <main className="bg main">
-                    <Container>
-                        { screen }
-                    </Container>
+                <main className={`bg main${this.state.loading ? ' flex' : ''}`}>
+                    {
+                        this.state.loading ?
+                            <LoadingData />
+                            : <Container>
+                                { screen }
+                            </Container>
+                    }
                 </main>
                 <Footer />
             </React.Fragment>
@@ -66,6 +72,8 @@ class App extends PureComponent {
     _getDataForApp(){
         if (getCookie("userInfo")){
             const userInfo = getCookie("userInfo").split(",");
+
+            this.setState({loading: true});
 
             getMyTasks()
                 .then(tasks => {
@@ -87,6 +95,7 @@ class App extends PureComponent {
                 })
                 .catch(e => console.log(e))
                 .finally(() => {
+                    this.setState({loading: false});
                     console.log('finally - getMyTasks');
                 });
         }
