@@ -15,7 +15,8 @@ export const checkLengthMinMaxStr = (str, minLengthStr, maxLengthStr) => {
  */
 export const hasDateExpired = (dateTask) => {
     const today = new Date().getTime();
-    const date = new Date(dateTask).getTime();
+    const date = new Date(reverseDate(dateTask)).getTime();
+    
     return today >= date;
 };
 /**
@@ -39,3 +40,10 @@ export const getCookie = (name) => {
 export const getTask = (tasks, idTask) => {
     return tasks.find((task) => task.id === (+idTask));
 };
+/**
+ * Переворачивает дату с сервера для js
+ * @param {String} date 
+ */
+export const reverseDate = (date) => {
+    return date.split('.').reverse().join('-');
+}

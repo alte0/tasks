@@ -1,11 +1,9 @@
-import {myTasks, designatedTasks} from "../mocks/mocks";
+import {designatedTasks} from "../mocks/mocks";
 
 const getDataMyTasks = async () => {
-  const data = new Promise((resolve, reject) => {
-    setTimeout(() => resolve(myTasks), 2000)
-  })
+  const response = await fetch('http://tasks.loc:80/ajax/get-my-tasks.php');
 
-  return await data;
+  return await response.json();
 };
 
 export const getMyTasks = getDataMyTasks;

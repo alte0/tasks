@@ -100,7 +100,6 @@ class App extends PureComponent {
                 .catch(e => console.log(e))
                 .finally(() => {
                     this.setState({loading: false});
-                    console.log('finally - getMyTasks');
                 });
         }
     }

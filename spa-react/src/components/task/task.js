@@ -10,49 +10,54 @@ const getTaskContent = (props) => {
         task
     } = props;
     const {
-        dateEnd,
-        title,
-        desc,
-        dateStart,
-        status,
-        author,
-        executor,
-        id
+        task_date_end,
+        task_title,
+        task_desc,
+        task_date_start,
+        task_status,
+        task_date_no_limit,
+        task_id,
+        author_name,
+        author_surname,
+        author_patronymic,
+        executor_name,
+        executor_patronymic,
+        executor_surname
     } = task;
     
     return (
         <React.Fragment>
-            <h3 className="task__title">${title}</h3>
+            <h3 className="task__title">{task_title}</h3>
             <div className="task__desc">
                 {
                     isShowDesc ?
-                        <p>{desc}</p>
+                        {task_desc}
                         :
                         ""
                 }
             </div>
             <footer className="task__footer">
-                <div className="task__date-start">Начало задачи: {dateStart}
+                <div className="task__date-start">Начало задачи: {task_date_start}
                 </div>
-                <div className="task__date-end">Закончить задачу до: {dateEnd}
+                <div className="task__date-end">Закончить задачу до: {Number(task_date_no_limit) === 1 ? 'без даты окончания' : task_date_end}
                 </div>
-                <div className="task__status">Статус: {status}
+                <div className="task__status">Статус: {task_status ? 'В работе.' : 'Выполнено.' }
                 </div>
                 <div className="task__execute">
                     <button>Выполнить задачу</button>
                 </div>
-                <div className="task__author">Назначил: {author}
+                <div className="task__author">Назначил: {author_surname} {author_name} {author_patronymic}
                 </div>
-                <div className="task__executor">Испонитель: {executor}
+                <div className="task__executor">Испонитель: {executor_surname} {executor_name} {executor_patronymic}
                 </div>
             </footer>
             {
                 isMore ?
                     <a
                         className="link"
-                        data-id={id}
+                        data-id={task_id}
                         onClick={props.handleClickMore}
-                        href={`/? taskId = ${id}`}>Подробнее</a>
+                        href={`/?taskId=${task_id}`}>Подробнее</a>
                     : ''
             }
         </React.Fragment>
@@ -66,7 +71,7 @@ export const Task = (props) => {
         task
     } = props;
     const {
-        dateEnd
+        task_date_end
     } = task;
 
     if (isTasks) {
@@ -76,7 +81,7 @@ export const Task = (props) => {
         }
 
     return (
-        <section className={`task ${hasDateExpired(dateEnd) ? `task_expired` : ``} ${isShowDesc ? `task_single` : ''}`}>
+        <section className={`task ${hasDateExpired(task_date_end) ? `task_expired` : ``} ${isShowDesc ? `task_single` : ''}`}>
             {getTaskContent(props)}
         </section>
     )
@@ -86,13 +91,13 @@ Task.propTypes = {
     isShowDesc: PropTypes.bool.isRequired,
     isMore: PropTypes.bool.isRequired,
     task: PropTypes.shape({
-        dateEnd: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        dateStart: PropTypes.string.isRequired,
-        status: PropTypes.string.isRequired,
-        author: PropTypes.string.isRequired,
-        executor: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired
+        task_date_end: PropTypes.string.isRequired,
+        task_title: PropTypes.string.isRequired,
+        task_date_start: PropTypes.string.isRequired,
+        task_status: PropTypes.string.isRequired,
+        author_name: PropTypes.string.isRequired,
+        executor_name: PropTypes.string.isRequired,
+        task_id: PropTypes.string.isRequired
     }).isRequired,
     handleClickMore: PropTypes.func
 };

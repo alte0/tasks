@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Task from "../task/task";
+import { hasDateExpired } from "../../helpers/helpers";
 import "./tasks.scss";
 
 const option = {
@@ -23,10 +24,13 @@ export const Tasks = (props) => {
                     <ul className="tasks__lists">
                         {
                             tasks.map((task)=> {
+                                const classTaskItem = option.isTasks ? 'task' : '';
+                                const classTaskExpired = hasDateExpired(task.task_date_end) && Number(task.task_date_no_limit) !== 1 ? `task_expired` : ``;
+
                                 return (
                                     <li
-                                        className={`tasks__item ${option.isTasks ? 'task' : ''}`}
-                                        key={task.id}>
+                                        className={`tasks__item ${classTaskItem} ${classTaskExpired}`}
+                                        key={task.task_id}>
                                         <Task
                                             isMore={option.isMore}
                                             isShowDesc={option.isShowDesc}
