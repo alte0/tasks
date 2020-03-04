@@ -66,22 +66,29 @@ class App extends PureComponent {
     _getDataForApp(){
         if (getCookie("userInfo")){
             const userInfo = getCookie("userInfo").split(",");
-            const tasks = getMyTasks();
-            const lengthTasks = tasks.length;
 
-            this.setState((state) => {
-                const {itemsTasks} = state;
+            getMyTasks()
+                .then(tasks => {
+                    const lengthTasks = tasks.length;
 
-                return {
-                    user: {
-                        name: userInfo[0],
-                        surname: userInfo[1],
-                        patronymic: userInfo[2]
-                    },
-                    tasks: tasks,
-                    pagesCount: Math.ceil((lengthTasks / itemsTasks))
-                }
-            })
+                    this.setState((state) => {
+                        const { itemsTasks } = state;
+
+                        return {
+                            user: {
+                                name: userInfo[0],
+                                surname: userInfo[1],
+                                patronymic: userInfo[2]
+                            },
+                            tasks: tasks,
+                            pagesCount: Math.ceil((lengthTasks / itemsTasks))
+                        }
+                    })
+                })
+                .catch(e => console.log(e))
+                .finally(() => {
+                    console.log('finally - getMyTasks');
+                });
         }
     }
 

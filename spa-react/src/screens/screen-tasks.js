@@ -14,7 +14,7 @@ const ScreenTasks = (props) => {
         itemsTasks,
         user
         } = props;
-    const visibleTasks = tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks);
+    const visibleTasks = tasks.length ? tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) : tasks;
     const links = [
         { textLink: "Выполненые задачи мною", href: "/my-tasks-done", dataScreen: "screen-my-tasks-done"},
         {textLink: "Я назначил задачи", href: "/designated-task", dataScreen: "screen-designated-tasks"},
