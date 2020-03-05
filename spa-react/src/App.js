@@ -5,13 +5,10 @@ import ScreenSingUp from "./screens/screen-sign-up";
 import ScreenAddTask from "./screens/screen-add-task";
 import ScreenTask from "./screens/screen-task";
 import ScreenTasks from "./screens/screen-tasks";
-import ScreenMyTasksDone from "./screens/screen-my-tasks-done";
-import ScreenDesignatedTasks from "./screens/screen-designated-tasks";
-import ScreenDesignatedTasksDone from "./screens/screen-designated-tasks-done";
 import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data'
 import {getCookie, getTask} from  "./helpers/helpers";
-import {getMyTasks, getDesignatedTasksTasks} from "./data/data";
+import {getMyTasks} from "./data/data";
 
 import 'normalize.css';
 
@@ -23,6 +20,7 @@ class App extends PureComponent {
 
         this.initialState = {
             activeScreen: this._getUserSingIn() ? "screen-tasks" : "screen-sing-in",
+            ActiveMenuLinks: [],
             itemsTasks: 3,
             pagesCount: 0,
             pageCurrentPagination: 1,
@@ -69,38 +67,43 @@ class App extends PureComponent {
         );
     }
 
+    _getDataMyTasks() {
+        this.setState({loading: true});
+
+        getMyTasks()
+            .then(tasks => {
+                const lengthTasks = tasks.length;
+
+                this.setState((state) => {
+                    const { itemsTasks } = state;
+
+                    return {
+                        tasks: tasks,
+                        pagesCount: Math.ceil((lengthTasks / itemsTasks))
+                    }
+                })
+            })
+            .catch(e => console.log(e))
+            .finally(() => {
+                this.setState({ loading: false });
+            });
+    }
+
     _getDataForApp(){
         if (getCookie("userInfo")){
             const userInfo = getCookie("userInfo").split(",");
+            this._changeActiveMenuLinks(this.state.activeScreen);
 
-            this.setState((state) => {
-                return {
-                    user: {
-                        name: userInfo[0],
-                        surname: userInfo[1],
-                        patronymic: userInfo[2]
-                    },
-                    loading: true
-                }
+            this.setState({
+                user: {
+                    name: userInfo[0],
+                    surname: userInfo[1],
+                    patronymic: userInfo[2]
+                },
+                loading: true
             });
 
-            getMyTasks()
-                .then(tasks => {
-                    const lengthTasks = tasks.length;
-
-                    this.setState((state) => {
-                        const { itemsTasks } = state;
-
-                        return {
-                            tasks: tasks,
-                            pagesCount: Math.ceil((lengthTasks / itemsTasks))
-                        }
-                    })
-                })
-                .catch(e => console.log(e))
-                .finally(() => {
-                    this.setState({loading: false});
-                });
+            this._getDataMyTasks();
         }
     }
 
@@ -116,9 +119,81 @@ class App extends PureComponent {
     }
 
     _changeActiveScreen(screen) {
+        this._changeActiveMenuLinks(screen);
         this.setState({
             activeScreen: screen
         })
+    }
+
+    _changeActiveMenuLinks(screen) {
+        switch (screen) {
+            case "screen-tasks":
+                this.setState({
+                    ActiveMenuLinks: [
+                        { textLink: "Выполненые задачи мною", href: "/my-tasks-done", dataScreen: "screen-my-tasks-done" },
+                        { textLink: "Я назначил задачи", href: "/designated-task", dataScreen: "screen-designated-tasks" },
+                    ]
+                })
+                break;
+            case "screen-my-tasks-done":
+                this.setState({
+                    ActiveMenuLinks: [
+                        { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks" },
+                        { textLink: "Я назначил задачи", href: "/designated-task", dataScreen: "screen-designated-tasks" },
+                    ]
+                })
+                break;
+            case "screen-designated-tasks":
+                this.setState({
+                    ActiveMenuLinks: [
+                        { textLink: "Выполненые задачи другими", href: "/designated-task-done", dataScreen: "screen-designated-tasks-done" },
+                        { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks" },
+                    ]
+                })
+                break;
+            case "screen-designated-tasks-done":
+                this.setState({
+                    ActiveMenuLinks: [
+                        { textLink: "Выполненые задачи другими", href: "/designated-task-done", dataScreen: "screen-designated-tasks-done" },
+                        { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks" },
+                    ]
+                })
+                break;
+            case "screen-task":
+                this.setState({
+                    ActiveMenuLinks: [
+                        { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks" },
+                        { textLink: "Я назначил задачи", href: "/designated-task", dataScreen: "screen-designated-tasks" },
+                    ]
+                })
+                break;
+            default:
+                this.setState({
+                    ActiveMenuLinks: [
+                        { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks" },
+                        { textLink: "Я назначил задачи", href: "/designated-task", dataScreen: "screen-designated-tasks" },
+                    ]
+                })
+        };
+    }
+
+    _changeActiveTasks(screen) {
+        switch (screen) {
+            case "screen-tasks":
+                this._getDataMyTasks();
+                break;
+            case "screen-my-tasks-done":
+                this._getDataMyTasks();
+                break;
+            case "screen-designated-tasks":
+                this._getDataMyTasks();
+                break;
+            case "screen-designated-tasks-done":
+                this._getDataMyTasks();
+                break;
+            default:
+                break;
+        };
     }
 
     _handleClickMore(evt) {
@@ -126,26 +201,17 @@ class App extends PureComponent {
         const id = evt.target.dataset.id;
 
         this.setState((state) => ({
-                task: getTask(state.tasks, id),
-                activeScreen: "screen-task"
+                task: getTask(state.tasks, id)
             }))
+
+        this._changeActiveScreen("screen-task");
     }
 
     _handleClickUserOtherLinks(evt) {
         evt.preventDefault();
         const dataScreen = evt.target.dataset.screen;
-        const tasks = dataScreen === "screen-designated-tasks" ? getDesignatedTasksTasks() : getMyTasks();
-        const lengthTasks = tasks.length;
-
-        this.setState((state) => {
-            const {itemsTasks} = state;
-
-            return {
-                tasks: tasks,
-                pagesCount: Math.ceil((lengthTasks / itemsTasks)),
-                pageCurrentPagination: 1
-            }
-        });
+        
+        this._changeActiveTasks(dataScreen);
         this._changeActiveScreen(evt.target.dataset.screen);
     }
 
@@ -168,6 +234,7 @@ class App extends PureComponent {
             pagesCount,
             pageCurrentPagination,
             user,
+            ActiveMenuLinks
         } = state;
 
         switch (activeScreen) {
@@ -184,7 +251,11 @@ class App extends PureComponent {
                 return <ScreenAddTask
                     changeActivePage={this._changeActiveScreen}
                 />;
+
             case "screen-tasks":
+            case "screen-my-tasks-done":
+            case "screen-designated-tasks":
+            case "screen-designated-tasks-done":
                 return <ScreenTasks
                     changeActivePage={this._changeActiveScreen}
                     tasks={tasks}
@@ -192,45 +263,7 @@ class App extends PureComponent {
                     pagesCount={pagesCount}
                     pageCurrentPagination={pageCurrentPagination}
                     user={user}
-                    handleClickMore={this._handleClickMore}
-                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
-                    handleClickExit={this._handleClickExit}
-                    handleClickChangePagePagination={this._handleClickChangePagePagination}
-                    />;
-            case "screen-my-tasks-done":
-                return <ScreenMyTasksDone
-                    changeActivePage={this._changeActiveScreen}
-                    tasks={tasks}
-                    itemsTasks={itemsTasks}
-                    pagesCount={pagesCount}
-                    pageCurrentPagination={pageCurrentPagination}
-                    user={user}
-                    handleClickMore={this._handleClickMore}
-                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
-                    handleClickExit={this._handleClickExit}
-                    handleClickChangePagePagination={this._handleClickChangePagePagination}
-                    />;
-            case "screen-designated-tasks":
-                return <ScreenDesignatedTasks
-                    changeActivePage={this._changeActiveScreen}
-                    tasks={tasks}
-                    itemsTasks={itemsTasks}
-                    pagesCount={pagesCount}
-                    pageCurrentPagination={pageCurrentPagination}
-                    user={user}
-                    handleClickMore={this._handleClickMore}
-                    handleClickUserOtherLinks={this._handleClickUserOtherLinks}
-                    handleClickExit={this._handleClickExit}
-                    handleClickChangePagePagination={this._handleClickChangePagePagination}
-                    />;
-            case "screen-designated-tasks-done":
-                return <ScreenDesignatedTasksDone
-                    changeActivePage={this._changeActiveScreen}
-                    tasks={tasks}
-                    itemsTasks={itemsTasks}
-                    pagesCount={pagesCount}
-                    pageCurrentPagination={pageCurrentPagination}
-                    user={user}
+                    menuLinks={ActiveMenuLinks}
                     handleClickMore={this._handleClickMore}
                     handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
@@ -243,6 +276,7 @@ class App extends PureComponent {
                     handleClickExit={this._handleClickExit}
                     user={user}
                     task={task}
+                    menuLinks={ActiveMenuLinks}
                 />;
             default:
                 return null;

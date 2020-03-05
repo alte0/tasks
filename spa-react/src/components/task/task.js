@@ -1,7 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./task.scss";
-import {hasDateExpired} from "../../helpers/helpers"
+import {hasDateExpired} from "../../helpers/helpers";
+import dompurify from 'dompurify';
+
+const sanitizer = dompurify.sanitize;
+
+const renderDesc = (isShow, stringAndTags) => {
+    return isShow ? sanitizer(stringAndTags) : "";
+}
 
 const getTaskContent = (props) => {
     const {
@@ -28,13 +35,10 @@ const getTaskContent = (props) => {
     return (
         <React.Fragment>
             <h3 className="task__title">{task_title}</h3>
-            <div className="task__desc">
-                {
-                    isShowDesc ?
-                        {task_desc}
-                        :
-                        ""
-                }
+            <div 
+                className="task__desc"
+                dangerouslySetInnerHTML={{ __html: renderDesc(isShowDesc, task_desc) }}
+                >
             </div>
             <footer className="task__footer">
                 <div className="task__date-start">Начало задачи: {task_date_start}
@@ -71,7 +75,8 @@ export const Task = (props) => {
         task
     } = props;
     const {
-        task_date_end
+        task_date_end,
+        task_date_no_limit
     } = task;
 
     if (isTasks) {
@@ -80,8 +85,10 @@ export const Task = (props) => {
             )
         }
 
+    const classTaskExpired = hasDateExpired(task_date_end) && Number(task_date_no_limit) !== 1 ? `task_expired` : ``;
+
     return (
-        <section className={`task ${hasDateExpired(task_date_end) ? `task_expired` : ``} ${isShowDesc ? `task_single` : ''}`}>
+        <section className={`task ${classTaskExpired} ${isShowDesc ? `task_single` : ''}`}>
             {getTaskContent(props)}
         </section>
     )

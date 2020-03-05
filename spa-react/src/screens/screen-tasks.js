@@ -12,13 +12,10 @@ const ScreenTasks = (props) => {
         pageCurrentPagination,
         pagesCount,
         itemsTasks,
-        user
+        user,
+        menuLinks
         } = props;
     const visibleTasks = tasks.length ? tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) : tasks;
-    const links = [
-        { textLink: "Выполненые задачи мною", href: "/my-tasks-done", dataScreen: "screen-my-tasks-done"},
-        {textLink: "Я назначил задачи", href: "/designated-task", dataScreen: "screen-designated-tasks"},
-    ];
 
     return (
         <React.Fragment>
@@ -27,7 +24,7 @@ const ScreenTasks = (props) => {
                 handleClickUserOtherLinks={props.handleClickUserOtherLinks}
                 handleClickExit={props.handleClickExit}
                 user={user}
-                links={links}
+                links={menuLinks}
             />
             <SearchByTasks/>
             <Tasks

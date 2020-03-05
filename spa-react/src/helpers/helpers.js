@@ -38,7 +38,7 @@ export const getCookie = (name) => {
  * @returns {Object}
  */
 export const getTask = (tasks, idTask) => {
-    return tasks.find((task) => task.id === (+idTask));
+    return tasks.find((task) => Number(task.task_id) === Number(idTask));
 };
 /**
  * Переворачивает дату с сервера для js
