@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import "./forms.scss";
 
-import {initFlatpickr} from "../../plugins/flatpickr";
-import {initEditor} from "../../plugins/editor";
+import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
+import { initEditor, destroyEditor } from "../../plugins/editor";
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMaxAddTask} from "../../vars/vars";
 
@@ -26,6 +26,11 @@ class FormAddTask extends Component {
     componentDidMount() {
         initFlatpickr(this.inputDatesRef.current);
         initEditor(this.textareaRef.current, this._handleDescTaskChange);
+    }
+
+    componentWillUnmount() {
+        destroyEditor();
+        destroyFlatpickr();
     }
 
     render() {

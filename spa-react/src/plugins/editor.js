@@ -34,6 +34,15 @@ export const initEditor = (elem, fn) => {
 
 };
 /**
+ * Размонтирование Редактора
+ */
+export const destroyEditor = () => {
+  editor.destroy()
+    .catch(error => {
+      console.log(error);
+    });
+}
+/**
  * Очишает введеные данные в ckeditor5
  */
 export const clearDataEditor = () => {

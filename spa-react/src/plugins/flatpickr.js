@@ -21,6 +21,12 @@ export const initFlatpickr = (elem) => {
   fp.setDate(+new Date(), true, CONFIG_FLATPICKR.dateFormat);
 };
 /**
+ * Размонтирование flatpickr
+ */
+export const destroyFlatpickr = () => {
+  fp.destroy();
+}
+/**
  * Очишает данные в flatpickr и устанавливает текушую дату
  */
 export const clearDataFlatpickr = () => {
