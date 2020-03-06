@@ -9,7 +9,7 @@ import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data';
 import { TypeMessage, showMessage } from './plugins/show-message';
 import {getCookie, getTask} from  "./helpers/helpers";
-import {getMyTasks} from "./data/data";
+import { getMyTasks, getDesignatedTasks } from "./data/data";
 
 import 'normalize.css';
 
@@ -74,7 +74,42 @@ class App extends PureComponent {
         getMyTasks()
             .then(tasks => {
                 if (tasks.msgsType === 'error') {
-                    return false
+                    this.setState({
+                        tasks: []
+                    })
+                    return true
+                }
+
+                const lengthTasks = tasks.length;
+
+                this.setState((state) => {
+                    const { itemsTasks } = state;
+
+                    return {
+                        tasks: tasks,
+                        pagesCount: Math.ceil((lengthTasks / itemsTasks))
+                    }
+                })
+            })
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+            });
+    }
+
+    _getDataDesignatedTasks() {
+        this.setState({loading: true});
+
+        getDesignatedTasks()
+            .then(tasks => {
+                if (tasks.msgsType === 'error') {
+                    this.setState({
+                        tasks: []
+                    })
+                    return true
                 }
 
                 const lengthTasks = tasks.length;
@@ -194,7 +229,7 @@ class App extends PureComponent {
                 this._getDataMyTasks();
                 break;
             case "screen-designated-tasks":
-                this._getDataMyTasks();
+                this._getDataDesignatedTasks();
                 break;
             case "screen-designated-tasks-done":
                 this._getDataMyTasks();
@@ -272,6 +307,7 @@ class App extends PureComponent {
                     pageCurrentPagination={pageCurrentPagination}
                     user={user}
                     menuLinks={ActiveMenuLinks}
+                    activeScreen={activeScreen}
                     handleClickMore={this._handleClickMore}
                     handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}

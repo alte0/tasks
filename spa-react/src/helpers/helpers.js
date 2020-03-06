@@ -47,3 +47,19 @@ export const getTask = (tasks, idTask) => {
 export const reverseDate = (date) => {
     return date.split('.').reverse().join('-');
 }
+
+
+export const getActiveTitleTasks = (activeScreen) => {
+    switch (activeScreen) {
+        case "screen-tasks":
+            return "Мои задачи.";
+        case "screen-my-tasks-done":
+            return "Мои выполненые задачи.";
+        case "screen-designated-tasks":
+            return "Я назначил задачи.";
+        case "screen-designated-tasks-done":
+            return "Выполненные задачи другими.";
+        default:
+            return "Мои задачи.";
+    }
+}

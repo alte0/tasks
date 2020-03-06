@@ -3,8 +3,7 @@ import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
 import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
 import Pagination from "../components/pagination/pagination";
-
-const title = "Мои задачи.";
+import { getActiveTitleTasks } from "../helpers/helpers";
 
 const ScreenTasks = (props) => {
     const {
@@ -13,9 +12,11 @@ const ScreenTasks = (props) => {
         pagesCount,
         itemsTasks,
         user,
-        menuLinks
+        menuLinks,
+        activeScreen
         } = props;
     const visibleTasks = tasks.length ? tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) : tasks;
+    const title = getActiveTitleTasks(activeScreen);
 
     return (
         <React.Fragment>
