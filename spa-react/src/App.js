@@ -6,7 +6,8 @@ import ScreenAddTask from "./screens/screen-add-task";
 import ScreenTask from "./screens/screen-task";
 import ScreenTasks from "./screens/screen-tasks";
 import Footer from './components/footer/footer';
-import LoadingData from './components/loading-data/loading-data'
+import LoadingData from './components/loading-data/loading-data';
+import { TypeMessage, showMessage } from './plugins/show-message';
 import {getCookie, getTask} from  "./helpers/helpers";
 import {getMyTasks} from "./data/data";
 
@@ -83,7 +84,10 @@ class App extends PureComponent {
                     }
                 })
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+            })
             .finally(() => {
                 this.setState({ loading: false });
             });
