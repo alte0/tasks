@@ -85,7 +85,7 @@ export const Task = (props) => {
             )
         }
 
-    const classTaskExpired = hasDateExpired(task_date_end) && Number(task_date_no_limit) !== 1 ? `task_expired` : ``;
+    const classTaskExpired = hasDateExpired(task_date_end) && Number(task_date_no_limit) === 0 ? `task_expired` : ``;
 
     return (
         <section className={`task ${classTaskExpired} ${isShowDesc ? `task_single` : ''}`}>

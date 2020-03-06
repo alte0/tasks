@@ -25,7 +25,7 @@ export const Tasks = (props) => {
                         {
                             tasks.map((task)=> {
                                 const classTaskItem = option.isTasks ? 'task' : '';
-                                const classTaskExpired = hasDateExpired(task.task_date_end) && Number(task.task_date_no_limit) !== 1 ? `task_expired` : ``;
+                                const classTaskExpired = hasDateExpired(task.task_date_end) && Number(task.task_date_no_limit) === 0 ? `task_expired` : ``;
 
                                 return (
                                     <li

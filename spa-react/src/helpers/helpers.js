@@ -15,9 +15,9 @@ export const checkLengthMinMaxStr = (str, minLengthStr, maxLengthStr) => {
  */
 export const hasDateExpired = (dateTask) => {
     const today = new Date().getTime();
-    const date = new Date(reverseDate(dateTask)).getTime();
+    const dateEnd = new Date(reverseDate(dateTask)).getTime();
     
-    return today >= date;
+    return dateEnd < today;
 };
 /**
  * Получение Cookie по имени
