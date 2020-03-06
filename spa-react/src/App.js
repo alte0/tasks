@@ -68,42 +68,10 @@ class App extends PureComponent {
         );
     }
 
-    _getDataMyTasks() {
-        this.setState({loading: true});
+    _getData(fn) {
+        this.setState({ loading: true });
 
-        getMyTasks()
-            .then(tasks => {
-                if (tasks.msgsType === 'error') {
-                    this.setState({
-                        tasks: []
-                    })
-                    return true
-                }
-
-                const lengthTasks = tasks.length;
-
-                this.setState((state) => {
-                    const { itemsTasks } = state;
-
-                    return {
-                        tasks: tasks,
-                        pagesCount: Math.ceil((lengthTasks / itemsTasks))
-                    }
-                })
-            })
-            .catch(e => {
-                console.error(e);
-                showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
-            })
-            .finally(() => {
-                this.setState({ loading: false });
-            });
-    }
-
-    _getDataDesignatedTasks() {
-        this.setState({loading: true});
-
-        getDesignatedTasks()
+        fn()
             .then(tasks => {
                 if (tasks.msgsType === 'error') {
                     this.setState({
@@ -146,7 +114,7 @@ class App extends PureComponent {
                 loading: true
             });
 
-            this._getDataMyTasks();
+            this._getData(getMyTasks);
         }
     }
 
@@ -223,16 +191,16 @@ class App extends PureComponent {
     _changeActiveTasks(screen) {
         switch (screen) {
             case "screen-tasks":
-                this._getDataMyTasks();
+                this._getData(getMyTasks);
                 break;
             case "screen-my-tasks-done":
-                this._getDataMyTasks();
+                // this._getData(getMyTasks);
                 break;
             case "screen-designated-tasks":
-                this._getDataDesignatedTasks();
+                this._getData(getDesignatedTasks);
                 break;
             case "screen-designated-tasks-done":
-                this._getDataMyTasks();
+                // this._getData(getMyTasks);
                 break;
             default:
                 break;
