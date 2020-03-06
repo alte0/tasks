@@ -9,7 +9,7 @@ import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data';
 import { TypeMessage, showMessage } from './plugins/show-message';
 import {getCookie, getTask} from  "./helpers/helpers";
-import { getMyTasks, getDesignatedTasks } from "./data/data";
+import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone } from "./data/data";
 
 import 'normalize.css';
 
@@ -194,13 +194,13 @@ class App extends PureComponent {
                 this._getData(getMyTasks);
                 break;
             case "screen-my-tasks-done":
-                // this._getData(getMyTasks);
+                this._getData(getMyTasksDone);
                 break;
             case "screen-designated-tasks":
                 this._getData(getDesignatedTasks);
                 break;
             case "screen-designated-tasks-done":
-                // this._getData(getMyTasks);
+                this._getData(getDesignatedTasksDone);
                 break;
             default:
                 break;
