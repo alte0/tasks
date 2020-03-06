@@ -223,7 +223,7 @@ class App extends PureComponent {
         evt.preventDefault();
         const dataScreen = evt.target.dataset.screen;
         
-        this._changeActiveScreen(evt.target.dataset.screen);
+        this._changeActiveScreen(dataScreen);
     }
 
     _handleClickExit(evt) {
