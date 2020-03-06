@@ -8,7 +8,7 @@ import ScreenTasks from "./screens/screen-tasks";
 import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data';
 import { TypeMessage, showMessage } from './plugins/show-message';
-import {getCookie, getTask} from  "./helpers/helpers";
+import { getCookie, getTask } from  "./helpers/helpers";
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone } from "./data/data";
 
 import 'normalize.css';

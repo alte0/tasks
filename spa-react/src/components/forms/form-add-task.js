@@ -5,6 +5,8 @@ import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
 import { initEditor, destroyEditor } from "../../plugins/editor";
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMaxAddTask} from "../../vars/vars";
+import { getAllUsers } from "../../data/data";
+import { TypeMessage, showMessage } from '../../plugins/show-message';
 
 class FormAddTask extends Component {
     constructor(props) {
@@ -15,7 +17,8 @@ class FormAddTask extends Component {
             valueSelect: "disabled",
             titleTask: "",
             descTask: "",
-            validForm: false
+            validForm: false,
+            allUsers: []
         };
         this.state = this.initialState;
 
@@ -26,6 +29,24 @@ class FormAddTask extends Component {
     componentDidMount() {
         initFlatpickr(this.inputDatesRef.current);
         initEditor(this.textareaRef.current, this._handleDescTaskChange);
+        getAllUsers()
+            .then(allUsers => {
+                if (allUsers.msgsType === 'error') {
+                    this.setState({
+                        allUsers: []
+                    })
+                    return true
+                }
+
+                this.setState({
+                    allUsers: allUsers
+                })
+
+            })
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+            });
     }
 
     componentWillUnmount() {
@@ -68,7 +89,14 @@ class FormAddTask extends Component {
                         onChange={this._handleSelectChange}
                         className="form__select" name="executor" required="required">
                         <option value="disabled" disabled="disabled">Не выбрано</option>
-                        <option value="1">User</option>
+                        {
+                            this.state.allUsers.map(user => (
+                                <option 
+                                    value={user.user_id}
+                                    key={user.user_id}
+                                    >{user.user_surname} {user.user_name} {user.user_patronymic}</option>
+                            ))
+                        }
                     </select>
                 </div>
                 <div className="form__row form__row_content-column">

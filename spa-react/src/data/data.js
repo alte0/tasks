@@ -30,3 +30,11 @@ export const getDesignatedTasksDone = async () => {
 
   return await response.json();
 };
+/**
+ * Получение всех ользователей
+ */
+export const getAllUsers = async () => {
+  const response = await fetch('http://tasks.loc:80/ajax/get-all-users.php');
+
+  return await response.json();
+};
