@@ -73,6 +73,10 @@ class App extends PureComponent {
 
         getMyTasks()
             .then(tasks => {
+                if (tasks.msgsType === 'error') {
+                    return false
+                }
+
                 const lengthTasks = tasks.length;
 
                 this.setState((state) => {
