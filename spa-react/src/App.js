@@ -130,6 +130,7 @@ class App extends PureComponent {
     }
 
     _changeActiveScreen(screen) {
+        this._changeActiveTasks(screen);
         this._changeActiveMenuLinks(screen);
         this.setState({
             activeScreen: screen
@@ -222,7 +223,6 @@ class App extends PureComponent {
         evt.preventDefault();
         const dataScreen = evt.target.dataset.screen;
         
-        this._changeActiveTasks(dataScreen);
         this._changeActiveScreen(evt.target.dataset.screen);
     }
 
