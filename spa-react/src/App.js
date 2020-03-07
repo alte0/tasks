@@ -252,7 +252,6 @@ class App extends PureComponent {
             case "screen-sing-in":
                 return <ScreenSingIn
                     changeActivePage={this._changeActiveScreen}
-                    getData={this._getDataForApp}
                 />;
             case "screen-sing-up":
                 return <ScreenSingUp

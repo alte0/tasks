@@ -5,7 +5,6 @@ const ScreenSingIn = (props) => {
     return (
         <FormSingIn
             changeActivePage={props.changeActivePage}
-            getData={props.getData}
         />
     )
 };
