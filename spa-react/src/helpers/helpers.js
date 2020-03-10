@@ -47,8 +47,10 @@ export const getTask = (tasks, idTask) => {
 export const reverseDate = (date) => {
     return date.split('.').reverse().join('-');
 }
-
-
+/**
+ * Возврашает заголовок для задач в зависимомти от активного скрина.
+ * @param {String} activeScreen 
+ */
 export const getActiveTitleTasks = (activeScreen) => {
     switch (activeScreen) {
         case "screen-tasks":
@@ -62,4 +64,15 @@ export const getActiveTitleTasks = (activeScreen) => {
         default:
             return "Мои задачи.";
     }
+}
+
+export const changeStatusTaskAndDel = (tasks, idTask) => {
+    let copyTasks = [...tasks];
+    const indexTask = copyTasks.findIndex((task) => Number(task.task_id) === Number(idTask));
+    if (indexTask !== -1) {
+        copyTasks[indexTask]["task_status"] = "1";
+        copyTasks.splice(indexTask, 1);
+    }
+    
+    return copyTasks;
 }

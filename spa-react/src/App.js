@@ -8,8 +8,8 @@ import ScreenTasks from "./screens/screen-tasks";
 import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data';
 import { TypeMessage, showMessage } from './plugins/show-message';
-import { getCookie, getTask } from  "./helpers/helpers";
-import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone } from "./data/data";
+import { getCookie, getTask, changeStatusTaskAndDel } from  "./helpers/helpers";
+import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask } from "./data/data";
 
 import 'normalize.css';
 
@@ -43,6 +43,7 @@ class App extends PureComponent {
         this._handleClickUserOtherLinks = this._handleClickUserOtherLinks.bind(this);
         this._handleClickExit = this._handleClickExit.bind(this);
         this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
+        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this);
     }
 
     componentDidMount() {
@@ -135,6 +136,34 @@ class App extends PureComponent {
         this.setState({
             activeScreen: screen
         })
+    }
+
+    _handleClickExecuteTask(evt) {
+        const idTask = evt.target.dataset.idTask;
+        const title = evt.target.dataset.title;
+        
+        const isQuestion = window.confirm(`Вы хотите выполнить задачу - ${title}?`)
+
+        if (isQuestion) {
+            executeTask(idTask)
+                .then(result => {
+                    showMessage(result.msgsType, '', result.textMsgs);
+                    if (result.msgsType === 'success') {
+                        this.setState((state) => {
+    
+                            return {
+                                tasks: changeStatusTaskAndDel(state.tasks, idTask),
+                            }
+                        })
+    
+                        return true
+                    }
+                })
+                .catch(e => {
+                    console.error(e);
+                    showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
+                });
+        }
     }
 
     _changeActiveMenuLinks(screen) {
@@ -279,12 +308,14 @@ class App extends PureComponent {
                     handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
                     handleClickChangePagePagination={this._handleClickChangePagePagination}
+                    handleClickExecuteTask={this._handleClickExecuteTask}
                     />;
             case "screen-task":
                 return <ScreenTask
                     changeActivePage={this._changeActiveScreen}
                     handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
+                    handleClickExecuteTask={this._handleClickExecuteTask}
                     user={user}
                     task={task}
                     menuLinks={ActiveMenuLinks}

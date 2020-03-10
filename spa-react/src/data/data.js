@@ -2,7 +2,9 @@
  * Получение моих задач
  */
 export const fetchRequest = async (link) => {
-  const response = await fetch(`http://tasks.loc:80/ajax/${link}`);
+  const response = await fetch(`http://tasks.loc:80/ajax/${link}`, {
+    cache: 'no-store'
+  });
 
   return await response.json();
 };
@@ -10,7 +12,6 @@ export const fetchRequest = async (link) => {
  * Получение моих задач
  */
 export const getMyTasks = () => fetchRequest('get-my-tasks.php');
-
 /**
  * Получение моих выполненых задач
  */
@@ -27,3 +28,7 @@ export const getDesignatedTasksDone = () => fetchRequest('get-designated-tasks-d
  * Получение всех ользователей
  */
 export const getAllUsers = () => fetchRequest('get-all-users.php');
+/**
+ * Выполнение задачи
+ */
+export const executeTask = (idTask) => fetchRequest(`execute-task.php?execute-task=ajax&action=execute&id=${idTask}`);

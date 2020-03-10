@@ -32,6 +32,7 @@ const ScreenTasks = (props) => {
                 tasks={visibleTasks}
                 title={title}
                 handleClickMore={props.handleClickMore}
+                handleClickExecuteTask={props.handleClickExecuteTask}
             />
             {
                 tasks.length > itemsTasks ?

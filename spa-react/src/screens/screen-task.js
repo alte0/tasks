@@ -21,6 +21,7 @@ const ScreenTask = (props) => {
                 isMore={option.isMore}
                 isShowDesc={option.isShowDesc}
                 task={props.task}
+                handleClickExecuteTask={props.handleClickExecuteTask}
             />
         </React.Fragment>
     )

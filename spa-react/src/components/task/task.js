@@ -45,10 +45,18 @@ const getTaskContent = (props) => {
                 </div>
                 <div className="task__date-end">Закончить задачу до: {Number(task_date_no_limit) === 1 ? 'без даты окончания' : task_date_end}
                 </div>
-                <div className="task__status">Статус: {task_status ? 'В работе.' : 'Выполнено.' }
+                <div className="task__status">Статус: {Number(task_status) ? 'Выполнено.': 'В работе.'}
                 </div>
                 <div className="task__execute">
-                    <button>Выполнить задачу</button>
+                    {
+                        !Number(task_status) 
+                            ? <button
+                                data-id-task={task_id}
+                                data-title={task_title}
+                                onClick={props.handleClickExecuteTask}
+                            >Выполнить задачу</button>
+                            : ""
+                    }
                 </div>
                 <div className="task__author">Назначил: {author_surname} {author_name} {author_patronymic}
                 </div>

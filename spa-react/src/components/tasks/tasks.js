@@ -37,6 +37,7 @@ export const Tasks = (props) => {
                                             isTasks={option.isTasks}
                                             task={task}
                                             handleClickMore={props.handleClickMore}
+                                            handleClickExecuteTask={props.handleClickExecuteTask}
                                         />
                                     </li>
                                 )
