@@ -22,7 +22,7 @@ class App extends PureComponent {
         this.initialState = {
             activeScreen: this._getUserSingIn() ? "screen-tasks" : "screen-sing-in",
             ActiveMenuLinks: [],
-            itemsTasks: 3,
+            itemsTasks: 9,
             pagesCount: 0,
             pageCurrentPagination: 1,
             loading: false,

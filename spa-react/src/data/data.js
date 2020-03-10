@@ -1,10 +1,14 @@
 /**
  * Получение моих задач
  */
-export const fetchRequest = async (link) => {
-  const response = await fetch(`http://tasks.loc:80/ajax/${link}`, {
+export const fetchRequest = async (
+  link,
+  params = {
+    method: 'GET',
     cache: 'no-store'
-  });
+  }
+  ) => {
+  const response = await fetch(`http://tasks.loc:80/ajax/${link}`, params);
 
   return await response.json();
 };
@@ -32,3 +36,14 @@ export const getAllUsers = () => fetchRequest('get-all-users.php');
  * Выполнение задачи
  */
 export const executeTask = (idTask) => fetchRequest(`execute-task.php?execute-task=ajax&action=execute&id=${idTask}`);
+/**
+ * Добавление заддачи
+ * @param {Object} formData 
+ */
+export const addTask = (formData) => fetchRequest(
+  `add-task.php`,
+  {
+    method: 'POST',
+    body: formData
+  }
+  );

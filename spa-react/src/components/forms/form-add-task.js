@@ -7,6 +7,9 @@ import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMaxAddTask} from "../../vars/vars";
 import { getAllUsers } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
+import { addTask } from "../../data/data";
+import { clearDataEditor } from "../../plugins/editor";
+import { clearDataFlatpickr } from "../../plugins/flatpickr";
 
 class FormAddTask extends Component {
     constructor(props) {
@@ -123,7 +126,7 @@ class FormAddTask extends Component {
                     <a
                         className="form__link link"
                         onClick={this._handleClick}
-                        href="/tasks">К списку задач</a>
+                        href="/tasks">К списку моих задач</a>
                 </div>
             </form>
         )
@@ -177,9 +180,30 @@ class FormAddTask extends Component {
 
     handleSubmitForm = (evt) => {
         evt.preventDefault();
-        console.log(evt.target);
-        console.log(new FormData(evt.target));
-        alert('fake data');
+        let FORM_DATA = new FormData(evt.target);
+        FORM_DATA.append('add-task', 'ajax');
+        
+        addTask(FORM_DATA)
+            .then(result => {
+                showMessage(result.msgsType, '', result.textMsgs);
+                if (result.msgsType === 'success') {
+                    this.setState({
+                        isCheckedDateNoLimit: false,
+                        valueSelect: "disabled",
+                        titleTask: "",
+                        validForm: false,
+                    })
+
+                    clearDataEditor();
+                    clearDataFlatpickr();
+
+                    return true
+                }
+            })
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
+            });
     };
 
     _handleClick = (evt) => {
