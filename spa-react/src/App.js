@@ -20,7 +20,7 @@ class App extends PureComponent {
         super(props);
 
         this.initialState = {
-            activeScreen: this._getUserSingIn() ? "screen-tasks" : "screen-sing-in",
+            activeScreen: this._isAuthUser() ? "screen-tasks" : "screen-sing-in",
             ActiveMenuLinks: [],
             itemsTasks: 9,
             pagesCount: 0,
@@ -126,7 +126,7 @@ class App extends PureComponent {
         });
     }
 
-    _getUserSingIn() {
+    _isAuthUser() {
         return getCookie("userInfo") && getCookie("FakePhpSession");
     }
 
