@@ -3,6 +3,7 @@ import "./forms.scss"
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMax, ConfTimes} from "../../vars/vars";
 import {showMessage, TypeMessage} from "../../plugins/show-message";
+import { signUpUser } from "../../data/data";
 
 class FormSingUp extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class FormSingUp extends Component {
             patronymic: "",
             validForm: false
         };
+
         this.state = this.initialState;
     }
 
@@ -127,7 +129,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             login: value,
-            validForm: this._validateForm(Object.assign(state, {login: value}))
+            validForm: this._validateForm(Object.assign({}, state, {login: value}))
         }));
     };
 
@@ -135,7 +137,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             password: value,
-            validForm: this._validateForm(Object.assign(state, {password: value}))
+            validForm: this._validateForm(Object.assign({}, state, {password: value}))
         }));
     };
 
@@ -143,7 +145,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             password2: value,
-            validForm: this._validateForm(Object.assign(state, {password2: value}))
+            validForm: this._validateForm(Object.assign({}, state, {password2: value}))
         }));
     };
 
@@ -151,7 +153,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             name: value,
-            validForm: this._validateForm(Object.assign(state, {name: value}))
+            validForm: this._validateForm(Object.assign({}, state, {name: value}))
         }));
     };
 
@@ -159,7 +161,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             surname: value,
-            validForm: this._validateForm(Object.assign(state, {surname: value}))
+            validForm: this._validateForm(Object.assign({}, state, {surname: value}))
         }));
     };
 
@@ -167,28 +169,35 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             patronymic: value,
-            validForm: this._validateForm(Object.assign(state, {patronymic: value}))
+            validForm: this._validateForm(Object.assign({}, state, {patronymic: value}))
         }));
     };
 
     _handleSubmitForm = (evt) => {
         evt.preventDefault();
-        console.log(evt.target);
-        console.log(new FormData(evt.target));
-        this.setState({validForm: false});
-        showMessage(TypeMessage.SUCCESS,
-            `Вы зарегистрированны!<br/>Через ${ConfTimes.REDIRECTION_SIGN_IN_TIME/1000} секунд, Вас перенаправит на страницу входа.`,
-            "",
-            ConfTimes.REDIRECTION_SIGN_IN_TIME);
-        setTimeout(()=> {
-            this.props.changeActivePage("screen-sing-in");
-        }, ConfTimes.REDIRECTION_SIGN_IN_TIME);
+
+        let formData = new FormData(evt.target);
+        formData.append('signup', 'ajax');
+
+        signUpUser(formData)
+            .then(result => {
+                showMessage(result.msgsType, '', result.textMsgs);
+                if (result.msgsType === 'success') {
+                    this.setState(this.initialState);
+
+                    return true
+                }
+            })
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
+            });
     };
 
     _onBlurInput = () => {
         const {password, password2} = this.state;
         if (password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && password !== password2) {
-            showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль!"`);
+            showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль"!`);
         }
     };
 

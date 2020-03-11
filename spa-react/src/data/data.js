@@ -47,3 +47,14 @@ export const addTask = (formData) => fetchRequest(
     body: formData
   }
   );
+/**
+ * Регистрация пользователя на сайте.
+ * @param {Object} formData
+ */
+export const signUpUser = (formData) => fetchRequest(
+  `signup.php`,
+  {
+    method: 'POST',
+    body: formData
+  }
+  );
