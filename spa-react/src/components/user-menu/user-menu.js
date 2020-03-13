@@ -11,7 +11,7 @@ const UserMenu = (props) => {
 
     return (
         <nav className="user-menu">
-            <span className="user-menu__user-name">{`${name} ${surname} ${patronymic}`}</span>
+            <span className="user-menu__user-name">{`${surname} ${name} ${patronymic}`}</span>
             {
                 props.links.map((item, index) => {
                     return (
@@ -23,7 +23,6 @@ const UserMenu = (props) => {
                     )
                 })
             }
-            {/* <a className="user-menu__link" href="/designated-task">Я назначил задачу</a>*/}
             <a
                className="user-menu__link link"
                onClick={props.handleClickUserOtherLinks}

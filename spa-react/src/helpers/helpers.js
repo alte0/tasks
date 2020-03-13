@@ -32,6 +32,44 @@ export const getCookie = (name) => {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 /**
+ *  Устанавливает куки с именем name и значением value c опциями.
+ * @param {String} name 
+ * @param {String} value
+ * @param {Object} options 
+ */
+function setCookie(name, value, options = {}) {
+
+    options = {
+        path: '/',
+        ...options
+    };
+
+    if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+    }
+
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}
+/**
+ * Уддаление Cookie по её имени.
+ * @param {String} name 
+ */
+export const deleteCookie = (name) => {
+    setCookie(name, "", {
+        'max-age': -1
+    })
+}
+/**
  * Получение задачи по её id
  * @param tasks
  * @param idTask - id задачи
@@ -65,7 +103,11 @@ export const getActiveTitleTasks = (activeScreen) => {
             return "Мои задачи.";
     }
 }
-
+/**
+ * Изминение статуса задачи и её удаление
+ * @param {Object} tasks 
+ * @param {Number} idTask 
+ */
 export const changeStatusTaskAndDel = (tasks, idTask) => {
     let copyTasks = [...tasks];
     const indexTask = copyTasks.findIndex((task) => Number(task.task_id) === Number(idTask));

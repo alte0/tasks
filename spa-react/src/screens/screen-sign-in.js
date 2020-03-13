@@ -5,6 +5,7 @@ const ScreenSingIn = (props) => {
     return (
         <FormSingIn
             changeActivePage={props.changeActivePage}
+            getFullName={props.getFullName}
         />
     )
 };

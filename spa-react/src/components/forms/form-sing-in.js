@@ -3,6 +3,8 @@ import "./forms.scss";
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMax} from "../../vars/vars";
 import {getCookie} from "../../helpers/helpers";
+import { signInUser } from "../../data/data";
+import { TypeMessage, showMessage } from '../../plugins/show-message';
 
 class FormSingIn extends Component {
     constructor(props) {
@@ -72,7 +74,7 @@ class FormSingIn extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             login: value,
-            validForm: this._validateForm(Object.assign(state, {login: value}))
+            validForm: this._validateForm(Object.assign({}, state, {login: value}))
         }));
     };
 
@@ -80,19 +82,35 @@ class FormSingIn extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             password: value,
-            validForm: this._validateForm(Object.assign(state, {password: value}))
+            validForm: this._validateForm(Object.assign({}, state, {password: value}))
         }));
     };
 
     _handleSubmitForm = (evt) => {
         evt.preventDefault();
-        console.log(evt.target);
-        console.log(new FormData(evt.target));
-        document.cookie = "userInfo=Пётр,Петрович,Петров; path=/; max-age=300";
-        document.cookie = "FakePhpSession=iigubyguybguywg; path=/; max-age=300";
-        if (getCookie("userInfo")) {
-            this.props.changeActivePage("screen-tasks");
-        }
+
+        let formData = new FormData(evt.target);
+        formData.append('signin', 'ajax');
+
+        signInUser(formData)
+            .then(result => {
+                showMessage(result.msgsType, '', result.textMsgs);
+                if (result.msgsType === 'success') {
+                    this.setState(this.initialState);
+
+                    if (getCookie("userInfo") && getCookie("PHPSESSID")) {
+                        this.props.getFullName();
+                        this.props.changeActivePage("screen-tasks");
+                    }
+
+                    return true
+                }
+            })
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
+            });
+
     };
 
     _handleClick = (evt) => {

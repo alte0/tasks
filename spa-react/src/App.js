@@ -8,8 +8,8 @@ import ScreenTasks from "./screens/screen-tasks";
 import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data';
 import { TypeMessage, showMessage } from './plugins/show-message';
-import { getCookie, getTask, changeStatusTaskAndDel } from  "./helpers/helpers";
-import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask } from "./data/data";
+import { getCookie, getTask, changeStatusTaskAndDel, deleteCookie } from  "./helpers/helpers";
+import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, logOut } from "./data/data";
 
 import 'normalize.css';
 
@@ -44,6 +44,7 @@ class App extends PureComponent {
         this._handleClickExit = this._handleClickExit.bind(this);
         this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
         this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this);
+        this._getFullName = this._getFullName.bind(this);
     }
 
     componentDidMount() {
@@ -70,7 +71,10 @@ class App extends PureComponent {
     }
 
     _getData(fn) {
-        this.setState({ loading: true });
+        this.setState({
+            loading: true,
+            tasks: []
+         });
 
         fn()
             .then(tasks => {
@@ -101,19 +105,26 @@ class App extends PureComponent {
             });
     }
 
-    _getDataForApp(){
-        if (getCookie("userInfo")){
-            const userInfo = getCookie("userInfo").split(",");
-            this._changeActiveMenuLinks(this.state.activeScreen);
+    _getFullName() {
+        const userInfo = getCookie("userInfo").split(";");
+        this.setState({
+            user: {
+                name: userInfo[0],
+                surname: userInfo[1],
+                patronymic: userInfo[2]
+            }
+        });
 
+    }
+
+    _getDataForApp(){
+        if (getCookie("userInfo") && getCookie("PHPSESSID")){
+            this._changeActiveMenuLinks(this.state.activeScreen);
+            this._getFullName();
             this.setState({
-                user: {
-                    name: userInfo[0],
-                    surname: userInfo[1],
-                    patronymic: userInfo[2]
-                },
                 loading: true
             });
+
 
             this._getData(getMyTasks);
         }
@@ -127,7 +138,7 @@ class App extends PureComponent {
     }
 
     _isAuthUser() {
-        return getCookie("userInfo") && getCookie("FakePhpSession");
+        return getCookie("userInfo") && getCookie("PHPSESSID");
     }
 
     _changeActiveScreen(screen) {
@@ -259,9 +270,20 @@ class App extends PureComponent {
         evt.preventDefault();
         const isQuestion = window.confirm(`Вы действительно хотите выйти?`);
         if (isQuestion) {
-            document.cookie = "userInfo=; path=/; max-age=-1";
-            document.cookie = "FakePhpSession=; path=/; max-age=-1";
-            this._changeActiveScreen("screen-sing-in");
+            logOut()
+                .then(response => {
+                    showMessage(response.msgsType, '', response.textMsgs);
+                    if (response.msgsType === 'success') {
+                        deleteCookie('PHPSESSID');
+                        deleteCookie('userInfo');
+                        this._changeActiveScreen("screen-sing-in");
+                    }
+                    return true;
+                })
+                .catch(e => {
+                    console.error(e);
+                    showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+                });
         }
     }
 
@@ -281,6 +303,7 @@ class App extends PureComponent {
             case "screen-sing-in":
                 return <ScreenSingIn
                     changeActivePage={this._changeActiveScreen}
+                    getFullName={this._getFullName}
                 />;
             case "screen-sing-up":
                 return <ScreenSingUp

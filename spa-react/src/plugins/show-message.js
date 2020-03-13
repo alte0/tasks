@@ -6,7 +6,6 @@ toastr.options = {
     newestOnTop: false,
     progressBar: true,
     positionClass: `toast-top-center`,
-    preventDuplicates: true,
     onclick: null,
     showDuration: `300`,
     hideDuration: `1000`,
@@ -23,8 +22,9 @@ toastr.options = {
  * @param {String} title `text`
  * @param {Number} time
  */
-const showMessage = (type, message, title = ``, time= 5000) => {
-    toastr.options.timeOut = time;
+const showMessage = (type, message, title = ``, options = { time: 5000, preventDuplicates: false }) => {
+    toastr.options.timeOut = options.time;
+    toastr.options.preventDuplicates = options.preventDuplicates;
     if (title) {
         toastr[type](message, title)
     } else {
