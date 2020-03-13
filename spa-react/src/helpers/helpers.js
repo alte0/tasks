@@ -89,16 +89,16 @@ export const reverseDate = (date) => {
  * Возврашает заголовок для задач в зависимомти от активного скрина.
  * @param {String} activeScreen 
  */
-export const getActiveTitleTasks = (activeScreen) => {
+export const getActiveTitleTasks = (activeScreen, textSearch="") => {
     switch (activeScreen) {
-        case "screen-tasks":
-            return "Мои задачи.";
         case "screen-my-tasks-done":
             return "Мои выполненые задачи.";
         case "screen-designated-tasks":
             return "Я назначил задачи.";
         case "screen-designated-tasks-done":
             return "Выполненные задачи другими.";
+        case "screen-search":
+            return `Результаты поиска по запросу - "${textSearch}"`;
         default:
             return "Мои задачи.";
     }

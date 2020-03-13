@@ -8,8 +8,8 @@ import ScreenTasks from "./screens/screen-tasks";
 import Footer from './components/footer/footer';
 import LoadingData from './components/loading-data/loading-data';
 import { TypeMessage, showMessage } from './plugins/show-message';
-import { getCookie, getTask, changeStatusTaskAndDel, deleteCookie } from  "./helpers/helpers";
-import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, logOut } from "./data/data";
+import { getCookie, getTask, changeStatusTaskAndDel, deleteCookie, getActiveTitleTasks } from  "./helpers/helpers";
+import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, logOut, searchText } from "./data/data";
 
 import 'normalize.css';
 
@@ -32,7 +32,9 @@ class App extends PureComponent {
                 patronymic: ''
             },
             tasks: [],
-            task: {}
+            task: {},
+            textSearch: '',
+            titleForTasks:''
         };
 
         this.state = this.initialState;
@@ -45,6 +47,8 @@ class App extends PureComponent {
         this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
         this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this);
         this._getFullName = this._getFullName.bind(this);
+        this._handleChangeTextSearch = this._handleChangeTextSearch.bind(this);
+        this._handleSubmitFormSearch = this._handleSubmitFormSearch.bind(this);
     }
 
     componentDidMount() {
@@ -68,6 +72,14 @@ class App extends PureComponent {
                 <Footer />
             </React.Fragment>
         );
+    }
+
+    changeTextSearch(value = ""){
+        this.setState({ textSearch: value })
+    }
+
+    _handleChangeTextSearch(evt) {
+        this.changeTextSearch(evt.target.value);
     }
 
     _getData(fn) {
@@ -122,7 +134,8 @@ class App extends PureComponent {
             this._changeActiveMenuLinks(this.state.activeScreen);
             this._getFullName();
             this.setState({
-                loading: true
+                loading: true,
+                titleForTasks: getActiveTitleTasks(this.state.activeScreen)
             });
 
 
@@ -145,7 +158,8 @@ class App extends PureComponent {
         this._changeActiveTasks(screen);
         this._changeActiveMenuLinks(screen);
         this.setState({
-            activeScreen: screen
+            activeScreen: screen,
+            titleForTasks: getActiveTitleTasks(screen)
         })
     }
 
@@ -212,6 +226,7 @@ class App extends PureComponent {
                 })
                 break;
             case "screen-task":
+            case "screen-search":
                 this.setState({
                     ActiveMenuLinks: [
                         { textLink: "Мои задачи", href: "/my-tasks", dataScreen: "screen-tasks" },
@@ -232,15 +247,19 @@ class App extends PureComponent {
     _changeActiveTasks(screen) {
         switch (screen) {
             case "screen-tasks":
+                this.changeTextSearch();
                 this._getData(getMyTasks);
                 break;
             case "screen-my-tasks-done":
+                this.changeTextSearch();
                 this._getData(getMyTasksDone);
                 break;
             case "screen-designated-tasks":
+                this.changeTextSearch();
                 this._getData(getDesignatedTasks);
                 break;
             case "screen-designated-tasks-done":
+                this.changeTextSearch();
                 this._getData(getDesignatedTasksDone);
                 break;
             default:
@@ -287,6 +306,59 @@ class App extends PureComponent {
         }
     }
 
+    _handleSubmitFormSearch(evt) {
+        evt.preventDefault();
+        const formData = new FormData(evt.target);
+        let isEmptyField = true;
+        let textSearch = '';
+        
+        for (const item of formData.entries()) {
+            console.log(item);
+            console.log(formData.entries());
+            
+            if (item[0] === 'search-field' && item[1] !== '') {
+                isEmptyField = false;
+                textSearch = item[1];
+            }
+        }
+
+        if (!isEmptyField) {
+            this.setState({
+                loading: true
+            })
+            
+            searchText(textSearch)
+                .then(response => {
+                    this._changeActiveScreen("screen-search");
+                    if (response.msgsType !== 'warning') {
+                        
+                        this.setState({
+                            tasks: response,
+                            titleForTasks: getActiveTitleTasks("screen-search", textSearch)
+                        })
+                    }
+                    if (response.msgsType === 'warning') {
+                        this.setState({
+                            tasks: []
+                        })
+                        showMessage(response.msgsType, '', response.textMsgs);
+                    }
+                    return true;
+                })
+                .catch(e => {
+                    console.error(e);
+                    showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+                })
+                .finally(()=> {
+                    this.setState({
+                        loading: false
+                    })
+                })
+        } else {
+            showMessage(TypeMessage.WARNING , '', 'Заполните поле поиска по задачам!');
+        }
+    }
+
     _getScreen(state) {
         const {
             activeScreen,
@@ -318,6 +390,7 @@ class App extends PureComponent {
             case "screen-my-tasks-done":
             case "screen-designated-tasks":
             case "screen-designated-tasks-done":
+            case "screen-search":
                 return <ScreenTasks
                     changeActivePage={this._changeActiveScreen}
                     tasks={tasks}
@@ -327,11 +400,15 @@ class App extends PureComponent {
                     user={user}
                     menuLinks={ActiveMenuLinks}
                     activeScreen={activeScreen}
+                    textSearch={this.state.textSearch}
+                    title={this.state.titleForTasks}
                     handleClickMore={this._handleClickMore}
                     handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
                     handleClickChangePagePagination={this._handleClickChangePagePagination}
                     handleClickExecuteTask={this._handleClickExecuteTask}
+                    handleChangeTextSearch={this._handleChangeTextSearch}
+                    handleSubmitFormSearch={this._handleSubmitFormSearch}
                     />;
             case "screen-task":
                 return <ScreenTask

@@ -74,3 +74,8 @@ export const signInUser = (formData) => fetchRequest(
  * Выход с сайта.
  */
 export const logOut = () => fetchRequest(`logout.php?logout=ajax&action=exit`);
+/**
+ * Поиск задачи
+ * @param {String} text 
+ */
+export const searchText = (text) => fetchRequest(`get-result-search.php?search-field=${text}`);
