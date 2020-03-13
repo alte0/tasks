@@ -1,7 +1,6 @@
 <?php
 require "../init.php";
 
-header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json;");
 
 if (!$isAuth) {
@@ -9,13 +8,13 @@ if (!$isAuth) {
   die;
 }
 
-// if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["get-designated-task"])) {
-//   if ($_GET["get-designated-task"] === 'ajax') {
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["get-designated-task"])) {
+  if ($_GET["get-designated-task"] === 'ajax') {
       $tasks = getMyDesignatedTasks($linkDB, $sqlDesignatedTask);
       if (!empty($tasks)) {
         echo json_encode($tasks);
       } else {
         echo json_encode(["msgsType"=> "error", "textMsgs" => "Поставленных задач нету!"]);
       }
-//   }
-// }
+  }
+}

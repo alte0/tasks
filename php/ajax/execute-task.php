@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
         if (executeTask($linkDB, $_GET["id"])) {
           echo json_encode(["msgsType"=> "success", "textMsgs" => "Задача выполнена!"]);
         } else {
-          echo json_encode(["msgsType"=> "error", "textMsgs" => "Не могу выполнить задачу, попробуйте позднее еще раз!"]);
+          echo json_encode(["msgsType"=> "warning", "textMsgs" => "Такой задачи нету!"]);
         }
       }
     }

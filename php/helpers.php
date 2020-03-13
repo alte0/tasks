@@ -171,7 +171,7 @@ function checkUserInDB($link, $user, $isPwd = false): bool
             $userInfo["surname"] = $result["user_surname"];
             $userInfo["patronymic"] = $result["user_patronymic"];
             $_SESSION['userInfo'] = $userInfo;
-            setcookie("userInfo", "{$userInfo["name"]};{$userInfo["surname"]};{$userInfo["patronymic"]}", "", "/");
+            setcookie("userInfo", "{$userInfo["name"]};{$userInfo["surname"]};{$userInfo["patronymic"]};{$userInfo["id"]}", "", "/");
 
             return true;
         }
@@ -226,7 +226,8 @@ function transformsDate($date): string
  */
 function addTask($link, array $task): bool
 {
-    $authorId = $_SESSION['userInfo']['id'];
+    global $userId;
+    $authorId = $userId;
     $executorId = $task["executor"];
     $date = $task["date"];
     $title = $task["title"];
@@ -347,12 +348,13 @@ function executeTask($link, $id): bool
     global $todayAndHour;
     $sql = "UPDATE `tasks` SET `task_status`='$job', `task_date_complete`='$todayAndHour' WHERE `task_id`=$idTask";
 
-    $query = $link->query($sql);
-    if (!$query) {
-        return false;
+    $query = $link->exec($sql);
+
+    if ($query) {
+        return true;
     }
     
-    return true;
+    return false;
 }
 /**
  * Получение задачи

@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["signin"])) {
       'password' => !empty(trim($_POST["password"])) ? trim($_POST["password"]) : "",
     ];
 
-
     if (checkUserInDB($linkDB, $user, true)) {
       echo json_encode(["msgsType"=> "success", "textMsgs" => "Вы авторизовались!"]);
     } else {

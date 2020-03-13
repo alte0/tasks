@@ -1,6 +1,8 @@
 <?php
 require "../init.php";
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Expose-Headers: *');
 header("Content-Type: application/json;");
 
 if ($isAuth) {
