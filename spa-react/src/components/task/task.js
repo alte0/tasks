@@ -30,8 +30,7 @@ const getTaskContent = (props) => {
         author_patronymic,
         executor_name,
         executor_patronymic,
-        executor_surname,
-        author_id
+        executor_surname
     } = task;
     
     return (
