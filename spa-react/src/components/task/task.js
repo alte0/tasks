@@ -14,7 +14,8 @@ const getTaskContent = (props) => {
     const {
         isShowDesc,
         isMore,
-        task
+        task,
+        isShowLinkExecute
     } = props;
     const {
         task_date_end,
@@ -29,7 +30,8 @@ const getTaskContent = (props) => {
         author_patronymic,
         executor_name,
         executor_patronymic,
-        executor_surname
+        executor_surname,
+        author_id
     } = task;
     
     return (
@@ -49,7 +51,7 @@ const getTaskContent = (props) => {
                 </div>
                 <div className="task__execute">
                     {
-                        !Number(task_status) 
+                        !Number(task_status) && isShowLinkExecute
                             ? <button
                                 data-id-task={task_id}
                                 data-title={task_title}

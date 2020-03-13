@@ -15,7 +15,8 @@ const ScreenTasks = (props) => {
         textSearch,
         handleChangeTextSearch,
         handleSubmitFormSearch,
-        title
+        title,
+        isShowLinkExecute
         } = props;
     const visibleTasks = tasks.length ? tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) : tasks;
 
@@ -36,6 +37,7 @@ const ScreenTasks = (props) => {
             <Tasks
                 tasks={visibleTasks}
                 title={title}
+                isShowLinkExecute={isShowLinkExecute}
                 handleClickMore={props.handleClickMore}
                 handleClickExecuteTask={props.handleClickExecuteTask}
             />

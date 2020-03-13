@@ -29,7 +29,8 @@ class App extends PureComponent {
             user: {
                 name: '',
                 surname: '',
-                patronymic: ''
+                patronymic: '',
+                userId: null
             },
             tasks: [],
             task: {},
@@ -89,7 +90,7 @@ class App extends PureComponent {
          });
 
         fn()
-            .then(tasks => {
+            .then(tasks => {                
                 if (tasks.msgsType === 'error') {
                     this.setState({
                         tasks: []
@@ -123,7 +124,8 @@ class App extends PureComponent {
             user: {
                 name: userInfo[0],
                 surname: userInfo[1],
-                patronymic: userInfo[2]
+                patronymic: userInfo[2],
+                userId: Number(userInfo[3])
             }
         });
 
@@ -402,6 +404,7 @@ class App extends PureComponent {
                     activeScreen={activeScreen}
                     textSearch={this.state.textSearch}
                     title={this.state.titleForTasks}
+                    isShowLinkExecute={this.state.activeScreen !== "screen-tasks" ? false : true}
                     handleClickMore={this._handleClickMore}
                     handleClickUserOtherLinks={this._handleClickUserOtherLinks}
                     handleClickExit={this._handleClickExit}
@@ -419,6 +422,7 @@ class App extends PureComponent {
                     user={user}
                     task={task}
                     menuLinks={ActiveMenuLinks}
+                    isShowLinkExecute={this.state.activeScreen !== "screen-tasks" ? false : true}
                 />;
             default:
                 return null;
