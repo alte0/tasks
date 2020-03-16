@@ -1,9 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./forms.scss"
-import {checkLengthMinMaxStr} from "../../helpers/helpers";
-import {ConfMinAndMax} from "../../vars/vars";
-import {showMessage, TypeMessage} from "../../plugins/show-message";
+import { checkLengthMinMaxStr } from "../../helpers/helpers";
+import { ConfMinAndMax } from "../../vars/vars";
+import { showMessage, TypeMessage } from "../../plugins/show-message";
 import { signUpUser } from "../../data/data";
+
+import { Link} from "react-router-dom";
+// import { Link, useHistory } from "react-router-dom";
 
 class FormSingUp extends Component {
     constructor(props) {
@@ -21,7 +24,7 @@ class FormSingUp extends Component {
         this.state = this.initialState;
     }
 
-    render() {
+    render() {        
         return (
             <form
                 onSubmit={this._handleSubmitForm}
@@ -38,7 +41,7 @@ class FormSingUp extends Component {
                         id="login" type="text" name="login"
                         minLength={ConfMinAndMax.MIN_LENGTH_LOGIN}
                         maxLength={ConfMinAndMax.MAX_LENGTH_LOGIN}
-                        required="required"/>
+                        required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label htmlFor="password">Пароль:</label>
@@ -49,7 +52,7 @@ class FormSingUp extends Component {
                         id="password" type="password" name="password"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
                         maxLength={ConfMinAndMax.MAX_LENGTH_PASSWORD}
-                        required="required"/>
+                        required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label htmlFor="password2">Повторите пароль:</label>
@@ -61,7 +64,7 @@ class FormSingUp extends Component {
                         id="password2" type="password" name="password2"
                         minLength={ConfMinAndMax.MIN_LENGTH_PASSWORD}
                         maxLength={ConfMinAndMax.MAX_LENGTH_PASSWORD}
-                        required="required"/>
+                        required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label htmlFor="name">Имя:</label>
@@ -72,7 +75,7 @@ class FormSingUp extends Component {
                         id="name" type="text" name="name"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
                         maxLength={ConfMinAndMax.MAX_LENGTH_TEXT}
-                        required="required"/>
+                        required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label htmlFor="surname">Фамилия:</label>
@@ -83,7 +86,7 @@ class FormSingUp extends Component {
                         id="surname" type="text" name="surname"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
                         maxLength={ConfMinAndMax.MAX_LENGTH_TEXT}
-                        required="required"/>
+                        required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label htmlFor="patronymic">Отчество:</label>
@@ -94,7 +97,7 @@ class FormSingUp extends Component {
                         id="patronymic" type="text" name="patronymic"
                         minLength={ConfMinAndMax.MIN_LENGTH_TEXT}
                         maxLength={ConfMinAndMax.MAX_LENGTH_TEXT}
-                        required="required"/>
+                        required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <button
@@ -103,17 +106,17 @@ class FormSingUp extends Component {
                         type="submit">Зарегистрироваться</button>
                 </div>
                 <div className="form__row form__row_text-center">
-                    <a
+                    <Link
+                        to="/sing-in"
                         className="form__link-signup link"
-                        onClick={this._handleClick}
-                        href="/signin">Авторизоваться</a>
+                    >Авторизоваться</Link>
                 </div>
             </form>
         )
     }
 
     _validateForm = (state) => {
-        const {login, password, password2, name, surname, patronymic} = state;
+        const { login, password, password2, name, surname, patronymic } = state;
         const isValidLogin = checkLengthMinMaxStr(login, ConfMinAndMax.MIN_LENGTH_LOGIN, ConfMinAndMax.MAX_LENGTH_LOGIN);
         const isValidPassword = checkLengthMinMaxStr(password, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
         const isValidPassword2 = checkLengthMinMaxStr(password2, ConfMinAndMax.MIN_LENGTH_PASSWORD, ConfMinAndMax.MAX_LENGTH_PASSWORD);
@@ -129,7 +132,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             login: value,
-            validForm: this._validateForm(Object.assign({}, state, {login: value}))
+            validForm: this._validateForm(Object.assign({}, state, { login: value }))
         }));
     };
 
@@ -137,7 +140,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             password: value,
-            validForm: this._validateForm(Object.assign({}, state, {password: value}))
+            validForm: this._validateForm(Object.assign({}, state, { password: value }))
         }));
     };
 
@@ -145,7 +148,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             password2: value,
-            validForm: this._validateForm(Object.assign({}, state, {password2: value}))
+            validForm: this._validateForm(Object.assign({}, state, { password2: value }))
         }));
     };
 
@@ -153,7 +156,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             name: value,
-            validForm: this._validateForm(Object.assign({}, state, {name: value}))
+            validForm: this._validateForm(Object.assign({}, state, { name: value }))
         }));
     };
 
@@ -161,7 +164,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             surname: value,
-            validForm: this._validateForm(Object.assign({}, state, {surname: value}))
+            validForm: this._validateForm(Object.assign({}, state, { surname: value }))
         }));
     };
 
@@ -169,7 +172,7 @@ class FormSingUp extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             patronymic: value,
-            validForm: this._validateForm(Object.assign({}, state, {patronymic: value}))
+            validForm: this._validateForm(Object.assign({}, state, { patronymic: value }))
         }));
     };
 
@@ -184,6 +187,8 @@ class FormSingUp extends Component {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {
                     this.setState(this.initialState);
+                    // let history = useHistory();
+                    // history.push("/home");
 
                     return true
                 }
@@ -195,15 +200,10 @@ class FormSingUp extends Component {
     };
 
     _onBlurInput = () => {
-        const {password, password2} = this.state;
+        const { password, password2 } = this.state;
         if (password.length >= ConfMinAndMax.MIN_LENGTH_PASSWORD && password !== password2) {
             showMessage(TypeMessage.WARNING, `В поле "Повторите пароль", пароль не совпадает с полем "Пароль"!`);
         }
-    };
-
-    _handleClick = (evt) => {
-        evt.preventDefault();
-        this.props.changeActivePage("screen-sing-in");
     };
 }
 export default FormSingUp

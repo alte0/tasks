@@ -11,6 +11,12 @@ import { TypeMessage, showMessage } from './plugins/show-message';
 import { getCookie, getTask, changeStatusTaskAndDel, deleteCookie, getActiveTitleTasks } from  "./helpers/helpers";
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, logOut, searchText } from "./data/data";
 
+
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import PageTasks from './pages/page-tasks';
+import PageSingIn from './pages/page-sign-in';
+import PageSingUp from './pages/page-sign-up';
+
 import 'normalize.css';
 
 require('./Common.scss');
@@ -431,3 +437,96 @@ class App extends PureComponent {
 }
 
 export default App;
+
+
+
+export class AppR extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.initialState = {
+            // activeScreen: this._isAuthUser() ? "screen-tasks" : "screen-sing-in",
+            ActiveMenuLinks: [],
+            itemsTasks: 9,
+            pagesCount: 0,
+            pageCurrentPagination: 1,
+            loading: false,
+            user: {
+                name: '',
+                surname: '',
+                patronymic: '',
+                userId: null
+            },
+            tasks: [],
+            task: {},
+            textSearch: '',
+            titleForTasks: '',
+            isLoggedIn: Boolean(this._isAuthUser())
+        };
+
+        this.state = this.initialState;
+
+        this._getFullName = this._getFullName.bind(this);
+        this._setLoggedIn = this._setLoggedIn.bind(this);
+    }
+
+    _isAuthUser() {
+        return getCookie("userInfo") && getCookie("PHPSESSID");
+    }
+
+    _getFullName() {
+        const userInfo = getCookie("userInfo").split(";");
+        this.setState({
+            user: {
+                name: userInfo[0],
+                surname: userInfo[1],
+                patronymic: userInfo[2],
+                userId: Number(userInfo[3])
+            }
+        });
+    }
+
+    _setLoggedIn(value = false) {
+        this.setState({ isLoggedIn: value })
+    }
+
+    render() {
+        const { isLoggedIn } = this.state;
+
+        return (
+            <Router>
+                <main className={`bg main${this.state.loading ? ' flex' : ''}`}>
+                    <Container>
+                        <Switch>
+                            <Route 
+                                path="/"
+                                render={() => (
+                                    <PageTasks
+                                        isLoggedIn={isLoggedIn}
+                                    />
+                                )}
+                                exact />
+                            <Route 
+                                path="/sing-up"
+                                render={()=>(
+                                    <PageSingUp 
+                                        isLoggedIn={isLoggedIn}
+                                    />
+                                )} />
+                            <Route 
+                                path="/sing-in"
+                                render={() => (
+                                    <PageSingIn
+                                        isLoggedIn={isLoggedIn}
+                                        getFullName={this._getFullName}
+                                        setLoggedIn={this._setLoggedIn}
+                                    />
+                                )} />
+                        </Switch>
+                    </Container>
+                </main>
+                <Footer />
+            </Router>
+        )
+    }
+}

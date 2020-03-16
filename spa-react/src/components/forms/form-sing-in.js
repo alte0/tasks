@@ -6,13 +6,15 @@ import {getCookie} from "../../helpers/helpers";
 import { signInUser } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
 
+import { Link, withRouter } from "react-router-dom";
+
 class FormSingIn extends Component {
     constructor(props) {
         super(props);
         this.initialState = {
-            login: "",
-            password: "",
-            validForm: false
+            login: "vasay",
+            password: "vasay2@dfG$",
+            validForm: true
         };
         this.state = this.initialState;
     }
@@ -53,10 +55,10 @@ class FormSingIn extends Component {
                         type="submit">Войти</button>
                 </div>
                 <div className="form__row form__row_text-center">
-                    <a
+                    <Link 
+                        to="/sing-up"
                         className="form__link-signup link"
-                        onClick={this._handleClick}
-                        href="/signup.html">Зарегистрироваться</a>
+                        >Зарегистрироваться</Link>
                 </div>
             </form>
         )
@@ -91,7 +93,7 @@ class FormSingIn extends Component {
 
         let formData = new FormData(evt.target);
         formData.append('signin', 'ajax');
-
+        
         signInUser(formData)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);
@@ -99,11 +101,11 @@ class FormSingIn extends Component {
                     this.setState(this.initialState);
 
                     if (getCookie("userInfo") && getCookie("PHPSESSID")) {
+                        
+                        this.props.setLoggedIn(true);
                         this.props.getFullName();
-                        this.props.changeActivePage("screen-tasks");
+                        this.props.history.push('/');
                     }
-
-                    return true
                 }
             })
             .catch(e => {
@@ -112,10 +114,5 @@ class FormSingIn extends Component {
             });
 
     };
-
-    _handleClick = (evt) => {
-        evt.preventDefault();
-        this.props.changeActivePage("screen-sing-up");
-    }
 }
-export default FormSingIn
+export default withRouter(FormSingIn)
