@@ -6,7 +6,6 @@ import { showMessage, TypeMessage } from "../../plugins/show-message";
 import { signUpUser } from "../../data/data";
 
 import { Link} from "react-router-dom";
-// import { Link, useHistory } from "react-router-dom";
 
 class FormSingUp extends Component {
     constructor(props) {
@@ -187,8 +186,6 @@ class FormSingUp extends Component {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {
                     this.setState(this.initialState);
-                    // let history = useHistory();
-                    // history.push("/home");
 
                     return true
                 }

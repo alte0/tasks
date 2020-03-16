@@ -2,8 +2,8 @@ import React from "react";
 import FormSingUp from "../components/forms/form-sing-up";
 import { Redirect } from "react-router-dom";
 
-const PageSingUp = (props) => {
-    if (props.isLoggedIn) {
+const PageSingUp = ({isLoggedIn}) => {
+    if (isLoggedIn) {
         return (<Redirect to="/" />)
     }
     

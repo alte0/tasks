@@ -8,7 +8,7 @@ const PageSingIn = ({
         setLoggedIn
     }) => {
     
-    if (isLoggedIn === true) {
+    if (isLoggedIn) {
         return (<Redirect to="/" />)
     }
 
