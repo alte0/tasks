@@ -21,7 +21,9 @@ class PageTasks extends Component {
         };
         this.state = this.initialState;
 
-        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this);
+        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this); 
+        this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
+
     }
 
     componentDidMount() {
@@ -92,7 +94,7 @@ class PageTasks extends Component {
                                     <Pagination
                                         pagesCount={pagesCount}
                                         pageCurrentPagination={pageCurrentPagination}
-                                        handleClickChangePagePagination={this.props.handleClickChangePagePagination}
+                                        handleClickChangePagePagination={this._handleClickChangePagePagination}
                                     />
                                     :
                                     null
@@ -177,6 +179,13 @@ class PageTasks extends Component {
                     showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
                 });
         }
+    }
+
+    _handleClickChangePagePagination(evt) {
+        evt.preventDefault();
+        this.setState({
+            pageCurrentPagination: +evt.target.dataset.pageIdPag
+        });
     }
 };
 
