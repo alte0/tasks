@@ -87,17 +87,17 @@ export const reverseDate = (date) => {
 }
 /**
  * Возврашает заголовок для задач в зависимомти от активного скрина.
- * @param {String} activeScreen 
+ * @param {String} url
  */
-export const getActiveTitleTasks = (activeScreen, textSearch="") => {
-    switch (activeScreen) {
-        case "screen-my-tasks-done":
+export const getActiveTitleTasks = (url, textSearch="") => {
+    switch (url) {
+        case "my-tasks-done":
             return "Мои выполненые задачи.";
-        case "screen-designated-tasks":
+        case "designated-tasks":
             return "Я назначил задачи.";
-        case "screen-designated-tasks-done":
+        case "designated-tasks-done":
             return "Выполненные задачи другими.";
-        case "screen-search":
+        case "search":
             return `Результаты поиска по запросу - "${textSearch}"`;
         default:
             return "Мои задачи.";
@@ -117,4 +117,43 @@ export const changeStatusTaskAndDel = (tasks, idTask) => {
     }
     
     return copyTasks;
+}
+/**
+ * Полуение массива активных(изменяемых в зависимости от типа адреса) ссылок для меню.
+ * @param {String} url 
+ */
+export const getActiveMenuLinks = (url) => {
+    switch (url) {
+        case "/":
+            return [
+                { textLink: "Выполненые задачи мною", href: "/my-tasks-done" },
+                { textLink: "Я назначил задачи", href: "/designated-task" },
+            ]
+        case "my-tasks-done":
+            return [
+                { textLink: "Мои задачи", href: "/"},
+                { textLink: "Я назначил задачи", href: "/designated-tasks" },
+            ]
+        case "designated-tasks":
+            return [
+                { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
+                { textLink: "Мои задачи", href: "/"},
+            ]
+        case "designated-tasks-done":
+            return [
+                { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
+                { textLink: "Мои задачи", href: "/"},
+            ]
+        case "task":
+        case "search":
+            return [
+                { textLink: "Мои задачи", href: "/"},
+                { textLink: "Я назначил задачи", href: "/designated-tasks" },
+            ]
+        default:
+            return [
+                { textLink: "Выполненые задачи мною", href: "/my-tasks-done" },
+                { textLink: "Я назначил задачи", href: "/designated-tasks" },
+            ]
+    };
 }

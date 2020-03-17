@@ -1,15 +1,17 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./forms.scss";
 
 import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
 import { initEditor, destroyEditor } from "../../plugins/editor";
-import {checkLengthMinMaxStr} from "../../helpers/helpers";
-import {ConfMinAndMaxAddTask} from "../../vars/vars";
+import { checkLengthMinMaxStr } from "../../helpers/helpers";
+import { ConfMinAndMaxAddTask } from "../../vars/vars";
 import { getAllUsers } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
 import { addTask } from "../../data/data";
 import { clearDataEditor } from "../../plugins/editor";
 import { clearDataFlatpickr } from "../../plugins/flatpickr";
+
+import { Link } from "react-router-dom";
 
 class FormAddTask extends Component {
     constructor(props) {
@@ -72,7 +74,7 @@ class FormAddTask extends Component {
                             className="form__date input"
                             onInput={this._handleDatesChange}
                             id="date" type="text" name="date"
-                            placeholder="выберите дату или даты" data-input="data-input" required="required"/>
+                            placeholder="выберите дату или даты" data-input="data-input" required="required" />
                         <button type="button" title="Открыт/Закрыть календарь" data-toggle="">календарь</button>
                         <button type="button" title="Очистить календарь" data-clear="">очистить</button>
                     </div>
@@ -82,7 +84,7 @@ class FormAddTask extends Component {
                         className="form__checkbox"
                         onChange={this._handleDateNoLimitChange}
                         checked={this.state.isCheckedDateNoLimit}
-                        type="checkbox" name="date-no-limit" id="date-no-limit"/>
+                        type="checkbox" name="date-no-limit" id="date-no-limit" />
                     <label htmlFor="date-no-limit">Без даты окончания (дата окончания выбранная выше, будет игнорирована)</label>
                 </div>
                 <div className="form__row form__row_content-column">
@@ -94,10 +96,10 @@ class FormAddTask extends Component {
                         <option value="disabled" disabled="disabled">Не выбрано</option>
                         {
                             this.state.allUsers.map(user => (
-                                <option 
+                                <option
                                     value={user.user_id}
                                     key={user.user_id}
-                                    >{user.user_surname} {user.user_name} {user.user_patronymic}</option>
+                                >{user.user_surname} {user.user_name} {user.user_patronymic}</option>
                             ))
                         }
                     </select>
@@ -123,19 +125,19 @@ class FormAddTask extends Component {
                         disabled={!this.state.validForm}
                         className="form__submit submit"
                         type="submit">Добавить задачу</button>
-                    <a
+                    <Link
                         className="form__link link"
-                        onClick={this._handleClick}
-                        href="/tasks">К списку моих задач</a>
+                        to="/"
+                    >К списку моих задач</Link>
                 </div>
             </form>
         )
     }
 
     _validateForm = (state) => {
-        const {selectedDates, valueSelect, titleTask, descTask} = state;
+        const { selectedDates, valueSelect, titleTask, descTask } = state;
         const isValidValueSelect = valueSelect !== "disabled";
-        const isValidTitleTask= checkLengthMinMaxStr(titleTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_TITLE);
+        const isValidTitleTask = checkLengthMinMaxStr(titleTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_TITLE);
         const isValidDescTask = checkLengthMinMaxStr(descTask, ConfMinAndMaxAddTask.MIN_LENGTH_TEXT, ConfMinAndMaxAddTask.MAX_LENGTH_TEXT_DESK);
 
         return selectedDates && isValidValueSelect && isValidTitleTask && isValidDescTask;
@@ -145,7 +147,7 @@ class FormAddTask extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             selectedDates: value,
-            validForm: this._validateForm(Object.assign(state, {selectedDates: value}))
+            validForm: this._validateForm(Object.assign(state, { selectedDates: value }))
         }));
     };
 
@@ -159,14 +161,14 @@ class FormAddTask extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             titleTask: value,
-            validForm: this._validateForm(Object.assign(state, {titleTask: value}))
+            validForm: this._validateForm(Object.assign(state, { titleTask: value }))
         }));
     };
 
     _handleDescTaskChange = (data) => {
         this.setState((state) => ({
             descTask: data,
-            validForm: this._validateForm(Object.assign(state, {descTask: data}))
+            validForm: this._validateForm(Object.assign(state, { descTask: data }))
         }));
     };
 
@@ -174,7 +176,7 @@ class FormAddTask extends Component {
         const value = evt.target.value;
         this.setState((state) => ({
             valueSelect: value,
-            validForm: this._validateForm(Object.assign(state, {valueSelect: value}))
+            validForm: this._validateForm(Object.assign(state, { valueSelect: value }))
         }));
     };
 
@@ -182,7 +184,7 @@ class FormAddTask extends Component {
         evt.preventDefault();
         let FORM_DATA = new FormData(evt.target);
         FORM_DATA.append('add-task', 'ajax');
-        
+
         addTask(FORM_DATA)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);

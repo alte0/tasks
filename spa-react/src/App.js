@@ -12,10 +12,11 @@ import { getCookie, getTask, changeStatusTaskAndDel, deleteCookie, getActiveTitl
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, logOut, searchText } from "./data/data";
 
 
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PageTasks from './pages/page-tasks';
 import PageSingIn from './pages/page-sign-in';
 import PageSingUp from './pages/page-sign-up';
+import PageAddTask from "./pages/page-add-task";
 
 import 'normalize.css';
 
@@ -40,8 +41,7 @@ class App extends PureComponent {
             },
             tasks: [],
             task: {},
-            textSearch: '',
-            titleForTasks:''
+            textSearch: ''
         };
 
         this.state = this.initialState;
@@ -445,7 +445,6 @@ export class AppR extends PureComponent {
         super(props);
 
         this.initialState = {
-            // activeScreen: this._isAuthUser() ? "screen-tasks" : "screen-sing-in",
             ActiveMenuLinks: [],
             itemsTasks: 9,
             pagesCount: 0,
@@ -460,7 +459,6 @@ export class AppR extends PureComponent {
             tasks: [],
             task: {},
             textSearch: '',
-            titleForTasks: '',
             isLoggedIn: Boolean(this._isAuthUser())
         };
 
@@ -468,30 +466,22 @@ export class AppR extends PureComponent {
 
         this._getFullName = this._getFullName.bind(this);
         this._setLoggedIn = this._setLoggedIn.bind(this);
+        this._handleClickExit = this._handleClickExit.bind(this);
     }
 
-    _isAuthUser() {
-        return getCookie("userInfo") && getCookie("PHPSESSID");
-    }
-
-    _getFullName() {
-        const userInfo = getCookie("userInfo").split(";");
-        this.setState({
-            user: {
-                name: userInfo[0],
-                surname: userInfo[1],
-                patronymic: userInfo[2],
-                userId: Number(userInfo[3])
-            }
-        });
-    }
-
-    _setLoggedIn(value = false) {
-        this.setState({ isLoggedIn: value })
+    componentDidMount() {
+        this._getFullName();
     }
 
     render() {
-        const { isLoggedIn } = this.state;
+        const { 
+            isLoggedIn,
+            itemsTasks,
+            pageCurrentPagination,
+            pagesCount,
+            // tasks,
+            user
+         } = this.state;
 
         return (
             <Router>
@@ -500,11 +490,19 @@ export class AppR extends PureComponent {
                         <Switch>
                             <Route 
                                 path="/"
-                                render={() => (
+                                render={({match}) => (
                                     <PageTasks
                                         isLoggedIn={isLoggedIn}
+                                        itemsTasks={itemsTasks}
+                                        pageCurrentPagination={pageCurrentPagination}
+                                        pagesCount={pagesCount}
+                                        // tasks={tasks}
+                                        user={user}
+                                        url={match.url}
+                                        handleClickExit={this._handleClickExit}
                                     />
-                                )}
+                                    )
+                                }
                                 exact />
                             <Route 
                                 path="/sing-up"
@@ -522,11 +520,62 @@ export class AppR extends PureComponent {
                                         setLoggedIn={this._setLoggedIn}
                                     />
                                 )} />
+                            <Route 
+                                path="/add-task"
+                                render={()=>(
+                                    <PageAddTask 
+                                        isLoggedIn={isLoggedIn}
+                                        />
+                                )}
+                                />
                         </Switch>
                     </Container>
                 </main>
                 <Footer />
             </Router>
         )
+    }
+
+    _isAuthUser() {
+        return getCookie("userInfo") && getCookie("PHPSESSID");
+    }
+
+    _getFullName() {
+        if (this._isAuthUser()) {
+            const userInfo = getCookie("userInfo").split(";");
+            this.setState({
+                user: {
+                    name: userInfo[0],
+                    surname: userInfo[1],
+                    patronymic: userInfo[2],
+                    userId: Number(userInfo[3])
+                }
+            });
+        }
+    }
+
+    _setLoggedIn(value = false) {
+        this.setState({ isLoggedIn: value })
+    }
+
+    _handleClickExit(evt) {
+        evt.preventDefault();
+        const isQuestion = window.confirm(`Вы действительно хотите выйти?`);
+        if (isQuestion) {
+            logOut()
+                .then(response => {
+                    showMessage(response.msgsType, '', response.textMsgs);
+                    if (response.msgsType === 'success') {
+                        deleteCookie('PHPSESSID');
+                        deleteCookie('userInfo');
+                        this._setLoggedIn(false);
+                    }
+                    return true;
+                })
+                .catch(e => {
+                    console.error(e);
+                    showMessage(TypeMessage.ERROR, e, );
+                });
+        }
     }
 }

@@ -1,47 +1,49 @@
 import React from "react";
 import "./user-menu.scss"
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { getActiveMenuLinks } from "../../helpers/helpers";
 
 const UserMenu = (props) => {
     const {
-        name,
-        surname,
-        patronymic,
-    } = props.user;
+        user,
+        url,
+        handleClickExit
+    } = props;
 
     return (
         <nav className="user-menu">
-            <span className="user-menu__user-name">{`${surname} ${name} ${patronymic}`}</span>
+            <span className="user-menu__user-name">{`${user.surname} ${user.name} ${user.patronymic}`}</span>
             {
-                props.links.map((item, index) => {
+                getActiveMenuLinks(url).map((item, index) => {
                     return (
-                        <a className="user-menu__link link"
-                           key={item.dataScreen + index}
-                           href={item.href}
-                            data-screen={item.dataScreen}
-                            onClick={props.handleClickUserOtherLinks}>{item.textLink}</a>
+                        <Link
+                            className="user-menu__link link"
+                            key={item.href + index}
+                            to={item.href}
+                            >{item.textLink}</Link>
                     )
                 })
             }
-            <a
-               className="user-menu__link link"
-               onClick={props.handleClickUserOtherLinks}
-               data-screen="screen-add-task"
-               href="/add-task">Поставить задачу</a>
+            <Link 
+                className="user-menu__link link"
+                to="/add-task"
+                >Поставить задачу</Link>
             <a
                 className="user-menu__link user-menu__logout link"
-                onClick={props.handleClickExit}
+                onClick={handleClickExit}
                 href="/logout">Выйти</a>
         </nav>
     )
 };
 
-UserMenu.propsTypes = {
-    name: PropTypes.string.isRequired,
-    surname: PropTypes.string.isRequired,
-    patronymic: PropTypes.string.isRequired,
-    handleAddTaskClick: PropTypes.func.isRequired,
-    handleClickExit: PropTypes.func.isRequired,
+UserMenu.propTypes = {
+    url: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+        surname: PropTypes.string,
+        name: PropTypes.string,
+        patronymic: PropTypes.string
+    }).isRequired
 };
 
 export default UserMenu

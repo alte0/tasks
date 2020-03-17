@@ -12,9 +12,9 @@ class FormSingIn extends Component {
     constructor(props) {
         super(props);
         this.initialState = {
-            login: "vasay",
-            password: "vasay2@dfG$",
-            validForm: true
+            login: "",
+            password: "",
+            validForm: false
         };
         this.state = this.initialState;
     }
@@ -101,7 +101,6 @@ class FormSingIn extends Component {
                     this.setState(this.initialState);
 
                     if (getCookie("userInfo") && getCookie("PHPSESSID")) {
-                        
                         this.props.setLoggedIn(true);
                         this.props.getFullName();
                         this.props.history.push('/');
