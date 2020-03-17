@@ -7,6 +7,7 @@ import { getActiveTitleTasks } from "../helpers/helpers";
 import { Redirect } from "react-router-dom";
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
+import LoadingData from '../components/loading-data/loading-data';
 
 class PageTasks extends Component {
     constructor(props){
@@ -60,47 +61,53 @@ class PageTasks extends Component {
                     user={user}
                     url={url}
                 />
-                {/* <SearchByTasks
+                {
+                    this.state.loading ?
+                        <LoadingData /> :
+                        <React.Fragment>
+                            {/* <SearchByTasks
                     textSearch={textSearch}
                     handleChangeTextSearch={handleChangeTextSearch}
                     handleSubmitFormSearch={handleSubmitFormSearch}
                     /> */}
-                <Tasks
-                    tasks={visibleTasks}
-                    title={getActiveTitleTasks(url)}
-                    isShowLinkExecute={isShowLinkExecute}
-                    handleClickMore={this.props.handleClickMore}
-                    handleClickExecuteTask={this.props.handleClickExecuteTask}
-                />
-                {
-                    tasks.length > itemsTasks ?
-                        <Pagination
-                            pagesCount={pagesCount}
-                            pageCurrentPagination={pageCurrentPagination}
-                            handleClickChangePagePagination={this.props.handleClickChangePagePagination}
-                        />
-                        :
-                        null
+                            <Tasks
+                                tasks={visibleTasks}
+                                title={getActiveTitleTasks(url)}
+                                isShowLinkExecute={isShowLinkExecute}
+                                handleClickMore={this.props.handleClickMore}
+                                handleClickExecuteTask={this.props.handleClickExecuteTask}
+                            />
+                            {
+                                tasks.length > itemsTasks ?
+                                    <Pagination
+                                        pagesCount={pagesCount}
+                                        pageCurrentPagination={pageCurrentPagination}
+                                        handleClickChangePagePagination={this.props.handleClickChangePagePagination}
+                                    />
+                                    :
+                                    null
+                            }
+                        </React.Fragment>
                 }
             </React.Fragment>
         )
     }
 
     _getData(fn) {
-        // this.setState({
-        //     loading: true,
-        //     tasks: []
-        // });
+        this.setState({
+            loading: true,
+            tasks: []
+        });
 
         fn()
             .then(tasks => {
                 console.log(tasks);
-                // if (tasks.msgsType === 'error') {
-                //     this.setState({
-                //         tasks: []
-                //     })
-                //     return true
-                // }
+                if (tasks.msgsType === 'error') {
+                    this.setState({
+                        tasks: []
+                    })
+                    return true
+                }
 
                 const lengthTasks = tasks.length;
 
@@ -116,10 +123,10 @@ class PageTasks extends Component {
             .catch(e => {
                 console.error(e);
                 showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+            })
+            .finally(() => {
+                this.setState({ loading: false });
             });
-            // .finally(() => {
-            //     this.setState({ loading: false });
-            // });
     }
 
     _getFuncData(url) {
