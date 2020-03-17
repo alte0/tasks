@@ -91,13 +91,13 @@ export const reverseDate = (date) => {
  */
 export const getActiveTitleTasks = (url, textSearch="") => {
     switch (url) {
-        case "my-tasks-done":
+        case "/my-tasks-done":
             return "Мои выполненые задачи.";
-        case "designated-tasks":
+        case "/designated-tasks":
             return "Я назначил задачи.";
-        case "designated-tasks-done":
+        case "/designated-tasks-done":
             return "Выполненные задачи другими.";
-        case "search":
+        case "/search":
             return `Результаты поиска по запросу - "${textSearch}"`;
         default:
             return "Мои задачи.";
@@ -127,25 +127,25 @@ export const getActiveMenuLinks = (url) => {
         case "/":
             return [
                 { textLink: "Выполненые задачи мною", href: "/my-tasks-done" },
-                { textLink: "Я назначил задачи", href: "/designated-task" },
+                { textLink: "Я назначил задачи", href: "/designated-tasks" },
             ]
-        case "my-tasks-done":
+        case "/my-tasks-done":
             return [
                 { textLink: "Мои задачи", href: "/"},
                 { textLink: "Я назначил задачи", href: "/designated-tasks" },
             ]
-        case "designated-tasks":
+        case "/designated-tasks":
             return [
                 { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
                 { textLink: "Мои задачи", href: "/"},
             ]
-        case "designated-tasks-done":
+        case "/designated-tasks-done":
             return [
                 { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
                 { textLink: "Мои задачи", href: "/"},
             ]
-        case "task":
-        case "search":
+        case "/task":
+        case "/search":
             return [
                 { textLink: "Мои задачи", href: "/"},
                 { textLink: "Я назначил задачи", href: "/designated-tasks" },

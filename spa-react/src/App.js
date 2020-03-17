@@ -445,19 +445,12 @@ export class AppR extends PureComponent {
         super(props);
 
         this.initialState = {
-            ActiveMenuLinks: [],
-            itemsTasks: 9,
-            pagesCount: 0,
-            pageCurrentPagination: 1,
-            loading: false,
             user: {
                 name: '',
                 surname: '',
                 patronymic: '',
                 userId: null
             },
-            tasks: [],
-            task: {},
             textSearch: '',
             isLoggedIn: Boolean(this._isAuthUser())
         };
@@ -479,7 +472,6 @@ export class AppR extends PureComponent {
             itemsTasks,
             pageCurrentPagination,
             pagesCount,
-            // tasks,
             user
          } = this.state;
 
@@ -496,7 +488,6 @@ export class AppR extends PureComponent {
                                         itemsTasks={itemsTasks}
                                         pageCurrentPagination={pageCurrentPagination}
                                         pagesCount={pagesCount}
-                                        // tasks={tasks}
                                         user={user}
                                         url={match.url}
                                         handleClickExit={this._handleClickExit}
@@ -504,6 +495,51 @@ export class AppR extends PureComponent {
                                     )
                                 }
                                 exact />
+                            <Route 
+                                path="/my-tasks-done"
+                                render={({match}) => (
+                                    <PageTasks
+                                        isLoggedIn={isLoggedIn}
+                                        itemsTasks={itemsTasks}
+                                        pageCurrentPagination={pageCurrentPagination}
+                                        pagesCount={pagesCount}
+                                        user={user}
+                                        url={match.url}
+                                        handleClickExit={this._handleClickExit}
+                                    />
+                                    )
+                                }
+                                 />
+                            <Route 
+                                path="/designated-tasks"
+                                render={({match}) => (
+                                    <PageTasks
+                                        isLoggedIn={isLoggedIn}
+                                        itemsTasks={itemsTasks}
+                                        pageCurrentPagination={pageCurrentPagination}
+                                        pagesCount={pagesCount}
+                                        user={user}
+                                        url={match.url}
+                                        handleClickExit={this._handleClickExit}
+                                    />
+                                    )
+                                }
+                                 />
+                            <Route 
+                                path="/designated-tasks-done"
+                                render={({match}) => (
+                                    <PageTasks
+                                        isLoggedIn={isLoggedIn}
+                                        itemsTasks={itemsTasks}
+                                        pageCurrentPagination={pageCurrentPagination}
+                                        pagesCount={pagesCount}
+                                        user={user}
+                                        url={match.url}
+                                        handleClickExit={this._handleClickExit}
+                                    />
+                                    )
+                                }
+                                 />
                             <Route 
                                 path="/sing-up"
                                 render={()=>(
@@ -528,6 +564,7 @@ export class AppR extends PureComponent {
                                         />
                                 )}
                                 />
+                            <Route render={()=>(<h1>Такой страницы нету!</h1>)} />
                         </Switch>
                     </Container>
                 </main>
