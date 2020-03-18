@@ -200,7 +200,7 @@ class PageTasks extends Component {
         const textSearch = decodeParamsSearchUrl(this.props.urlOrigin) || '';
         getResultSearchText(textSearch)
             .then(tasks => {
-                if (tasks.msgsType === 'error') {
+                if (tasks.msgsType === 'warning') {
                     this.setState({
                         tasks: this.initialState.tasks,
                         pageCurrentPagination: this.initialState.pageCurrentPagination
