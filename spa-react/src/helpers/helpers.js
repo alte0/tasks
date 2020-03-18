@@ -157,3 +157,19 @@ export const getActiveMenuLinks = (url) => {
             ]
     };
 }
+/**
+ * Декадирование параметра поиска 
+ * @param {String} urlOrigin 
+ */
+export const decodeParamsSearchUrl = (urlOrigin) => {
+    if (!urlOrigin) {
+        return '';
+    }
+    const url = new URL(urlOrigin);
+    if (url.searchParams.has('q')) {
+        const searchTextEncode = url.searchParams.get('q');
+        const searchTextDecode = decodeURIComponent(searchTextEncode);
+
+        return searchTextDecode;
+    }
+}

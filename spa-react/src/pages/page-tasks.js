@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-// import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
+import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
 import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
 import Pagination from "../components/pagination/pagination";
-import { getActiveTitleTasks, changeStatusTaskAndDel } from "../helpers/helpers";
+import { getActiveTitleTasks, changeStatusTaskAndDel, decodeParamsSearchUrl } from "../helpers/helpers";
 import { Redirect } from "react-router-dom";
-import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask } from "../data/data";
+import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, getResultSearchText } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import LoadingData from '../components/loading-data/loading-data';
 
@@ -17,7 +17,7 @@ class PageTasks extends Component {
             itemsTasks: 9,
             pagesCount: 0,
             pageCurrentPagination: 1,
-            loading: false,
+            loading: true,
         };
         this.state = this.initialState;
 
@@ -27,14 +27,23 @@ class PageTasks extends Component {
     }
 
     componentDidMount() {
-        const dataFunc = this._getFuncData(this.props.url);
-        this._getData(dataFunc);
+        const { url } = this.props;
+        if (url !== '/search') {
+            const dataFunc = this._getFuncData(url);
+            this._getData(dataFunc);
+        } else {
+            this._getSearchData();
+        }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.url !== prevProps.url) {
+        const { url, urlOrigin } = this.props;
+        if (url !== '/search' && url !== prevProps.url) {
             const dataFunc = this._getFuncData(this.props.url);
             this._getData(dataFunc);
+        } 
+        if (url === '/search' && urlOrigin !== prevProps.urlOrigin) {
+            this._getSearchData();
         }
     }
 
@@ -47,12 +56,12 @@ class PageTasks extends Component {
 
         const {
             user,
-            // textSearch,
             handleClickExit,
-            // handleChangeTextSearch,
-            // handleSubmitFormSearch,
-            url
+            url,
+            urlOrigin
         } = this.props;
+
+        const textSearch = decodeParamsSearchUrl(urlOrigin);
 
         const {
             tasks,
@@ -74,14 +83,12 @@ class PageTasks extends Component {
                     this.state.loading ?
                         <LoadingData /> :
                         <React.Fragment>
-                            {/* <SearchByTasks
-                    textSearch={textSearch}
-                    handleChangeTextSearch={handleChangeTextSearch}
-                    handleSubmitFormSearch={handleSubmitFormSearch}
-                    /> */}
+                            <SearchByTasks
+                                textSearch={textSearch}
+                            />
                             <Tasks
                                 tasks={visibleTasks}
-                                title={getActiveTitleTasks(url)}
+                                title={getActiveTitleTasks(url, textSearch)}
                                 isShowLinkExecute={isShowLinkExecute}
                                 handleClickMore={(evt) => {
                                     evt.preventDefault();
@@ -108,7 +115,8 @@ class PageTasks extends Component {
     _getData(fn) {
         this.setState({
             loading: true,
-            tasks: []
+            tasks: this.initialState.tasks,
+            pageCurrentPagination: this.initialState.pageCurrentPagination
         });
 
         fn()
@@ -186,6 +194,38 @@ class PageTasks extends Component {
         this.setState({
             pageCurrentPagination: +evt.target.dataset.pageIdPag
         });
+    }
+
+    _getSearchData() {
+        const textSearch = decodeParamsSearchUrl(this.props.urlOrigin) || '';
+        getResultSearchText(textSearch)
+            .then(tasks => {
+                if (tasks.msgsType === 'error') {
+                    this.setState({
+                        tasks: this.initialState.tasks,
+                        pageCurrentPagination: this.initialState.pageCurrentPagination
+                    })
+                    return true
+                }
+
+                const lengthTasks = tasks.length;
+
+                this.setState((state) => {
+                    const { itemsTasks } = state;
+
+                    return {
+                        tasks: tasks,
+                        pagesCount: Math.ceil((lengthTasks / itemsTasks))
+                    }
+                })
+            })
+            .catch(e => {
+                console.error(e);
+                showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+            });
     }
 };
 

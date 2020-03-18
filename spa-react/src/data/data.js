@@ -78,4 +78,4 @@ export const logOut = () => fetchRequest(`logout.php?logout=ajax&action=exit`);
  * Поиск задачи
  * @param {String} text 
  */
-export const searchText = (text) => fetchRequest(`get-result-search.php?search-field=${text}`);
+export const getResultSearchText = (text) => fetchRequest(`get-result-search.php?search-field=${text}`);
