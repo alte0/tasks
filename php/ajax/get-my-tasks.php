@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["my-tasks"])) {
       if (!empty($myTasks)) {
         echo json_encode($myTasks);
       } else {
-        echo json_encode(["msgsType"=> "error", "textMsgs" => "Моих задач нету! {$_SESSION['userInfo']['id']}", "data" => $myTasks]);
+        echo json_encode(["msgsType"=> "error", "textMsgs" => "Моих задач нету!"]);
       }
   }
 }

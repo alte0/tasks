@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./task.scss";
 import {hasDateExpired} from "../../helpers/helpers";
 import dompurify from 'dompurify';
+import { Link } from "react-router-dom";
 
 const sanitizer = dompurify.sanitize;
 
@@ -66,11 +67,10 @@ const getTaskContent = (props) => {
             </footer>
             {
                 isMore ?
-                    <a
+                    <Link
+                        to={location => ({ ...location, pathname: `/task/${task_id}` })}
                         className="link"
-                        data-id={task_id}
-                        onClick={props.handleClickMore}
-                        href={`/?taskId=${task_id}`}>Подробнее</a>
+                        >Подробнее</Link>
                     : ''
             }
         </React.Fragment>

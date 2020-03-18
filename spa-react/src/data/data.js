@@ -79,3 +79,8 @@ export const logOut = () => fetchRequest(`logout.php?logout=ajax&action=exit`);
  * @param {String} text 
  */
 export const getResultSearchText = (text) => fetchRequest(`get-result-search.php?search-field=${text}`);
+/**
+ * Получение задаччи по её ID
+ * @param {Number} idTask 
+ */
+export const getTask = (idTask) => fetchRequest(`get-task.php?task=ajax&id=${idTask}`);

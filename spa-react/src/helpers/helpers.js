@@ -144,7 +144,6 @@ export const getActiveMenuLinks = (url) => {
                 { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
                 { textLink: "Мои задачи", href: "/"},
             ]
-        case "/task":
         case "/search":
             return [
                 { textLink: "Мои задачи", href: "/"},
@@ -152,7 +151,7 @@ export const getActiveMenuLinks = (url) => {
             ]
         default:
             return [
-                { textLink: "Выполненые задачи мною", href: "/my-tasks-done" },
+                { textLink: "Мои задачи", href: "/" },
                 { textLink: "Я назначил задачи", href: "/designated-tasks" },
             ]
     };

@@ -10,6 +10,7 @@ import PageTasks from './pages/page-tasks';
 import PageSingIn from './pages/page-sign-in';
 import PageSingUp from './pages/page-sign-up';
 import PageAddTask from "./pages/page-add-task";
+import PageTask from "./pages/page-task";
 
 import 'normalize.css';
 
@@ -137,6 +138,21 @@ export class App extends PureComponent {
                                         isLoggedIn={isLoggedIn}
                                         />
                                 )}
+                                />
+                            <Route 
+                                path="/task/:id"
+                                render={({ match })=> {
+                                    const { id } = match.params;
+
+                                    return <PageTask
+                                        user={user}
+                                        url={match.url}
+                                        idTask={id}
+                                        handleClickExit={this._handleClickExit}
+                                        isLoggedIn={isLoggedIn}
+                                    />
+                                    }
+                                }
                                 />
                             <Route render={()=>(<h1>Такой страницы нету!</h1>)} />
                         </Switch>

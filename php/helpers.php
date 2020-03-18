@@ -377,7 +377,8 @@ function getTask($link, $sql, $taskId): array
             return $result[0];
         }
 
-        return ["error"=> "Такой задачи нету."];
+        // return ["error"=> "Такой задачи нету."];
+        return [];
     }
     
     return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
