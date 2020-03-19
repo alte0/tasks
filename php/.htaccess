@@ -7,7 +7,7 @@ Options All -Indexes
 <IfModule dir_module>
   # Зададим index файл который будет
   # отдаваться если запрошенный не найден
-  DirectoryIndex index.php index.html
+  DirectoryIndex index.html index.php 
 </IfModule>
 
 ErrorDocument 404 /error.php
