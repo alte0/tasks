@@ -1,5 +1,6 @@
 import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
+import { deleteCookie } from './cookie'
 
 const LOGOUT = document.querySelector(`.user-menu__logout`)
 /**
@@ -24,6 +25,8 @@ const linkClickHandler = (evt) => {
       .then((response) => {
         if (response.msgsType === `success`) {
           showMessage(response.msgsType, response.textMsgs)
+          deleteCookie('PHPSESSID')
+          deleteCookie('userInfo')
           setTimeout(() => {
             location = '/signin.php'
           }, Vars.TIME)
