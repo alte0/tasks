@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         header("Location: /index.php");
         die;
       }
-      $errorsForm["login"] = $errorsForm["password"] = "Неправльный логин или пароль!";
+      $errorsForm["login"] = $errorsForm["password"] = "Неправильный логин или пароль!";
     }
 }
 

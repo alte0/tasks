@@ -27,10 +27,9 @@ if (!isset($_GET["id"]) || clearInt($_GET["id"]) === 0) {
 $taskId = $_GET["id"];
 $task = getTask($linkDB, $sqlTask, $taskId);
 
-if (isset($task["error"])) {
-    $error = $task["error"];
+if (isset($task["error"]) || empty($task)) {
     $content = include_template('error', [
-      'error' => $error
+      'error' => isset($task["error"]) ? $task["error"] : "Такой задачи нету!"
     ]);
 
     $layout = include_template('layout', [

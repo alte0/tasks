@@ -377,7 +377,6 @@ function getTask($link, $sql, $taskId): array
             return $result[0];
         }
 
-        // return ["error"=> "Такой задачи нету."];
         return [];
     }
     

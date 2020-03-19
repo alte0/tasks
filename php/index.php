@@ -9,8 +9,8 @@ if (!$isAuth) {
 $sql = $isClosedModeTasks ? $sqlMyTasksComplete : $sqlMyTasks;
 $tasks = getMyTasks($linkDB, $sql);
 
-if (isset($task["error"])) {
-    $error = $task["error"];
+if (isset($tasks["error"])) {
+    $error = $tasks["error"];
     $content = include_template('error', [
       'error' => $error
     ]);
