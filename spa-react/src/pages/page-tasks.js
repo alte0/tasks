@@ -3,7 +3,7 @@ import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
 import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
 import Pagination from "../components/pagination/pagination";
-import { getActiveTitleTasks, changeStatusTaskAndDel, decodeParamsSearchUrl } from "../helpers/helpers";
+import { getActiveTitleTasks, deleteTaskFromArrTasks, decodeParamsSearchUrl } from "../helpers/helpers";
 import { Redirect } from "react-router-dom";
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, getResultSearchText } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
@@ -173,7 +173,7 @@ class PageTasks extends Component {
                         this.setState((state) => {
 
                             return {
-                                tasks: changeStatusTaskAndDel(state.tasks, idTask),
+                                tasks: deleteTaskFromArrTasks(state.tasks, idTask),
                             }
                         })
 

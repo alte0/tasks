@@ -13,7 +13,8 @@ const option = {
 export const Tasks = (props) => {
     const {
         title,
-        tasks
+        tasks,
+        userId
         } = props;
 
     return (
@@ -36,7 +37,7 @@ export const Tasks = (props) => {
                                             isShowDesc={option.isShowDesc}
                                             isTasks={option.isTasks}
                                             task={task}
-                                            isShowLinkExecute={props.isShowLinkExecute}
+                                            userId={userId}
                                             handleClickMore={props.handleClickMore}
                                             handleClickExecuteTask={props.handleClickExecuteTask}
                                         />

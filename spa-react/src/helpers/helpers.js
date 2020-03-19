@@ -94,19 +94,27 @@ export const getActiveTitleTasks = (url, textSearch="") => {
     }
 }
 /**
- * Изминение статуса задачи и её удаление
+ * Удаление задачи. Для страниц с задачами.
  * @param {Object} tasks 
  * @param {Number} idTask 
  */
-export const changeStatusTaskAndDel = (tasks, idTask) => {
+export const deleteTaskFromArrTasks = (tasks, idTask) => {
     let copyTasks = [...tasks];
     const indexTask = copyTasks.findIndex((task) => Number(task.task_id) === Number(idTask));
     if (indexTask !== -1) {
-        copyTasks[indexTask]["task_status"] = "1";
+        // copyTasks[indexTask]["task_status"] = "1";
         copyTasks.splice(indexTask, 1);
     }
     
     return copyTasks;
+}
+/**
+ * Изменение статуса задаи для страницы задач.
+ * @param {Object} tasks
+ * @param {Number} idTask
+ */
+export const changeStatusTask = (task) => {
+    return Object.assign({}, task, { task_status: "1" });
 }
 /**
  * Полуение массива активных(изменяемых в зависимости от типа адреса) ссылок для меню.

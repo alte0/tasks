@@ -3,8 +3,9 @@ import Task from "../components/task/task"
 import UserMenu from "../components/user-menu/user-menu";
 import { Redirect } from "react-router-dom";
 import LoadingData from '../components/loading-data/loading-data';
-import { getTask } from "../data/data";
+import { getTask, executeTask } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
+import { changeStatusTask } from "../helpers/helpers";
 
 const option = {
     isMore: false,
@@ -19,6 +20,8 @@ class PageTask extends Component {
             loading: true
         };
         this.state = this.initialState;
+
+        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this); 
     }
 
     componentDidMount() {
@@ -75,12 +78,39 @@ class PageTask extends Component {
                                 isShowDesc={option.isShowDesc}
                                 task={this.state.task}
                                 userId={userId}
-                                handleClickExecuteTask={this.handleClickExecuteTask}
+                                handleClickExecuteTask={this._handleClickExecuteTask}
                             /> :
                             <p>Такая задача не существует!</p>
                 }
             </React.Fragment>
         )
+    }
+
+    _handleClickExecuteTask(evt) {
+        const idTask = evt.target.dataset.idTask;
+        const title = evt.target.dataset.title;
+
+        const isQuestion = window.confirm(`Вы хотите выполнить задачу - ${title}?`)
+
+        if (isQuestion) {
+            executeTask(idTask)
+                .then(result => {
+                    showMessage(result.msgsType, '', result.textMsgs);
+                    if (result.msgsType === 'success') {
+                        this.setState((state) => (
+                            {
+                                task: changeStatusTask(state.task),
+                            }
+                        ))
+
+                        return true
+                    }
+                })
+                .catch(e => {
+                    console.error(e);
+                    showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
+                });
+        }
     }
 };
 
