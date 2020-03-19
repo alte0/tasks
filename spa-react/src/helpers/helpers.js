@@ -38,7 +38,6 @@ export const getCookie = (name) => {
  * @param {Object} options 
  */
 function setCookie(name, value, options = {}) {
-
     options = {
         path: '/',
         ...options
@@ -69,15 +68,6 @@ export const deleteCookie = (name) => {
         'max-age': -1
     })
 }
-/**
- * Получение задачи по её id
- * @param tasks
- * @param idTask - id задачи
- * @returns {Object}
- */
-export const getTask = (tasks, idTask) => {
-    return tasks.find((task) => Number(task.task_id) === Number(idTask));
-};
 /**
  * Переворачивает дату с сервера для js
  * @param {String} date 

@@ -61,6 +61,8 @@ class PageTasks extends Component {
             urlOrigin
         } = this.props;
 
+        const { userId } = user;
+
         const textSearch = decodeParamsSearchUrl(urlOrigin);
 
         const {
@@ -89,11 +91,7 @@ class PageTasks extends Component {
                             <Tasks
                                 tasks={visibleTasks}
                                 title={getActiveTitleTasks(url, textSearch)}
-                                isShowLinkExecute={isShowLinkExecute}
-                                handleClickMore={(evt) => {
-                                    evt.preventDefault();
-                                    console.log('handleClickMore');
-                                }}
+                                userId={userId}
                                 handleClickExecuteTask={this._handleClickExecuteTask}
                             />
                             {

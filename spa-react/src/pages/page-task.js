@@ -56,7 +56,9 @@ class PageTask extends Component {
             handleClickExit,
             url,
         } = this.props;
-        
+
+        const {userId} = user;
+
         return (
             <React.Fragment>
                 <UserMenu
@@ -72,7 +74,7 @@ class PageTask extends Component {
                                 isMore={option.isMore}
                                 isShowDesc={option.isShowDesc}
                                 task={this.state.task}
-                                isShowLinkExecute={this.isShowLinkExecute}
+                                userId={userId}
                                 handleClickExecuteTask={this.handleClickExecuteTask}
                             /> :
                             <p>Такая задача не существует!</p>
