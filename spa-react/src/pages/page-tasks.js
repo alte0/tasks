@@ -72,7 +72,6 @@ class PageTasks extends Component {
             pagesCount
          } = this.state;
         const visibleTasks = tasks.length ? tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) : tasks;
-        const isShowLinkExecute = url === "/" ? true : false;
 
         return (
             <React.Fragment>
