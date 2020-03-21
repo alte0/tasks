@@ -55,65 +55,23 @@ export class App extends PureComponent {
                         <Switch>
                             <Route 
                                 path="/"
-                                render={({ location, match }) => {
-                                    return <PageTasks
-                                        isLoggedIn={isLoggedIn}
-                                        user={user}
-                                        url={match.url}
-                                        urlOrigin={`${window.location.origin}${location.search}`}
-                                        handleClickExit={this._handleClickExit}
-                                    />;
-                                    }
-                                }
+                                render={this.renderPageTasks}
                                 exact />
                             <Route 
                                 path="/search"
-                                render={({ location, match }) => {
-                                    return <PageTasks
-                                        isLoggedIn={isLoggedIn}
-                                        user={user}
-                                        url={match.url}
-                                        urlOrigin={`${window.location.origin}${location.search}`}
-                                        handleClickExit={this._handleClickExit}
-                                    />;
-                                    }
-                                }
+                                render={this.renderPageTasks}
                                 />
                             <Route 
                                 path="/my-tasks-done"
-                                render={({match}) => (
-                                    <PageTasks
-                                        isLoggedIn={isLoggedIn}
-                                        user={user}
-                                        url={match.url}
-                                        handleClickExit={this._handleClickExit}
-                                    />
-                                    )
-                                }
+                                render={this.renderPageTasks}
                                  />
                             <Route 
                                 path="/designated-tasks"
-                                render={({match}) => (
-                                    <PageTasks
-                                        isLoggedIn={isLoggedIn}
-                                        user={user}
-                                        url={match.url}
-                                        handleClickExit={this._handleClickExit}
-                                    />
-                                    )
-                                }
+                                render={this.renderPageTasks}
                                  />
                             <Route 
                                 path="/designated-tasks-done"
-                                render={({match}) => (
-                                    <PageTasks
-                                        isLoggedIn={isLoggedIn}
-                                        user={user}
-                                        url={match.url}
-                                        handleClickExit={this._handleClickExit}
-                                    />
-                                    )
-                                }
+                                render={this.renderPageTasks}
                                  />
                             <Route 
                                 path="/sing-up"
@@ -161,6 +119,16 @@ export class App extends PureComponent {
                 <Footer />
             </Router>
         )
+    }
+
+    renderPageTasks = ({ location, match }) => {
+        return <PageTasks
+            isLoggedIn={this.state.isLoggedIn}
+            user={this.state.user}
+            url={match.url}
+            urlOrigin={`${window.location.origin}${location.search}`}
+            handleClickExit={this._handleClickExit}
+        />;
     }
 
     _isAuthUser() {
