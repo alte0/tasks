@@ -49,7 +49,7 @@ export class App extends PureComponent {
          } = this.state;
 
         return (
-            <Router>
+            <Router basename="/react/" >
                 <main className={`bg main${this.state.loading ? ' flex' : ''}`}>
                     <Container>
                         <Switch>
