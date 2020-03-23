@@ -5,7 +5,8 @@ $content = "<p>Такой страницы нету! <a href=\"/index.php\">Пе
 
 $layout = include_template('layout', [
   'title' => $mainText . " Ошибка 404",
-  'content' => $content
+  'content' => $content,
+  'bgClass' => $bgClass
 ]);
 
 print($layout);
