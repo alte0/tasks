@@ -7,7 +7,7 @@
         <button type="button" title="Открыт/Закрыть календарь" data-toggle="">календарь</button>
         <button type="button" title="Очистить календарь" data-clear="">очистить</button>
       </div>
-      <?= !empty($errorsForm["date"]) ? "<div class=\"text-error\">{$errorsForm["date"]}</div>" : "" ?>
+      <?= !empty($errorsForm["date"]) ? "<div class=\"error\"><p class=\"error__text\">{$errorsForm["date"]}</p></div>" : "" ?>
     </div>
     <div class="form__row">
       <input class="form__checkbox" type="checkbox" name="date-no-limit" id="date-no-limit" <?= isset($_POST["date-no-limit"]) ? "checked" : "" ?>/>
@@ -29,17 +29,17 @@
           }
         ?>
       </select>
-      <?= !empty($errorsForm["executor"]) ? "<div class=\"text-error\">{$errorsForm["executor"]}</div>" : "" ?>
+      <?= !empty($errorsForm["executor"]) ? "<div class=\"error\"><p class=\"error__text\">{$errorsForm["executor"]}</p></div>" : "" ?>
     </div>
     <div class="form__row form__row_content-column">
       <label>Заголовок задачи</label>
       <textarea class="form__title-add textarea" type="date" name="title" maxlength="255" placeholder="сделать ..." required="required"><?= getPostVal("title") ?></textarea>
-      <?= !empty($errorsForm["title"]) ? "<div class=\"text-error\">{$errorsForm["title"]}</div>" : "" ?>
+      <?= !empty($errorsForm["title"]) ? "<div class=\"error\"><p class=\"error__text\">{$errorsForm["title"]}</p></div>" : "" ?>
     </div>
     <div class="form__row form__row_content-column">
       <label>Дополнительная информация по задаче</label>
       <textarea class="textarea" id="textarea-text" name="text" maxlength="1000" placeholder="Обьяснение задачи ..." required="required"><?= getPostVal("text") ?></textarea>
-      <?= !empty($errorsForm["text"]) ? "<div class=\"text-error\">{$errorsForm["text"]}</div>" : "" ?>
+      <?= !empty($errorsForm["text"]) ? "<div class=\"error\"><p class=\"error__text\">{$errorsForm["text"]}</p></div>" : "" ?>
     </div>
     <div class="form__row form__row_text-center">
       <button class="form__submit submit" type="submit" name="task-add">Добавить задачу</button>

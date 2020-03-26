@@ -76,7 +76,9 @@ task(
     'clean-all',
     parallel('sprites', 'spritesSVG', 'symbolsSVG'),
     'sass',
-    parallel('pug', 'watch', 'browser-sync')
+    'pug',
+    'watch',
+    'browser-sync'
   )
 )
 
