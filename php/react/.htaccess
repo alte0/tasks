@@ -1,0 +1,18 @@
+# Установка кодировки страниц сайта или off
+AddDefaultCharset Utf-8
+
+# Запретим пользователям просматривать файлы директории
+Options All -Indexes
+
+<IfModule dir_module>
+  # Зададим index файл который будет
+  # отдаваться если запрошенный не найден
+  DirectoryIndex index.html
+</IfModule>
+
+ErrorDocument 404 /error.php
+
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
