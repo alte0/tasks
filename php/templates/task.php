@@ -1,6 +1,6 @@
 <?= $userMenu ?>
 <?php
-  $classTaskExpired = (intval($task['task_date_no_limit']) === 0 && intval($task['task_status']) === 0) && (strtotime($task['task_date_end']) < strtotime($today)) ? " task_expired" : "";
+  $classTaskExpired = (intval($task['task_date_no_limit']) === 0 && intval($task['task_status']) === 0) && (strtotime($task['task_date_end']) <= strtotime($today)) ? " task_expired" : "";
 ?>
 <section class='task task_single<?= $classTaskExpired ?>'>
   <h3 class='task__title'><?= clearStrDataTags($task['task_title']) ?></h3>
