@@ -23,26 +23,28 @@ class PageTasks extends Component {
 
         this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this); 
         this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
-
     }
 
     componentDidMount() {
         const { url } = this.props;
-        if (url !== '/search') {
+
+        if (url === '/search') {
+            this._getSearchData();
+        } else {
             const dataFunc = this._getFuncData(url);
             this._getData(dataFunc);
-        } else {
-            this._getSearchData();
         }
     }
 
     componentDidUpdate(prevProps) {
         const { url, urlOrigin } = this.props;
-        if (url !== '/search' && url !== prevProps.url) {
-            const dataFunc = this._getFuncData(this.props.url);
+
+        if ((url !== '/search') && (url !== prevProps.url)) {
+            const dataFunc = this._getFuncData(url);
             this._getData(dataFunc);
-        } 
-        if (url === '/search' && urlOrigin !== prevProps.urlOrigin) {
+        }
+
+        if ((url === '/search') && (urlOrigin !== prevProps.urlOrigin)) {
             this._getSearchData();
         }
     }
