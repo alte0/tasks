@@ -4,14 +4,15 @@ import FormAddTask from "../components/forms/form-add-task";
 import { Redirect } from "react-router-dom";
 
 const PageAddTask = (props) => {
-    const { isLoggedIn } = props;
+    const { isLoggedIn, user } = props;
 
     if (!isLoggedIn) {
         return (<Redirect to="/sing-in" />)
     }
 
     return (
-        <FormAddTask />
+        <FormAddTask
+              user={user} />
     )
 };
 export default PageAddTask

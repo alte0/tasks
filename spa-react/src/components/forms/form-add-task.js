@@ -3,7 +3,7 @@ import "./forms.scss";
 
 import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
 import { initEditor, destroyEditor } from "../../plugins/editor";
-import { checkLengthMinMaxStr } from "../../helpers/helpers";
+import { checkLengthMinMaxStr, getCookie } from "../../helpers/helpers";
 import { ConfMinAndMaxAddTask } from "../../vars/vars";
 import { getAllUsers } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
@@ -60,6 +60,8 @@ class FormAddTask extends Component {
     }
 
     render() {
+      const { userId: userIdCurrent } = this.props.user;
+
         return (
             <form
                 onSubmit={this.handleSubmitForm}
@@ -99,7 +101,7 @@ class FormAddTask extends Component {
                                 <option
                                     value={user.user_id}
                                     key={user.user_id}
-                                >{user.user_surname} {user.user_name} {user.user_patronymic}</option>
+                                > { userIdCurrent === Number(user.user_id) ? "Я" : `${user.user_surname} ${user.user_name} ${user.user_patronymic}` } </option>
                             ))
                         }
                     </select>

@@ -16,7 +16,7 @@ export const checkLengthMinMaxStr = (str, minLengthStr, maxLengthStr) => {
 export const hasDateExpired = (dateTask) => {
     const today = new Date().getTime();
     const dateEnd = new Date(reverseDate(dateTask)).getTime();
-    
+
     return dateEnd < today;
 };
 /**
@@ -33,9 +33,9 @@ export const getCookie = (name) => {
 };
 /**
  *  Устанавливает куки с именем name и значением value c опциями.
- * @param {String} name 
+ * @param {String} name
  * @param {String} value
- * @param {Object} options 
+ * @param {Object} options
  */
 function setCookie(name, value, options = {}) {
     options = {
@@ -61,7 +61,7 @@ function setCookie(name, value, options = {}) {
 }
 /**
  * Уддаление Cookie по её имени.
- * @param {String} name 
+ * @param {String} name
  */
 export const deleteCookie = (name) => {
     setCookie(name, "", {
@@ -70,7 +70,7 @@ export const deleteCookie = (name) => {
 }
 /**
  * Переворачивает дату с сервера для js
- * @param {String} date 
+ * @param {String} date
  */
 export const reverseDate = (date) => {
     return date.split('.').reverse().join('-');
@@ -95,8 +95,8 @@ export const getActiveTitleTasks = (url, textSearch="") => {
 }
 /**
  * Удаление задачи. Для страниц с задачами.
- * @param {Object} tasks 
- * @param {Number} idTask 
+ * @param {Object} tasks
+ * @param {Number} idTask
  */
 export const deleteTaskFromArrTasks = (tasks, idTask) => {
     let copyTasks = [...tasks];
@@ -105,11 +105,11 @@ export const deleteTaskFromArrTasks = (tasks, idTask) => {
         // copyTasks[indexTask]["task_status"] = "1";
         copyTasks.splice(indexTask, 1);
     }
-    
+
     return copyTasks;
 }
 /**
- * Изменение статуса задаи для страницы задач.
+ * Изменение статуса задачи для страницы задач.
  * @param {Object} tasks
  * @param {Number} idTask
  */
@@ -117,8 +117,8 @@ export const changeStatusTask = (task) => {
     return Object.assign({}, task, { task_status: "1" });
 }
 /**
- * Полуение массива активных(изменяемых в зависимости от типа адреса) ссылок для меню.
- * @param {String} url 
+ * Получение массива активных(изменяемых в зависимости от типа адреса) ссылок для меню.
+ * @param {String} url
  */
 export const getActiveMenuLinks = (url) => {
     switch (url) {
@@ -155,8 +155,8 @@ export const getActiveMenuLinks = (url) => {
     };
 }
 /**
- * Декадирование параметра поиска 
- * @param {String} urlOrigin 
+ * Декадирование параметра поиска
+ * @param {String} urlOrigin
  */
 export const decodeParamsSearchUrl = (urlOrigin) => {
     if (!urlOrigin) {

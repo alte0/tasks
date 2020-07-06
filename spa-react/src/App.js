@@ -43,7 +43,7 @@ export class App extends PureComponent {
     }
 
     render() {
-        const { 
+        const {
             isLoggedIn,
             user
          } = this.state;
@@ -53,34 +53,34 @@ export class App extends PureComponent {
                 <main className={`bg main${this.state.loading ? ' flex' : ''}`}>
                     <Container>
                         <Switch>
-                            <Route 
+                            <Route
                                 path="/"
                                 render={this.renderPageTasks}
                                 exact />
-                            <Route 
+                            <Route
                                 path="/search"
                                 render={this.renderPageTasks}
                                 />
-                            <Route 
+                            <Route
                                 path="/my-tasks-done"
                                 render={this.renderPageTasks}
                                  />
-                            <Route 
+                            <Route
                                 path="/designated-tasks"
                                 render={this.renderPageTasks}
                                  />
-                            <Route 
+                            <Route
                                 path="/designated-tasks-done"
                                 render={this.renderPageTasks}
                                  />
-                            <Route 
+                            <Route
                                 path="/sing-up"
                                 render={()=>(
-                                    <PageSingUp 
+                                    <PageSingUp
                                         isLoggedIn={isLoggedIn}
                                     />
                                 )} />
-                            <Route 
+                            <Route
                                 path="/sing-in"
                                 render={() => (
                                     <PageSingIn
@@ -89,15 +89,16 @@ export class App extends PureComponent {
                                         setLoggedIn={this._setLoggedIn}
                                     />
                                 )} />
-                            <Route 
+                            <Route
                                 path="/add-task"
                                 render={()=>(
-                                    <PageAddTask 
+                                    <PageAddTask
+                                        user={this.state.user}
                                         isLoggedIn={isLoggedIn}
                                         />
                                 )}
                                 />
-                            <Route 
+                            <Route
                                 path="/task/:id"
                                 render={({ match })=> {
                                     const { id } = match.params;
