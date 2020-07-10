@@ -3,7 +3,7 @@ import "./forms.scss";
 
 import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
 import { initEditor, destroyEditor } from "../../plugins/editor";
-import { checkLengthMinMaxStr, getCookie } from "../../helpers/helpers";
+import { checkLengthMinMaxStr } from "../../helpers/helpers";
 import { ConfMinAndMaxAddTask } from "../../vars/vars";
 import { getAllUsers } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
