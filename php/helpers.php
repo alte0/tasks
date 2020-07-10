@@ -1,7 +1,7 @@
 <?php
 /**
  * DBO->prepare и $stmt->fetchAll()
- * 
+ *
  * @param pdo - $link Соеинение с бд
  * @param string - $sql запрос к бд
  * @param array - $data массив с данными для $stmt->execute($data)
@@ -10,19 +10,19 @@
 function dboPrepareAndFetchAll($link, $sql, array $data = []): array
 {
     $stmt = $link->prepare($sql);
-    
+
     if ($stmt !== false) {
         $stmt->execute($data);
         $result = $stmt->fetchAll();
-        
+
         return $result ?? [];
     }
-    
+
     return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
 }
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
- * 
+ *
  * @param string $nameTemplate Имя подключаемого файла шаблона из папки templates
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
@@ -42,7 +42,7 @@ function include_template(string $nameTemplate, array $data = []): string
 }
 /**
  * Функция очистки данных от тэгов
- * 
+ *
  * @param string $str Очишаемая строка
  * @param string $tags Тэги которые надо оставить - '<p><a>'
  * @return string Очишенная строка
@@ -53,7 +53,7 @@ function clearStrDataTags(string $str, $tags = ''): string
 }
 /**
  * Получения значения из $_POST для заполнеиня данных в форме.
- * 
+ *
  * @param string $name - имя ключа из массива $_POST для получения значения;
  * @return string
  */
@@ -63,8 +63,8 @@ function getPostVal($name): string
     return isset($_POST[$name]) ? htmlentities(trim($_POST[$name])) : "";
 }
 /**
- * Валидация строки
- * 
+ * Валидация строки min max
+ *
  * @param integer $min - минимальное значение длины строки;
  * @param integer $max - максимальное значение длины строки;
  * @param string $value - значение для валидации;
@@ -73,7 +73,7 @@ function getPostVal($name): string
 function validateLength(int $min, int $max, string $value)
 {
     $length = mb_strlen($value);
-    
+
     if (!($length >= $min && $length <= $max)) {
         return "Значение должно быть от $min до $max символов";
     }
@@ -81,8 +81,8 @@ function validateLength(int $min, int $max, string $value)
     return null;
 }
 /**
- * Валидация строки
- * 
+ * Валидация строки логина по regex
+ *
  * @param string $value - значение для валидации;
  * @return string|null
  */
@@ -95,8 +95,8 @@ function validateLoginRegex(string $value)
     return null;
 }
 /**
- * Валидация строки
- * 
+ * Валидация строки пароля по regex
+ *
  * @param string $value - значение для валидации;
  * @return string|null
  */
@@ -109,8 +109,8 @@ function validatePasswordsRegex(string $value)
     return null;
 }
 /**
- * Валидация строки
- * 
+ * Валидация строк паролей
+ *
  * @param string $value - значение для валидации;
  * @param string $value2 - значение для валидации;
  * @return string|null
@@ -124,8 +124,8 @@ function validatePasswordsEqually(string $value, string $value2)
     return null;
 }
 /**
- * Валидация строки
- * 
+ * Проверка существования логина в БД
+ *
  * @param pdo $link - соединение с БД;
  * @param array $arr - массив с данными для валидации;
  * @return string|null
@@ -140,11 +140,11 @@ function checkLoginInDB($link, array $arr)
 }
 /**
  * Проверка пользователя в бд
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param array $user - массив с данными = ["login"=> "login","password"=> "password"]
  * @param bool $isPwd - Признак надо ли на проверку пароль.
- * @return bool 
+ * @return bool
  */
 function checkUserInDB($link, $user, $isPwd = false): bool
 {
@@ -152,7 +152,7 @@ function checkUserInDB($link, $user, $isPwd = false): bool
     global $passwordSalt;
     $password = $passwordSalt . $user["password"];
     $sql = "SELECT * FROM `users` WHERE `user_login`=?";
-    
+
     $stmt = $link->prepare($sql);
 
     if ($stmt === false) {
@@ -175,7 +175,7 @@ function checkUserInDB($link, $user, $isPwd = false): bool
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -207,7 +207,7 @@ function getUsers($link): array
 
 /**
  * Преобразовывает введеную дату пользователя в дату для mysql
- * 
+ *
  * @param string - $date
  * @return  string
  */
@@ -219,7 +219,7 @@ function transformsDate($date): string
 
 /**
  * Добавление задачи для пользователя
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param array - $task
  * @return bool
@@ -236,9 +236,9 @@ function addTask($link, array $task): bool
     $status = 0;
     $dateStart = null;
     $dateEnd = null;
-  
+
     $dates = explode(" — ", $date);
-  
+
     if (count($dates) === 2) {
         $dateStart = transformsDate($dates[0]);
         $dateEnd = transformsDate($dates[1]);
@@ -248,15 +248,15 @@ function addTask($link, array $task): bool
     }
 
     $sqlTask = "INSERT INTO `tasks`(`task_title`, `task_desc`, `task_status`, `task_date_start`, `task_date_end`, `task_date_add`, `task_date_no_limit`) VALUES(?, ?, ?, ?, ?, ?, ?)";
-    
+
     $link->beginTransaction();
 
     if (!$link) {
         return false;
     }
-    
+
     $stmt = $link->prepare($sqlTask);
-    
+
     if (!$stmt) {
         return false;
     }
@@ -264,12 +264,12 @@ function addTask($link, array $task): bool
     global $todayAndHour;
 
     $resutTask = $stmt->execute([$title, $text, $status, $dateStart, $dateEnd, $todayAndHour, $dateNoLimit]);
-    
+
     $idTask = $link->lastInsertId();
 
     $sqlTaskAuthor = "INSERT INTO tasks_author (user_id, task_id) VALUES('$authorId', '$idTask')";
     $sqlTaskExecutor = "INSERT INTO tasks_executor (user_id, task_id) VALUES('$executorId', '$idTask')";
-    
+
     $resutAuthor = $link->exec($sqlTaskAuthor);
     $resutExecutor = $link->exec($sqlTaskExecutor);
 
@@ -284,7 +284,7 @@ function addTask($link, array $task): bool
 }
 /**
  * Получение задач
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param string $sql
  * @return array
@@ -304,18 +304,18 @@ function getTasks($link, $sql): array
 
 /**
  * Получение задач для пользователя
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param string $sql
  * @return array
  */
-function getMyTasks($link, $sql): array 
+function getMyTasks($link, $sql): array
 {
     return getTasks($link, $sql);
 }
 /**
  * Получение задач поставленных пользователем
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param string $sql
  * @return array
@@ -326,7 +326,7 @@ function getMyDesignatedTasks($link, $sql): array
 }
 /**
  * Очистка введеных данных(ожидаем цифру).
- * 
+ *
  * @param string $value
  * @return string
  */
@@ -335,7 +335,7 @@ function clearInt($value) {
 }
 /**
  * Выполнение задачи
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param int|float|string - $id задачи
  * @return bool
@@ -353,12 +353,12 @@ function executeTask($link, $id): bool
     if ($query) {
         return true;
     }
-    
+
     return false;
 }
 /**
  * Получение задачи
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param string - $sql
  * @param int - $taskId номер задачи
@@ -368,23 +368,23 @@ function getTask($link, $sql, $taskId): array
 {
     $taskId = abs(clearInt($taskId));
     $stmt = $link->prepare($sql);
-    
+
     if ($stmt !== false) {
         $stmt->execute([$taskId]);
         $result = $stmt->fetchAll();
-        
+
         if (!empty($result)) {
             return $result[0];
         }
 
         return [];
     }
-    
+
     return ["error"=> "Нет доступна к базе данных. Перезагрузите страницу!"];
 }
 /**
  * Добавление нового пользователя
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param string - $sql запрос
  * @param array - $user данные пользователя
@@ -414,7 +414,7 @@ function addUser($link, $sql, $user): bool
         return validateLength(MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, $user["patronymic"]);
     },
   ];
-  
+
   $rulesExtended = [
     'login' => function () use ($user) {
         return validateLoginRegex($user["login"]);
@@ -463,7 +463,7 @@ function addUser($link, $sql, $user): bool
       if (!isset($errorsForm[$key]) && isset($rulesExtendedSecond[$key])) {
           $ruleExtendedSecond = $rulesExtendedSecond[$key];
           $errorsForm[$key] = $ruleExtendedSecond();
-        
+
           if ($key === 'password') {
               $errorsForm['password2'] = $errorsForm['password'];
           }
@@ -488,7 +488,7 @@ function addUser($link, $sql, $user): bool
 }
 /**
  * Поиск по задачам
- * 
+ *
  * @param pdo $link - соединение с mysql
  * @param string - $sql Соеинение с бд
  * @param array - $data для prepare
