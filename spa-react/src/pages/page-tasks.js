@@ -8,6 +8,8 @@ import { Redirect } from "react-router-dom";
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, getResultSearchText } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import LoadingData from '../components/loading-data/loading-data';
+import { connect } from "react-redux";
+
 
 class PageTasks extends Component {
     constructor(props){
@@ -55,13 +57,12 @@ class PageTasks extends Component {
         }
 
         const {
-            user,
-            // handleClickExit,
             url,
-            urlOrigin
+            urlOrigin,
+            user
         } = this.props;
 
-        const { userId } = user;
+        const userId = user.userId;
 
         const textSearch = decodeParamsSearchUrl(urlOrigin);
 
@@ -76,7 +77,6 @@ class PageTasks extends Component {
         return (
             <React.Fragment>
                 <UserMenu
-                    user={user}
                     url={url}
                 />
                 {
@@ -225,4 +225,6 @@ class PageTasks extends Component {
     }
 }
 
-export default PageTasks
+const mapStateToProps = (state) => ({ user: state.user })
+
+export default connect(mapStateToProps)(PageTasks);

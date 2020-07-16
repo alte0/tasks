@@ -5,14 +5,9 @@ import { Link, withRouter } from "react-router-dom";
 import {deleteCookie, getActiveMenuLinks } from "../../helpers/helpers";
 import {logOut} from "../../data/data";
 import {showMessage, TypeMessage} from "../../plugins/show-message";
+import { connect} from "react-redux";
 
-const UserMenu = (props) => {
-    const {
-        user,
-        url,
-        history
-    } = props;
-
+const UserMenu = ({ user, url, history}) => {
     const handleClickExit = (evt) => {
         evt.preventDefault();
 
@@ -70,4 +65,8 @@ UserMenu.propTypes = {
     }).isRequired
 };
 
-export default withRouter(UserMenu)
+const mapStateToProps = (state) => ({ user: state.user })
+
+export default withRouter(
+    connect(mapStateToProps)(UserMenu)
+)

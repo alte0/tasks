@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import Container from "./components/container/container";
 import Footer from './components/footer/footer';
-// import { TypeMessage, showMessage } from './plugins/show-message';
-// import { getCookie, deleteCookie, checkLoggedUser } from  "./helpers/helpers";
 import { getCookie,  checkLoggedUser } from  "./helpers/helpers";
-// import { logOut } from "./data/data";
-
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect} from "react-redux";
+import { getUserInfo} from "./actions";
+
 import PageTasks from './pages/page-tasks';
 import PageSingIn from './pages/page-sign-in';
 import PageSingUp from './pages/page-sign-up';
@@ -23,29 +22,17 @@ export class App extends Component {
         super(props);
 
         this.initialState = {
-            user: {
-                name: '',
-                surname: '',
-                patronymic: '',
-                userId: null
-            },
             textSearch: '',
         };
 
         this.state = this.initialState;
-
-        this._getFullName = this._getFullName.bind(this);
     }
 
     componentDidMount() {
-        this._getFullName();
+        this.props.getUserInfoToProps();
     }
 
     render() {
-        const {
-            user
-         } = this.state;
-
         return (
             <Router basename="/react/" >
                 <main className={`bg main${this.state.loading ? ' flex' : ''}`}>
@@ -80,16 +67,12 @@ export class App extends Component {
                             <Route
                                 path="/sing-in"
                                 render={() => (
-                                    <PageSingIn
-                                        getFullName={this._getFullName}
-                                    />
+                                    <PageSingIn />
                                 )} />
                             <Route
                                 path="/add-task"
                                 render={()=>(
-                                    <PageAddTask
-                                        user={this.state.user}
-                                        />
+                                    <PageAddTask />
                                 )}
                                 />
                             <Route
@@ -98,7 +81,6 @@ export class App extends Component {
                                     const { id } = match.params;
 
                                     return <PageTask
-                                        user={user}
                                         url={match.url}
                                         idTask={id}
                                     />
@@ -116,25 +98,29 @@ export class App extends Component {
 
     renderPageTasks = ({ location, match }) => {
         return <PageTasks
-            user={this.state.user}
             url={match.url}
             urlOrigin={`${window.location.origin}${location.search}`}
         />;
     }
+}
 
-    _getFullName() {
-        if (checkLoggedUser()) {
-            const userInfo = getCookie("userInfo").split(";");
-            this.setState({
-                user: {
-                    name: userInfo[0],
-                    surname: userInfo[1],
-                    patronymic: userInfo[2],
-                    userId: Number(userInfo[3])
-                }
-            });
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getUserInfoToProps: () => {
+            if (checkLoggedUser()) {
+                const userInfo = getCookie("userInfo").split(";");
+
+                return dispatch(
+                    getUserInfo({
+                        name: userInfo[0],
+                        surname: userInfo[1],
+                        patronymic: userInfo[2],
+                        userId: Number(userInfo[3])
+                    })
+                )
+            }
         }
     }
 }
 
-export default App;
+export default connect(null, mapDispatchToProps)(App);

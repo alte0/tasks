@@ -4,18 +4,14 @@ import { Redirect } from "react-router-dom";
 import { checkLoggedUser} from "../helpers/helpers";
 
 
-const PageSingIn = ({
-        getFullName
-    }) => {
+const PageSingIn = () => {
 
     if (checkLoggedUser()) {
         return (<Redirect to="/" />)
     }
 
     return (
-        <FormSingIn
-            getFullName={getFullName}
-        />
+        <FormSingIn />
     )
 };
 export default PageSingIn

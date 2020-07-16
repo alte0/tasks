@@ -1,12 +1,15 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./forms.scss";
-import {checkLengthMinMaxStr} from "../../helpers/helpers";
-import {ConfMinAndMax} from "../../vars/vars";
+import {checkLengthMinMaxStr, getCookie} from "../../helpers/helpers";
+import { ConfMinAndMax } from "../../vars/vars";
 import { checkLoggedUser } from "../../helpers/helpers";
 import { signInUser } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
 
 import { Link, withRouter } from "react-router-dom";
+import { connect} from "react-redux";
+import { getUserInfo } from "../../actions";
+
 
 class FormSingIn extends Component {
     constructor(props) {
@@ -101,7 +104,7 @@ class FormSingIn extends Component {
                     this.setState(this.initialState);
 
                     if (checkLoggedUser()) {
-                        this.props.getFullName();
+                        this.props.getUserInfoToProps();
                         this.props.history.push('/');
                     }
                 }
@@ -112,4 +115,26 @@ class FormSingIn extends Component {
             });
     };
 }
-export default withRouter(FormSingIn)
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getUserInfoToProps: () => {
+            if (checkLoggedUser()) {
+                const userInfo = getCookie("userInfo").split(";");
+
+                return dispatch(
+                    getUserInfo({
+                        name: userInfo[0],
+                        surname: userInfo[1],
+                        patronymic: userInfo[2],
+                        userId: Number(userInfo[3])
+                    })
+                )
+            }
+        }
+    }
+}
+
+export default withRouter(
+    connect(null, mapDispatchToProps)(FormSingIn)
+)

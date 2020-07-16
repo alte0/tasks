@@ -12,6 +12,8 @@ import { clearDataEditor } from "../../plugins/editor";
 import { clearDataFlatpickr } from "../../plugins/flatpickr";
 
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+
 
 class FormAddTask extends Component {
     constructor(props) {
@@ -111,7 +113,7 @@ class FormAddTask extends Component {
                     <textarea
                         value={this.state.titleTask}
                         onChange={this._handleTitleTaskChange}
-                        className="form__title-add textarea" type="date" name="title" maxLength="255" placeholder="сделать ..." required="required" />
+                        className="form__title-add textarea" name="title" maxLength="255" placeholder="сделать ..." required="required" />
                 </div>
                 <div className="form__row form__row_content-column">
                     <label>Дополнительная информация по задаче</label>
@@ -209,11 +211,8 @@ class FormAddTask extends Component {
                 showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
             });
     };
-
-    _handleClick = (evt) => {
-        evt.preventDefault();
-        this.props.changeActivePage("screen-tasks");
-    };
 }
 
-export default FormAddTask
+const mapStateToProps = (state) => ({ user: state.user })
+
+export default connect(mapStateToProps)(FormAddTask);
