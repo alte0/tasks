@@ -1,15 +1,39 @@
 import React from "react";
 import "./user-menu.scss"
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { getActiveMenuLinks } from "../../helpers/helpers";
+import { Link, withRouter } from "react-router-dom";
+import {deleteCookie, getActiveMenuLinks } from "../../helpers/helpers";
+import {logOut} from "../../data/data";
+import {showMessage, TypeMessage} from "../../plugins/show-message";
 
 const UserMenu = (props) => {
     const {
         user,
         url,
-        handleClickExit
+        history
     } = props;
+
+    const handleClickExit = (evt) => {
+        evt.preventDefault();
+
+        const isQuestion = window.confirm(`Вы действительно хотите выйти?`);
+        if (isQuestion) {
+            logOut()
+                .then(response => {
+                    showMessage(response.msgsType, '', response.textMsgs);
+                    if (response.msgsType === 'success') {
+                        deleteCookie('PHPSESSID');
+                        deleteCookie('userInfo');
+                        history.push('/sing-in');
+                    }
+                    return true;
+                })
+                .catch(e => {
+                    console.error(e);
+                    showMessage(TypeMessage.ERROR, e, );
+                });
+        }
+    }
 
     return (
         <nav className="user-menu">
@@ -25,14 +49,14 @@ const UserMenu = (props) => {
                     )
                 })
             }
-            <Link 
+            <Link
                 className="user-menu__link link"
                 to="/add-task"
                 >Поставить задачу</Link>
             <a
                 className="user-menu__link user-menu__logout link"
                 onClick={handleClickExit}
-                href="/logout">Выйти</a>
+                href="/log-out">Выйти</a>
         </nav>
     )
 };
@@ -46,4 +70,4 @@ UserMenu.propTypes = {
     }).isRequired
 };
 
-export default UserMenu
+export default withRouter(UserMenu)

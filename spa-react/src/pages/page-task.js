@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import LoadingData from '../components/loading-data/loading-data';
 import { getTask, executeTask } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
-import { changeStatusTask } from "../helpers/helpers";
+import { changeStatusTask, checkLoggedUser } from "../helpers/helpers";
 
 const option = {
     isMore: false,
@@ -21,12 +21,12 @@ class PageTask extends Component {
         };
         this.state = this.initialState;
 
-        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this); 
+        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this);
     }
 
     componentDidMount() {
         const idTask = this.props.idTask;
-        
+
         getTask(idTask)
             .then(task => {
                 if (task.msgsType === 'error') {
@@ -35,7 +35,7 @@ class PageTask extends Component {
                     })
                     return true;
                 }
-                
+
                 this.setState({task});
             })
             .catch(e => {
@@ -48,9 +48,7 @@ class PageTask extends Component {
     }
 
     render() {
-        const { isLoggedIn } = this.props;
-
-        if (!isLoggedIn) {
+        if (!checkLoggedUser()) {
             return (<Redirect to="/sing-in" />)
         }
 
@@ -112,6 +110,6 @@ class PageTask extends Component {
                 });
         }
     }
-};
+}
 
 export default PageTask

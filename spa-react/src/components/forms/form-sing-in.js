@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import "./forms.scss";
 import {checkLengthMinMaxStr} from "../../helpers/helpers";
 import {ConfMinAndMax} from "../../vars/vars";
-import {getCookie} from "../../helpers/helpers";
+import { checkLoggedUser } from "../../helpers/helpers";
 import { signInUser } from "../../data/data";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
 
@@ -55,7 +55,7 @@ class FormSingIn extends Component {
                         type="submit">Войти</button>
                 </div>
                 <div className="form__row form__row_text-center">
-                    <Link 
+                    <Link
                         to="/sing-up"
                         className="form__link-signup link"
                         >Зарегистрироваться</Link>
@@ -93,15 +93,14 @@ class FormSingIn extends Component {
 
         let formData = new FormData(evt.target);
         formData.append('signin', 'ajax');
-        
+
         signInUser(formData)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {
                     this.setState(this.initialState);
 
-                    if (getCookie("userInfo") && getCookie("PHPSESSID")) {
-                        this.props.setLoggedIn(true);
+                    if (checkLoggedUser()) {
                         this.props.getFullName();
                         this.props.history.push('/');
                     }
@@ -111,7 +110,6 @@ class FormSingIn extends Component {
                 console.error(e);
                 showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
             });
-
     };
 }
 export default withRouter(FormSingIn)

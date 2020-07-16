@@ -1,9 +1,11 @@
-import React, {PureComponent} from 'react';
+import React, { Component } from 'react';
 import Container from "./components/container/container";
 import Footer from './components/footer/footer';
-import { TypeMessage, showMessage } from './plugins/show-message';
-import { getCookie, deleteCookie } from  "./helpers/helpers";
-import { logOut } from "./data/data";
+// import { TypeMessage, showMessage } from './plugins/show-message';
+// import { getCookie, deleteCookie, checkLoggedUser } from  "./helpers/helpers";
+import { getCookie,  checkLoggedUser } from  "./helpers/helpers";
+// import { logOut } from "./data/data";
+
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PageTasks from './pages/page-tasks';
@@ -16,7 +18,7 @@ import 'normalize.css';
 
 require('./Common.scss');
 
-export class App extends PureComponent {
+export class App extends Component {
     constructor(props) {
         super(props);
 
@@ -28,14 +30,11 @@ export class App extends PureComponent {
                 userId: null
             },
             textSearch: '',
-            isLoggedIn: Boolean(this._isAuthUser())
         };
 
         this.state = this.initialState;
 
         this._getFullName = this._getFullName.bind(this);
-        this._setLoggedIn = this._setLoggedIn.bind(this);
-        this._handleClickExit = this._handleClickExit.bind(this);
     }
 
     componentDidMount() {
@@ -44,7 +43,6 @@ export class App extends PureComponent {
 
     render() {
         const {
-            isLoggedIn,
             user
          } = this.state;
 
@@ -77,16 +75,13 @@ export class App extends PureComponent {
                                 path="/sing-up"
                                 render={()=>(
                                     <PageSingUp
-                                        isLoggedIn={isLoggedIn}
                                     />
                                 )} />
                             <Route
                                 path="/sing-in"
                                 render={() => (
                                     <PageSingIn
-                                        isLoggedIn={isLoggedIn}
                                         getFullName={this._getFullName}
-                                        setLoggedIn={this._setLoggedIn}
                                     />
                                 )} />
                             <Route
@@ -94,7 +89,6 @@ export class App extends PureComponent {
                                 render={()=>(
                                     <PageAddTask
                                         user={this.state.user}
-                                        isLoggedIn={isLoggedIn}
                                         />
                                 )}
                                 />
@@ -107,8 +101,6 @@ export class App extends PureComponent {
                                         user={user}
                                         url={match.url}
                                         idTask={id}
-                                        handleClickExit={this._handleClickExit}
-                                        isLoggedIn={isLoggedIn}
                                     />
                                     }
                                 }
@@ -124,20 +116,14 @@ export class App extends PureComponent {
 
     renderPageTasks = ({ location, match }) => {
         return <PageTasks
-            isLoggedIn={this.state.isLoggedIn}
             user={this.state.user}
             url={match.url}
             urlOrigin={`${window.location.origin}${location.search}`}
-            handleClickExit={this._handleClickExit}
         />;
     }
 
-    _isAuthUser() {
-        return getCookie("userInfo") && getCookie("PHPSESSID");
-    }
-
     _getFullName() {
-        if (this._isAuthUser()) {
+        if (checkLoggedUser()) {
             const userInfo = getCookie("userInfo").split(";");
             this.setState({
                 user: {
@@ -147,31 +133,6 @@ export class App extends PureComponent {
                     userId: Number(userInfo[3])
                 }
             });
-        }
-    }
-
-    _setLoggedIn(value = false) {
-        this.setState({ isLoggedIn: value })
-    }
-
-    _handleClickExit(evt) {
-        evt.preventDefault();
-        const isQuestion = window.confirm(`Вы действительно хотите выйти?`);
-        if (isQuestion) {
-            logOut()
-                .then(response => {
-                    showMessage(response.msgsType, '', response.textMsgs);
-                    if (response.msgsType === 'success') {
-                        deleteCookie('PHPSESSID');
-                        deleteCookie('userInfo');
-                        this._setLoggedIn(false);
-                    }
-                    return true;
-                })
-                .catch(e => {
-                    console.error(e);
-                    showMessage(TypeMessage.ERROR, e, );
-                });
         }
     }
 }

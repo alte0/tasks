@@ -1,21 +1,20 @@
 import React from "react";
 import FormSingIn from "../components/forms/form-sing-in";
 import { Redirect } from "react-router-dom";
+import { checkLoggedUser} from "../helpers/helpers";
 
-const PageSingIn = ({ 
-        isLoggedIn, 
-        getFullName,
-        setLoggedIn
+
+const PageSingIn = ({
+        getFullName
     }) => {
-    
-    if (isLoggedIn) {
+
+    if (checkLoggedUser()) {
         return (<Redirect to="/" />)
     }
 
     return (
         <FormSingIn
             getFullName={getFullName}
-            setLoggedIn={setLoggedIn}
         />
     )
 };

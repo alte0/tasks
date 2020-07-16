@@ -78,6 +78,7 @@ export const reverseDate = (date) => {
 /**
  * Возврашает заголовок для задач в зависимомти от активного скрина.
  * @param {String} url
+ * @param {String} textSearch
  */
 export const getActiveTitleTasks = (url, textSearch="") => {
     switch (url) {
@@ -110,8 +111,7 @@ export const deleteTaskFromArrTasks = (tasks, idTask) => {
 }
 /**
  * Изменение статуса задачи для страницы задач.
- * @param {Object} tasks
- * @param {Number} idTask
+ * @param {Object} task
  */
 export const changeStatusTask = (task) => {
     return Object.assign({}, task, { task_status: "1" });
@@ -152,7 +152,7 @@ export const getActiveMenuLinks = (url) => {
                 { textLink: "Мои задачи", href: "/" },
                 { textLink: "Я назначил задачи", href: "/designated-tasks" },
             ]
-    };
+    }
 }
 /**
  * Декадирование параметра поиска
@@ -165,8 +165,10 @@ export const decodeParamsSearchUrl = (urlOrigin) => {
     const url = new URL(urlOrigin);
     if (url.searchParams.has('q')) {
         const searchTextEncode = url.searchParams.get('q');
-        const searchTextDecode = decodeURIComponent(searchTextEncode);
-
-        return searchTextDecode;
+        return decodeURIComponent(searchTextEncode);
     }
 }
+/*
+* Проверяет залогинился ли пользователь
+* */
+export const checkLoggedUser = ()=>  (getCookie("userInfo") && getCookie("PHPSESSID"));

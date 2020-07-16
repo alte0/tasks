@@ -3,7 +3,7 @@ import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
 import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
 import Pagination from "../components/pagination/pagination";
-import { getActiveTitleTasks, deleteTaskFromArrTasks, decodeParamsSearchUrl } from "../helpers/helpers";
+import { getActiveTitleTasks, deleteTaskFromArrTasks, decodeParamsSearchUrl, checkLoggedUser } from "../helpers/helpers";
 import { Redirect } from "react-router-dom";
 import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, getResultSearchText } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
@@ -21,7 +21,7 @@ class PageTasks extends Component {
         };
         this.state = this.initialState;
 
-        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this); 
+        this._handleClickExecuteTask = this._handleClickExecuteTask.bind(this);
         this._handleClickChangePagePagination = this._handleClickChangePagePagination.bind(this);
     }
 
@@ -50,15 +50,13 @@ class PageTasks extends Component {
     }
 
     render() {
-        const { isLoggedIn } = this.props;
-
-        if (!isLoggedIn) {
+        if (!checkLoggedUser()) {
             return (<Redirect to="/sing-in" />)
         }
 
         const {
             user,
-            handleClickExit,
+            // handleClickExit,
             url,
             urlOrigin
         } = this.props;
@@ -78,7 +76,6 @@ class PageTasks extends Component {
         return (
             <React.Fragment>
                 <UserMenu
-                    handleClickExit={handleClickExit}
                     user={user}
                     url={url}
                 />
@@ -226,6 +223,6 @@ class PageTasks extends Component {
                 this.setState({ loading: false });
             });
     }
-};
+}
 
 export default PageTasks
