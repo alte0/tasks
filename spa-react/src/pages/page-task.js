@@ -5,7 +5,10 @@ import { Redirect } from "react-router-dom";
 import LoadingData from '../components/loading-data/loading-data';
 import { getTask, executeTask } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
-import { changeStatusTask, checkLoggedUser } from "../helpers/helpers";
+import { checkLoggedUser } from "../helpers/helpers";
+import {connect} from "react-redux";
+import { fetchTask, executeTaskWithId } from "../actions";
+
 
 const option = {
     isMore: false,
@@ -16,7 +19,6 @@ class PageTask extends Component {
     constructor(props){
         super(props);
         this.initialState = {
-            task: null,
             loading: true
         };
         this.state = this.initialState;
@@ -27,17 +29,7 @@ class PageTask extends Component {
     componentDidMount() {
         const idTask = this.props.idTask;
 
-        getTask(idTask)
-            .then(task => {
-                if (task.msgsType === 'error') {
-                    this.setState({
-                        task: this.initialState.task
-                    })
-                    return true;
-                }
-
-                this.setState({task});
-            })
+        this.props.fetchTaskToProps(idTask)
             .catch(e => {
                 console.error(e);
                 showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
@@ -56,9 +48,10 @@ class PageTask extends Component {
             user,
             handleClickExit,
             url,
+            task
         } = this.props;
 
-        const {userId} = user;
+        const { userId } = user;
 
         return (
             <React.Fragment>
@@ -70,11 +63,11 @@ class PageTask extends Component {
                 {
                     this.state.loading ?
                         <LoadingData /> :
-                        this.state.task ?
+                        task ?
                             <Task
                                 isMore={option.isMore}
                                 isShowDesc={option.isShowDesc}
-                                task={this.state.task}
+                                task={task}
                                 userId={userId}
                                 handleClickExecuteTask={this._handleClickExecuteTask}
                             /> :
@@ -91,19 +84,7 @@ class PageTask extends Component {
         const isQuestion = window.confirm(`Вы хотите выполнить задачу - ${title}?`)
 
         if (isQuestion) {
-            executeTask(idTask)
-                .then(result => {
-                    showMessage(result.msgsType, '', result.textMsgs);
-                    if (result.msgsType === 'success') {
-                        this.setState((state) => (
-                            {
-                                task: changeStatusTask(state.task),
-                            }
-                        ))
-
-                        return true
-                    }
-                })
+            this.props.executeTask(idTask, this.props.task)
                 .catch(e => {
                     console.error(e);
                     showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
@@ -112,4 +93,38 @@ class PageTask extends Component {
     }
 }
 
-export default PageTask
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        task: state.task
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchTaskToProps: async function(idTask) {
+            await getTask(idTask)
+                .then(task => {
+                    if (task.msgsType === 'error') {
+                        dispatch(fetchTask(null));
+                        return true;
+                    }
+
+                    dispatch(fetchTask(task));
+                })
+        },
+        executeTask: async function(idTask, task) {
+            await executeTask(idTask)
+                .then(result => {
+                    showMessage(result.msgsType, '', result.textMsgs);
+                    if (result.msgsType === 'success') {
+                        dispatch(executeTaskWithId(task));
+
+                        return true
+                    }
+                })
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageTask);

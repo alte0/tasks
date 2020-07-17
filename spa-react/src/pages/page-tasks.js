@@ -62,7 +62,7 @@ class PageTasks extends Component {
             user
         } = this.props;
 
-        const userId = user.userId;
+        const { userId } = user;
 
         const textSearch = decodeParamsSearchUrl(urlOrigin);
 
