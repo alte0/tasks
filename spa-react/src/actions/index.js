@@ -1,8 +1,8 @@
 import { getUserInfo } from './user';
-import { fetchTask, executeTaskWithId } from './task';
+import { fetchTask, toPerformTask } from './task';
 
 export {
     getUserInfo,
     fetchTask,
-    executeTaskWithId
+    toPerformTask
 };

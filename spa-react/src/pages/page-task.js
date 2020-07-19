@@ -7,7 +7,7 @@ import { getTask, executeTask } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import { checkLoggedUser } from "../helpers/helpers";
 import {connect} from "react-redux";
-import { fetchTask, executeTaskWithId } from "../actions";
+import { fetchTask, toPerformTask } from "../actions";
 
 
 const option = {
@@ -29,7 +29,14 @@ class PageTask extends Component {
     componentDidMount() {
         const idTask = this.props.idTask;
 
-        this.props.fetchTaskToProps(idTask)
+        getTask(idTask)
+            .then(task => {
+                if (task.msgsType === 'error') {
+                    this.props.fetchTaskDispatch(null);
+                }
+
+                this.props.fetchTaskDispatch(task);
+            })
             .catch(e => {
                 console.error(e);
                 showMessage(TypeMessage.ERROR, e, 'Ошибка получения данных.');
@@ -84,7 +91,13 @@ class PageTask extends Component {
         const isQuestion = window.confirm(`Вы хотите выполнить задачу - ${title}?`)
 
         if (isQuestion) {
-            this.props.executeTask(idTask, this.props.task)
+            executeTask(idTask)
+                .then(result => {
+                    showMessage(result.msgsType, '', result.textMsgs);
+                    if (result.msgsType === 'success') {
+                        this.props.executeTaskDispatch(this.props.task);
+                    }
+                })
                 .catch(e => {
                     console.error(e);
                     showMessage(TypeMessage.ERROR, e, 'Произошла ошибка.');
@@ -102,27 +115,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchTaskToProps: async function(idTask) {
-            await getTask(idTask)
-                .then(task => {
-                    if (task.msgsType === 'error') {
-                        dispatch(fetchTask(null));
-                        return true;
-                    }
-
-                    dispatch(fetchTask(task));
-                })
+        fetchTaskDispatch: (task) => {
+            dispatch(fetchTask(task));
         },
-        executeTask: async function(idTask, task) {
-            await executeTask(idTask)
-                .then(result => {
-                    showMessage(result.msgsType, '', result.textMsgs);
-                    if (result.msgsType === 'success') {
-                        dispatch(executeTaskWithId(task));
-
-                        return true
-                    }
-                })
+        executeTaskDispatch: (task) => {
+            dispatch(toPerformTask(task));
         }
     }
 }
