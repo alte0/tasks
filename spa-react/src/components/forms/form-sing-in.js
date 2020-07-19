@@ -104,7 +104,15 @@ class FormSingIn extends Component {
                     this.setState(this.initialState);
 
                     if (checkLoggedUser()) {
-                        this.props.getUserInfoToProps();
+                        const userInfo = getCookie("userInfo").split(";");
+                        const user = getUserInfo({
+                            name: userInfo[0],
+                            surname: userInfo[1],
+                            patronymic: userInfo[2],
+                            userId: Number(userInfo[3])
+                        });
+
+                        this.props.getUserInfoToProps(user);
                         this.props.history.push('/');
                     }
                 }
@@ -118,20 +126,7 @@ class FormSingIn extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUserInfoToProps: () => {
-            if (checkLoggedUser()) {
-                const userInfo = getCookie("userInfo").split(";");
-
-                return dispatch(
-                    getUserInfo({
-                        name: userInfo[0],
-                        surname: userInfo[1],
-                        patronymic: userInfo[2],
-                        userId: Number(userInfo[3])
-                    })
-                )
-            }
-        }
+        getUserInfoToProps: (user) => (dispatch(user))
     }
 }
 
