@@ -13,6 +13,7 @@ import { clearDataFlatpickr } from "../../plugins/flatpickr";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { allUsers } from "../../actions";
 
 
 class FormAddTask extends Component {
@@ -25,7 +26,6 @@ class FormAddTask extends Component {
             titleTask: "",
             descTask: "",
             validForm: false,
-            allUsers: []
         };
         this.state = this.initialState;
 
@@ -37,18 +37,13 @@ class FormAddTask extends Component {
         initFlatpickr(this.inputDatesRef.current);
         initEditor(this.textareaRef.current, this._handleDescTaskChange);
         getAllUsers()
-            .then(allUsers => {
-                if (allUsers.msgsType === 'error') {
-                    this.setState({
-                        allUsers: []
-                    })
-                    return true
+            .then(users => {
+                if (users.msgsType === 'error') {
+                    this.props.getAllUsersDispatch([]);
+                    return;
                 }
 
-                this.setState({
-                    allUsers: allUsers
-                })
-
+                this.props.getAllUsersDispatch(users);
             })
             .catch(e => {
                 console.error(e);
@@ -99,7 +94,7 @@ class FormAddTask extends Component {
                         className="form__select" name="executor" required="required">
                         <option value="disabled" disabled="disabled">Не выбрано</option>
                         {
-                            this.state.allUsers.map(user => (
+                            this.props.users.map(user => (
                                 <option
                                     value={user.user_id}
                                     key={user.user_id}
@@ -202,8 +197,6 @@ class FormAddTask extends Component {
 
                     clearDataEditor();
                     clearDataFlatpickr();
-
-                    return true
                 }
             })
             .catch(e => {
@@ -213,6 +206,17 @@ class FormAddTask extends Component {
     };
 }
 
-const mapStateToProps = (state) => ({ user: state.user })
+const mapStateToProps = (state) => ({
+    user: state.user,
+    users: state.users
+})
 
-export default connect(mapStateToProps)(FormAddTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAllUsersDispatch: (users) => {
+            dispatch(allUsers(users));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormAddTask);
