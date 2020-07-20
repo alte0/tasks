@@ -9,13 +9,12 @@ import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone,
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import LoadingData from '../components/loading-data/loading-data';
 import { connect } from "react-redux";
-
+import { allTasks } from "../actions";
 
 class PageTasks extends Component {
     constructor(props){
         super(props);
         this.initialState = {
-            tasks: [],
             itemsTasks: 9,
             pagesCount: 0,
             pageCurrentPagination: 1,
@@ -57,6 +56,7 @@ class PageTasks extends Component {
         }
 
         const {
+            tasks,
             url,
             urlOrigin,
             user
@@ -67,7 +67,6 @@ class PageTasks extends Component {
         const textSearch = decodeParamsSearchUrl(urlOrigin);
 
         const {
-            tasks,
             pageCurrentPagination,
             itemsTasks,
             pagesCount
@@ -111,18 +110,17 @@ class PageTasks extends Component {
     _getData(fn) {
         this.setState({
             loading: true,
-            tasks: this.initialState.tasks,
             pageCurrentPagination: this.initialState.pageCurrentPagination
         });
 
         fn()
             .then(tasks => {
                 if (tasks.msgsType === 'error') {
-                    this.setState({
-                        tasks: []
-                    })
+                    this.props.getTasksDispatch([])
                     return true
                 }
+
+                this.props.getTasksDispatch(tasks);
 
                 const lengthTasks = tasks.length;
 
@@ -130,10 +128,9 @@ class PageTasks extends Component {
                     const { itemsTasks } = state;
 
                     return {
-                        tasks: tasks,
                         pagesCount: Math.ceil((lengthTasks / itemsTasks))
                     }
-                })
+                });
             })
             .catch(e => {
                 console.error(e);
@@ -168,14 +165,9 @@ class PageTasks extends Component {
                 .then(result => {
                     showMessage(result.msgsType, '', result.textMsgs);
                     if (result.msgsType === 'success') {
-                        this.setState((state) => {
+                        const newTasks = deleteTaskFromArrTasks(this.props.tasks, idTask);
 
-                            return {
-                                tasks: deleteTaskFromArrTasks(state.tasks, idTask),
-                            }
-                        })
-
-                        return true
+                        this.props.getTasksDispatch(newTasks);
                     }
                 })
                 .catch(e => {
@@ -194,15 +186,18 @@ class PageTasks extends Component {
 
     _getSearchData() {
         const textSearch = decodeParamsSearchUrl(this.props.urlOrigin) || '';
+
         getResultSearchText(textSearch)
             .then(tasks => {
                 if (tasks.msgsType === 'warning') {
+                    this.props.getTasksDispatch([]);
                     this.setState({
-                        tasks: this.initialState.tasks,
                         pageCurrentPagination: this.initialState.pageCurrentPagination
                     })
                     return true
                 }
+
+                this.props.getTasksDispatch(tasks);
 
                 const lengthTasks = tasks.length;
 
@@ -210,7 +205,6 @@ class PageTasks extends Component {
                     const { itemsTasks } = state;
 
                     return {
-                        tasks: tasks,
                         pagesCount: Math.ceil((lengthTasks / itemsTasks))
                     }
                 })
@@ -225,6 +219,17 @@ class PageTasks extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({ user: state.user })
+const mapStateToProps = (state) => ({
+    user: state.user,
+    tasks: state.tasks
+})
 
-export default connect(mapStateToProps)(PageTasks);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getTasksDispatch: (tasks) => {
+            dispatch(allTasks(tasks));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageTasks);
