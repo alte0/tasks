@@ -2,6 +2,6 @@
 return [
   "urlDB" => "127.0.0.1",
   "userDB" => "root",
-  "passwordDB" => "",
+  "passwordDB" => "root",
   "nameDB" => "tasks-db"
 ];

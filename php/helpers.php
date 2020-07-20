@@ -179,6 +179,13 @@ function checkUserInDB($link, $user, $isPwd = false): bool
         return false;
     }
 
+    /**
+     * нет логина
+     */
+    if (!$result) {
+        return false;
+    }
+
     if ($result["user_login"] === $login) {
         return true;
     }
