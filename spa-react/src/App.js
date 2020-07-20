@@ -14,8 +14,7 @@ import PageAddTask from "./pages/page-add-task";
 import PageTask from "./pages/page-task";
 
 import 'normalize.css';
-
-require('./Common.scss');
+import './Common.scss'
 
 export class App extends Component {
     constructor(props) {
@@ -38,14 +37,14 @@ export class App extends Component {
                 userId: Number(userInfo[3])
             });
 
-            this.props.getUserInfoToProps(user);
+            this.props.getUserInfoDispatch(user);
         }
     }
 
     render() {
         return (
             <Router basename="/react/" >
-                <main className={`bg main${this.state.loading ? ' flex' : ''}`}>
+                <main className={`bg main`}>
                     <Container>
                         <Switch>
                             <Route
@@ -115,7 +114,7 @@ export class App extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    getUserInfoToProps: (user) => {
+    getUserInfoDispatch: (user) => {
         dispatch(user);
     }
 })
