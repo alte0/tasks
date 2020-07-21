@@ -50,24 +50,29 @@ export class App extends Component {
                             <Route
                                 path="/"
                                 exact
-                                render={this.renderPageTasks}
-                            />
+                            >
+                                <PageTasks/>
+                            </Route>
                             <Route
                                 path="/search"
-                                render={this.renderPageTasks}
-                            />
+                            >
+                                <PageTasks/>
+                            </Route>
                             <Route
                                 path="/my-tasks-done"
-                                render={this.renderPageTasks}
-                            />
+                            >
+                                <PageTasks/>
+                            </Route>
                             <Route
                                 path="/designated-tasks"
-                                render={this.renderPageTasks}
-                            />
+                            >
+                                <PageTasks/>
+                            </Route>
                             <Route
                                 path="/designated-tasks-done"
-                                render={this.renderPageTasks}
-                            />
+                            >
+                                <PageTasks/>
+                            </Route>
                             <Route
                                 path="/sing-up" >
                                     <PageSingUp />
@@ -103,13 +108,6 @@ export class App extends Component {
                 <Footer />
             </Router>
         )
-    }
-
-    renderPageTasks = ({ location, match }) => {
-        return <PageTasks
-            url={match.url}
-            urlOrigin={`${window.location.origin}${location.search}`}
-        />;
     }
 }
 

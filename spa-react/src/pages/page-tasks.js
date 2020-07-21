@@ -10,6 +10,13 @@ import { TypeMessage, showMessage } from '../plugins/show-message';
 import LoadingData from '../components/loading-data/loading-data';
 import { connect } from "react-redux";
 import { allTasks } from "../actions";
+import { withRouter } from "react-router-dom";
+
+const getTextInSearchParams = (location) => {
+    const { search } = location;
+    const searchParams = new URLSearchParams(search);
+    return  searchParams.get("q");
+}
 
 class PageTasks extends Component {
     constructor(props){
@@ -27,27 +34,41 @@ class PageTasks extends Component {
     }
 
     componentDidMount() {
-        const { url } = this.props;
+        const { url } = this.props.match;
 
         if (url === '/search') {
-            this._getSearchData();
+            const textSearch =  getTextInSearchParams(this.props.location);
+            this._getSearchData(textSearch);
         } else {
             const dataFunc = this._getFuncData(url);
             this._getData(dataFunc);
         }
     }
 
-    componentDidUpdate(prevProps) {
-        const { url, urlOrigin } = this.props;
+    //TODO - уточнить про пропсы.
+    shouldComponentUpdate(nextProps) {
+        const { url: currUrl } = this.props.match;
+        const { url: nextUrl } = nextProps.match;
 
-        if ((url !== '/search') && (url !== prevProps.url)) {
-            const dataFunc = this._getFuncData(url);
+        const isUpdate = (currUrl !== nextUrl) && (nextUrl !== '/search');
+
+        if (isUpdate) {
+            const dataFunc = this._getFuncData(nextUrl);
             this._getData(dataFunc);
+            return true;
+
         }
 
-        if ((url === '/search') && (urlOrigin !== prevProps.urlOrigin)) {
-            this._getSearchData();
+        const textSearchCurr =  getTextInSearchParams(this.props.location);
+        const textSearchNext =  getTextInSearchParams(nextProps.location);
+        const isPageSearch = (currUrl === '/search') || (nextUrl === '/search');
+
+        if (isPageSearch && (textSearchCurr !== textSearchNext)) {
+            this._getSearchData(textSearchNext);
+            return true;
         }
+
+        return true;
     }
 
     render() {
@@ -57,12 +78,15 @@ class PageTasks extends Component {
 
         const {
             tasks,
-            url,
-            urlOrigin,
-            user
+            user,
+            match,
+            location
         } = this.props;
 
+        const { url } = match;
+
         const { userId } = user;
+        const urlOrigin=`${window.location.origin}${location.search}`;
 
         const textSearch = decodeParamsSearchUrl(urlOrigin);
 
@@ -184,9 +208,7 @@ class PageTasks extends Component {
         });
     }
 
-    _getSearchData() {
-        const textSearch = decodeParamsSearchUrl(this.props.urlOrigin) || '';
-
+    _getSearchData(textSearch) {
         getResultSearchText(textSearch)
             .then(tasks => {
                 if (tasks.msgsType === 'warning') {
@@ -232,4 +254,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageTasks);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PageTasks));
