@@ -14,7 +14,7 @@ import PageAddTask from "./pages/page-add-task";
 import PageTask from "./pages/page-task";
 
 import 'normalize.css';
-import './Common.scss'
+import './Common.scss';
 
 export class App extends Component {
     constructor(props) {
@@ -49,41 +49,39 @@ export class App extends Component {
                         <Switch>
                             <Route
                                 path="/"
+                                exact
                                 render={this.renderPageTasks}
-                                exact />
+                            />
                             <Route
                                 path="/search"
                                 render={this.renderPageTasks}
-                                />
+                            />
                             <Route
                                 path="/my-tasks-done"
                                 render={this.renderPageTasks}
-                                 />
+                            />
                             <Route
                                 path="/designated-tasks"
                                 render={this.renderPageTasks}
-                                 />
+                            />
                             <Route
                                 path="/designated-tasks-done"
                                 render={this.renderPageTasks}
-                                 />
+                            />
                             <Route
-                                path="/sing-up"
-                                render={()=>(
-                                    <PageSingUp
-                                    />
-                                )} />
+                                path="/sing-up" >
+                                    <PageSingUp />
+                            </Route>
                             <Route
                                 path="/sing-in"
-                                render={() => (
+                                >
                                     <PageSingIn />
-                                )} />
+                            </Route>
                             <Route
                                 path="/add-task"
-                                render={()=>(
+                                >
                                     <PageAddTask />
-                                )}
-                                />
+                            </Route>
                             <Route
                                 path="/task/:id"
                                 render={({ match })=> {
@@ -96,7 +94,9 @@ export class App extends Component {
                                     }
                                 }
                                 />
-                            <Route render={()=>(<h1>Такой страницы нету!</h1>)} />
+                            <Route>
+                                <h1>Такой страницы нету!</h1>
+                            </Route>
                         </Switch>
                     </Container>
                 </main>
