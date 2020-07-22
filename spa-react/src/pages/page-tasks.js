@@ -46,7 +46,7 @@ class PageTasks extends Component {
     }
 
     //TODO - уточнить про пропсы.
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         const { url: currUrl } = this.props.match;
         const { url: nextUrl } = nextProps.match;
 
@@ -56,7 +56,6 @@ class PageTasks extends Component {
             const dataFunc = this._getFuncData(nextUrl);
             this._getData(dataFunc);
             return true;
-
         }
 
         const textSearchCurr =  getTextInSearchParams(this.props.location);
@@ -68,7 +67,7 @@ class PageTasks extends Component {
             return true;
         }
 
-        return true;
+        return (nextState.loading !== this.state.loading) || (nextState.pageCurrentPagination !== this.state.pageCurrentPagination);
     }
 
     render() {
