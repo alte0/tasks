@@ -180,7 +180,7 @@ function checkUserInDB($link, $user, $isPwd = false): bool
     }
 
     /**
-     * нет логина
+     * нет логина 
      */
     if (!$result) {
         return false;
