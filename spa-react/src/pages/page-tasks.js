@@ -3,20 +3,26 @@ import SearchByTasks from "../components/search-by-tasks/search-by-tasks";
 import UserMenu from "../components/user-menu/user-menu";
 import Tasks from "../components/tasks/tasks";
 import Pagination from "../components/pagination/pagination";
-import { getActiveTitleTasks, deleteTaskFromArrTasks, decodeParamsSearchUrl, checkLoggedUser } from "../helpers/helpers";
+import {
+    getActiveTitleTasks,
+    deleteTaskFromArrTasks,
+    checkLoggedUser,
+    getTextInSearchParams
+} from "../helpers/helpers";
 import { Redirect } from "react-router-dom";
-import { getMyTasks, getMyTasksDone, getDesignatedTasks, getDesignatedTasksDone, executeTask, getResultSearchText } from "../data/data";
+import {
+    getMyTasks,
+    getMyTasksDone,
+    getDesignatedTasks,
+    getDesignatedTasksDone,
+    executeTask,
+    getResultSearchText
+} from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import LoadingData from '../components/loading-data/loading-data';
 import { connect } from "react-redux";
 import { allTasks } from "../actions";
 import { withRouter } from "react-router-dom";
-
-const getTextInSearchParams = (location) => {
-    const { search } = location;
-    const searchParams = new URLSearchParams(search);
-    return  searchParams.get("q");
-}
 
 class PageTasks extends Component {
     constructor(props){
@@ -45,7 +51,6 @@ class PageTasks extends Component {
         }
     }
 
-    //TODO - уточнить про пропсы.
     shouldComponentUpdate(nextProps, nextState) {
         const { url: currUrl } = this.props.match;
         const { url: nextUrl } = nextProps.match;
@@ -67,7 +72,8 @@ class PageTasks extends Component {
             return true;
         }
 
-        return (nextState.loading !== this.state.loading) || (nextState.pageCurrentPagination !== this.state.pageCurrentPagination);
+        return (nextState.loading !== this.state.loading) ||
+            (nextState.pageCurrentPagination !== this.state.pageCurrentPagination);
     }
 
     render() {
@@ -83,18 +89,18 @@ class PageTasks extends Component {
         } = this.props;
 
         const { url } = match;
-
         const { userId } = user;
-        const urlOrigin=`${window.location.origin}${location.search}`;
-
-        const textSearch = decodeParamsSearchUrl(urlOrigin);
+        const textSearch = getTextInSearchParams(location);
 
         const {
             pageCurrentPagination,
             itemsTasks,
             pagesCount
          } = this.state;
-        const visibleTasks = tasks.length ? tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) : tasks;
+
+        const visibleTasks = tasks.length ?
+            tasks.slice((pageCurrentPagination - 1) * itemsTasks, pageCurrentPagination * itemsTasks) :
+            tasks;
 
         return (
             <React.Fragment>

@@ -17,16 +17,6 @@ import 'normalize.css';
 import './Common.scss';
 
 export class App extends Component {
-    constructor(props) {
-        super(props);
-
-        this.initialState = {
-            textSearch: '',
-        };
-
-        this.state = this.initialState;
-    }
-
     componentDidMount() {
         if (checkLoggedUser()) {
             const userInfo = getCookie("userInfo").split(";");

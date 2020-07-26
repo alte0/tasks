@@ -60,7 +60,7 @@ function setCookie(name, value, options = {}) {
     document.cookie = updatedCookie;
 }
 /**
- * Уддаление Cookie по её имени.
+ * Удаление Cookie по её имени.
  * @param {String} name
  */
 export const deleteCookie = (name) => {
@@ -102,8 +102,8 @@ export const getActiveTitleTasks = (url, textSearch="") => {
 export const deleteTaskFromArrTasks = (tasks, idTask) => {
     let copyTasks = [...tasks];
     const indexTask = copyTasks.findIndex((task) => Number(task.task_id) === Number(idTask));
+
     if (indexTask !== -1) {
-        // copyTasks[indexTask]["task_status"] = "1";
         copyTasks.splice(indexTask, 1);
     }
 
@@ -155,20 +155,18 @@ export const getActiveMenuLinks = (url) => {
     }
 }
 /**
- * Декадирование параметра поиска
- * @param {String} urlOrigin
+ * Получаем текст для поиска из параметра q
+ * @param location
+ * @returns {string}
  */
-export const decodeParamsSearchUrl = (urlOrigin) => {
-    if (!urlOrigin) {
-        return '';
-    }
-    const url = new URL(urlOrigin);
-    if (url.searchParams.has('q')) {
-        const searchTextEncode = url.searchParams.get('q');
-        return decodeURIComponent(searchTextEncode);
-    }
+export const getTextInSearchParams = (location) => {
+    const { search } = location;
+    const searchParams = new URLSearchParams(search);
+    const searchTextEncode = searchParams.get("q") || '';
+    return decodeURIComponent(searchTextEncode);
 }
-/*
-* Проверяет залогинился ли пользователь
-* */
-export const checkLoggedUser = ()=>  (getCookie("userInfo") && getCookie("PHPSESSID"));
+/**
+ * Проверяет залогинился ли пользователь
+ * @returns { Boolean }
+ */
+export const checkLoggedUser = () => (getCookie("userInfo") && getCookie("PHPSESSID"));
