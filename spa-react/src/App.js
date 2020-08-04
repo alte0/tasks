@@ -12,6 +12,7 @@ import PageSingIn from './pages/page-sign-in';
 import PageSingUp from './pages/page-sign-up';
 import PageAddTask from "./pages/page-add-task";
 import PageTask from "./pages/page-task";
+import { ProtectPage, PrivatePage} from "./shields/shields";
 
 import 'normalize.css';
 import './Common.scss';
@@ -41,51 +42,66 @@ export class App extends Component {
                                 path="/"
                                 exact
                             >
-                                <PageTasks/>
+                                <PrivatePage>
+                                    <PageTasks/>
+                                </PrivatePage>
                             </Route>
                             <Route
                                 path="/search"
                             >
-                                <PageTasks/>
+                                <PrivatePage>
+                                    <PageTasks/>
+                                </PrivatePage>
                             </Route>
                             <Route
                                 path="/my-tasks-done"
                             >
-                                <PageTasks/>
+                                <PrivatePage>
+                                    <PageTasks/>
+                                </PrivatePage>
                             </Route>
                             <Route
                                 path="/designated-tasks"
                             >
-                                <PageTasks/>
+                                <PrivatePage>
+                                    <PageTasks/>
+                                </PrivatePage>
                             </Route>
                             <Route
                                 path="/designated-tasks-done"
                             >
-                                <PageTasks/>
+                                <PrivatePage>
+                                    <PageTasks/>
+                                </PrivatePage>
                             </Route>
                             <Route
                                 path="/sing-up" >
-                                    <PageSingUp />
+                                    <ProtectPage>
+                                        <PageSingUp />
+                                    </ProtectPage>
                             </Route>
                             <Route
                                 path="/sing-in"
                                 >
-                                    <PageSingIn />
+                                    <ProtectPage>
+                                        <PageSingIn />
+                                    </ProtectPage>
                             </Route>
                             <Route
                                 path="/add-task"
                                 >
+                                <PrivatePage>
                                     <PageAddTask />
+                                </PrivatePage>
                             </Route>
                             <Route
                                 path="/task/:id"
                                 render={({ match })=> {
                                     const { id } = match.params;
 
-                                    return <PageTask
-                                        url={match.url}
-                                        idTask={id}
-                                    />
+                                    return <PrivatePage>
+                                        <PageTask url={match.url} idTask={id} />
+                                    </PrivatePage>
                                     }
                                 }
                                 />

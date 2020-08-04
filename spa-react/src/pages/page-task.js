@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import Task from "../components/task/task"
 import UserMenu from "../components/user-menu/user-menu";
-import { Redirect } from "react-router-dom";
 import LoadingData from '../components/loading-data/loading-data';
 import { getTask, executeTask } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
-import { checkLoggedUser } from "../helpers/helpers";
 import {connect} from "react-redux";
 import { fetchTask, toPerformTask } from "../actions";
-
 
 const option = {
     isMore: false,
@@ -47,9 +44,6 @@ class PageTask extends Component {
     }
 
     render() {
-        if (!checkLoggedUser()) {
-            return (<Redirect to="/sing-in" />)
-        }
 
         const {
             user,

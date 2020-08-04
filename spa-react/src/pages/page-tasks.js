@@ -6,10 +6,8 @@ import Pagination from "../components/pagination/pagination";
 import {
     getActiveTitleTasks,
     deleteTaskFromArrTasks,
-    checkLoggedUser,
     getTextInSearchParams
 } from "../helpers/helpers";
-import { Redirect } from "react-router-dom";
 import {
     getMyTasks,
     getMyTasksDone,
@@ -77,10 +75,6 @@ class PageTasks extends Component {
     }
 
     render() {
-        if (!checkLoggedUser()) {
-            return (<Redirect to="/sing-in" />)
-        }
-
         const {
             tasks,
             user,
