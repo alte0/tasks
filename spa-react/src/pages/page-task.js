@@ -4,8 +4,9 @@ import UserMenu from "../components/user-menu/user-menu";
 import LoadingData from '../components/loading-data/loading-data';
 import { getTask, executeTask } from "../data/data";
 import { TypeMessage, showMessage } from '../plugins/show-message';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import { fetchTask, toPerformTask } from "../actions";
+import { withRouter } from "react-router-dom";
 
 const option = {
     isMore: false,
@@ -24,7 +25,7 @@ class PageTask extends Component {
     }
 
     componentDidMount() {
-        const idTask = this.props.idTask;
+        const idTask = this.props.match.params.id;
 
         getTask(idTask)
             .then(task => {
@@ -44,11 +45,9 @@ class PageTask extends Component {
     }
 
     render() {
-
         const {
             user,
             handleClickExit,
-            url,
             task
         } = this.props;
 
@@ -59,7 +58,7 @@ class PageTask extends Component {
                 <UserMenu
                     handleClickExit={handleClickExit}
                     user={user}
-                    url={url}
+                    url={''}
                 />
                 {
                     this.state.loading ?
@@ -118,4 +117,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageTask);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(PageTask)
+);

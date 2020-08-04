@@ -1,19 +1,43 @@
-import { Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import React from "react";
 import { checkLoggedUser } from "../helpers/helpers";
 
-export const PrivatePage = (props) => {
-    if (!checkLoggedUser()){
-        return <Redirect to="/sing-in" />
-    }
-
-    return props.children;
+export function PrivatePage({ children, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                checkLoggedUser() ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/sing-in",
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
 }
 
-export const ProtectPage = (props) => {
-    if (checkLoggedUser()){
-        return <Redirect to="/" />
-    }
-
-    return props.children;
+export function ProtectPage({ children, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                !checkLoggedUser() ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/",
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
 }

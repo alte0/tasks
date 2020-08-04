@@ -38,73 +38,33 @@ export class App extends Component {
                 <main className={`bg main`}>
                     <Container>
                         <Switch>
-                            <Route
-                                path="/"
-                                exact
-                            >
-                                <PrivatePage>
-                                    <PageTasks/>
-                                </PrivatePage>
-                            </Route>
-                            <Route
-                                path="/search"
-                            >
-                                <PrivatePage>
-                                    <PageTasks/>
-                                </PrivatePage>
-                            </Route>
-                            <Route
-                                path="/my-tasks-done"
-                            >
-                                <PrivatePage>
-                                    <PageTasks/>
-                                </PrivatePage>
-                            </Route>
-                            <Route
-                                path="/designated-tasks"
-                            >
-                                <PrivatePage>
-                                    <PageTasks/>
-                                </PrivatePage>
-                            </Route>
-                            <Route
-                                path="/designated-tasks-done"
-                            >
-                                <PrivatePage>
-                                    <PageTasks/>
-                                </PrivatePage>
-                            </Route>
-                            <Route
-                                path="/sing-up" >
-                                    <ProtectPage>
-                                        <PageSingUp />
-                                    </ProtectPage>
-                            </Route>
-                            <Route
-                                path="/sing-in"
-                                >
-                                    <ProtectPage>
-                                        <PageSingIn />
-                                    </ProtectPage>
-                            </Route>
-                            <Route
-                                path="/add-task"
-                                >
-                                <PrivatePage>
-                                    <PageAddTask />
-                                </PrivatePage>
-                            </Route>
-                            <Route
-                                path="/task/:id"
-                                render={({ match })=> {
-                                    const { id } = match.params;
-
-                                    return <PrivatePage>
-                                        <PageTask url={match.url} idTask={id} />
-                                    </PrivatePage>
-                                    }
-                                }
-                                />
+                            <PrivatePage path="/" exact>
+                                <PageTasks/>
+                            </PrivatePage>
+                            <PrivatePage path="/search">
+                                <PageTasks/>
+                            </PrivatePage>
+                            <PrivatePage path="/my-tasks-done">
+                                <PageTasks/>
+                            </PrivatePage>
+                            <PrivatePage path="/designated-tasks">
+                                <PageTasks/>
+                            </PrivatePage>
+                            <PrivatePage path="/designated-tasks-done">
+                                <PageTasks/>
+                            </PrivatePage>
+                            <ProtectPage path="/sing-up">
+                                <PageSingUp />
+                            </ProtectPage>
+                            <ProtectPage path="/sing-in">
+                                <PageSingIn />
+                            </ProtectPage>
+                            <PrivatePage path="/add-task">
+                                <PageAddTask />
+                            </PrivatePage>
+                            <PrivatePage path="/task/:id">
+                                <PageTask/>
+                            </PrivatePage>
                             <Route>
                                 <h1>Такой страницы нету!</h1>
                             </Route>
