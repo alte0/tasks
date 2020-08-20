@@ -1,5 +1,5 @@
 /**
- * Получение моих задач
+ * Общая функция для сетевых запросов
  */
 export const fetchRequest = async (
   link,
@@ -11,14 +11,18 @@ export const fetchRequest = async (
 
   const response = await fetch(`/ajax/${link}`, params);
 
-  return await response.json();
+  if (response.ok) {
+    return await response.json();
+  } else {
+    alert("Ошибка: " + response.status);
+  }
 };
 /**
  * Получение моих задач
  */
 export const getMyTasks = () => fetchRequest('get-my-tasks.php?my-tasks=ajax');
 /**
- * Получение моих выполненых задач
+ * Получение моих выполненных задач
  */
 export const getMyTasksDone = () => fetchRequest('get-my-tasks-done.php?my-tasks-done=ajax');
 /**
@@ -30,7 +34,7 @@ export const getDesignatedTasks = () => fetchRequest('get-designated-tasks.php?g
  */
 export const getDesignatedTasksDone = () => fetchRequest('get-designated-tasks-done.php?get-designated-task-done=ajax');
 /**
- * Получение всех ользователей
+ * Получение всех пользователей
  */
 export const getAllUsers = () => fetchRequest('get-all-users.php?all-users=ajax');
 /**
@@ -38,8 +42,8 @@ export const getAllUsers = () => fetchRequest('get-all-users.php?all-users=ajax'
  */
 export const executeTask = (idTask) => fetchRequest(`execute-task.php?execute-task=ajax&action=execute&id=${idTask}`);
 /**
- * Добавление заддачи
- * @param {Object} formData 
+ * Добавление задачи
+ * @param {Object} formData
  */
 export const addTask = (formData) => fetchRequest(
   `add-task.php`,
@@ -76,11 +80,11 @@ export const signInUser = (formData) => fetchRequest(
 export const logOut = () => fetchRequest(`logout.php?logout=ajax&action=exit`);
 /**
  * Поиск задачи
- * @param {String} text 
+ * @param {String} text
  */
 export const getResultSearchText = (text) => fetchRequest(`get-result-search.php?search-field=${text}`);
 /**
- * Получение задаччи по её ID
- * @param {Number} idTask 
+ * Получение задачи по её ID
+ * @param {Number} idTask
  */
 export const getTask = (idTask) => fetchRequest(`get-task.php?task=ajax&id=${idTask}`);
