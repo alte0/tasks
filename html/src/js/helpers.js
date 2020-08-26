@@ -11,7 +11,7 @@ export const getCookie = (name) => {
   return matches ? decodeURIComponent(matches[1]) : undefined
 }
 /**
- *  Устанавливает куки с именем name и значением value c опциями.
+ * Устанавливает куки с именем name и значением value c опциями.
  * @param {String} name
  * @param {String} value
  * @param {Object} options
@@ -39,11 +39,29 @@ function setCookie (name, value, options = {}) {
   document.cookie = updatedCookie
 }
 /**
- * Уддаление Cookie по её имени.
+ * Удаление Cookie по её имени.
  * @param {String} name
  */
 export const deleteCookie = (name) => {
   setCookie(name, '', {
     'max-age': -1
   })
+}
+/**
+ * Проверяет инпуты формы, что они не пустые.
+ * @param {FormData} formData
+ * @returns {boolean}
+ */
+export const checkFormsInputNotEmpty = (formData) => {
+  let isSend = true
+
+  // проверяем значения инпутов на не пустые
+  for (const field of formData.entries()) {
+    const valueField = 1
+    if (field[valueField] === '') {
+      isSend = false
+    }
+  }
+
+  return isSend
 }

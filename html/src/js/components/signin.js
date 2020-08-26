@@ -1,55 +1,36 @@
 import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
+import { apiFetch } from './apiFetch'
+import { checkFormsInputNotEmpty } from '../helpers'
 
-const FORM_AUTH = document.body.querySelector(`.form_auth`)
+const formAuth = document.body.querySelector(`.form_auth`)
 /**
- * ajax signin авторизация на сайте
+ * ajax sign-in авторизация на сайте
  */
 const formSignInSubmitHandler = (evt) => {
   evt.preventDefault()
-  const BUTTON_SUBMIT = FORM_AUTH.querySelector('.form__button')
-  const URL = `/ajax/signin.php`
-  // eslint-disable-next-line prefer-const
-  let formData = new FormData(FORM_AUTH)
+  const { target } = evt
+  const formButton = target.querySelector('.form__button')
+  const formData = new FormData(target)
 
-  let isSend = true
+  if (checkFormsInputNotEmpty(formData)) {
+    formButton.setAttribute('disabled', 'disabled')
 
-  for (const field of formData.entries()) {
-    if (field[1] === '') {
-      isSend = false
-    }
-  }
-
-  if (isSend) {
-    formData.append('signin', 'ajax')
-
-    BUTTON_SUBMIT.setAttribute('disabled', 'disabled')
-
-    fetch(URL, {
-      method: `POST`,
-      body: formData
-    })
-      .then(response => {
-        if (response.ok && response.status === Vars.STATUS_OK) {
-          return response.json()
-        } else {
-          throw new Error(`Не удалось отправить данные!`)
-        }
-      })
-      .then((response) => {
-        if (response.msgsType === `success`) {
-          showMessage(response.msgsType, response.textMsgs)
+    apiFetch.singInUser(formData)
+      .then((json) => {
+        if (json.msgsType === `success`) {
+          showMessage(json.msgsType, json.textMsgs)
           setTimeout(() => {
-            location = '/index.php'
+            location = '/'
           }, Vars.TIME)
-        } else if (response.msgsType === `error`) {
-          showMessage(response.msgsType, response.textMsgs)
+        } else if (json.msgsType === `error`) {
+          showMessage(json.msgsType, json.textMsgs)
         }
         return false
       })
       .finally(() => {
         setTimeout(() => {
-          BUTTON_SUBMIT.removeAttribute('disabled')
+          formButton.removeAttribute('disabled')
         }, Vars.TIME)
       })
       .catch((e) => {
@@ -60,6 +41,6 @@ const formSignInSubmitHandler = (evt) => {
   }
 }
 
-if (FORM_AUTH) {
-  FORM_AUTH.addEventListener(`submit`, formSignInSubmitHandler)
+if (formAuth) {
+  formAuth.addEventListener(`submit`, formSignInSubmitHandler)
 }

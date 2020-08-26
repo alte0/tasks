@@ -1,42 +1,22 @@
 import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
+import { apiFetch } from './apiFetch'
+import { checkFormsInputNotEmpty } from '../helpers'
 
-const FORM_REG = document.body.querySelector(`.form_reg`)
+const formReg = document.body.querySelector(`.form_reg`)
 /**
  * ajax signup регистрация на сайте
  */
 const formSignUPSubmitHandler = (evt) => {
   evt.preventDefault()
-  const BUTTON_SUBMIT = FORM_REG.querySelector('.form__button')
-  const URL = `/ajax/signup.php`
-  // eslint-disable-next-line prefer-const
-  let formData = new FormData(FORM_REG)
+  const { target } = evt
+  const formButton = target.querySelector('.form__button')
+  const formData = new FormData(target)
 
-  let isSend = true
+  if (checkFormsInputNotEmpty(formData)) {
+    formButton.setAttribute('disabled', 'disabled')
 
-  for (const field of formData.entries()) {
-    console.log(field)
-    if (field[1] === '') {
-      isSend = false
-    }
-  }
-
-  if (isSend) {
-    formData.append('signup', 'ajax')
-
-    BUTTON_SUBMIT.setAttribute('disabled', 'disabled')
-
-    fetch(URL, {
-      method: `POST`,
-      body: formData
-    })
-      .then(response => {
-        if (response.ok && response.status === Vars.STATUS_OK) {
-          return response.json()
-        } else {
-          throw new Error(`Не удалось отправить данные!`)
-        }
-      })
+    apiFetch.singUpUser(formData)
       .then((response) => {
         if (response.msgsType === `success`) {
           showMessage(response.msgsType, response.textMsgs)
@@ -50,7 +30,7 @@ const formSignUPSubmitHandler = (evt) => {
       })
       .finally(() => {
         setTimeout(() => {
-          BUTTON_SUBMIT.removeAttribute('disabled')
+          formButton.removeAttribute('disabled')
         }, Vars.TIME)
       })
       .catch((e) => {
@@ -61,6 +41,6 @@ const formSignUPSubmitHandler = (evt) => {
   }
 }
 
-if (FORM_REG) {
-  FORM_REG.addEventListener(`submit`, formSignUPSubmitHandler)
+if (formReg) {
+  formReg.addEventListener(`submit`, formSignUPSubmitHandler)
 }

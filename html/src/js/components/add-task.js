@@ -2,59 +2,38 @@ import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
 import { clearDataEditor } from './editor'
 import { clearDataFlatpickr } from './flatpickr-pl'
+import { checkFormsInputNotEmpty } from '../helpers'
+import { apiFetch } from './apiFetch'
 
-const FORM_TASK_ADD = document.body.querySelector(`.form_task-add`)
+const formTaskAdd = document.body.querySelector(`.form_task-add`)
 /**
- * ajax Добавление задачи на сервер
+ * Добавление задачи на сервер
  */
 const formTaskAddSubmitHandler = (evt) => {
   evt.preventDefault()
-  const BUTTON_SUBMIT = FORM_TASK_ADD.querySelector('.form__submit')
-  const URL = `/ajax/add-task.php`
-  // eslint-disable-next-line prefer-const
-  let FORM_DATA = new FormData(FORM_TASK_ADD)
-  let isSend = true
+  const { target } = evt
+  const submit = target.querySelector('.form__submit')
+  const formData = new FormData(target)
 
-  if (FORM_DATA.get('executor') === null) {
-    isSend = false
-  }
+  if (checkFormsInputNotEmpty(formData) && formData.get('executor')) {
+    submit.setAttribute('disabled', 'disabled')
 
-  for (const field of FORM_DATA.entries()) {
-    if (field[1] === '') {
-      isSend = false
-    }
-  }
-
-  if (isSend) {
-    FORM_DATA.append('add-task', 'ajax')
-
-    BUTTON_SUBMIT.setAttribute('disabled', 'disabled')
-
-    fetch(URL, {
-      method: `POST`,
-      body: FORM_DATA
-    })
-      .then(response => {
-        if (response.ok && response.status === Vars.STATUS_OK) {
-          return response.json()
-        } else {
-          throw new Error(`Не удалось отправить данные!`)
-        }
-      })
+    apiFetch.addTask(formData)
       .then((response) => {
         if (response.msgsType === `success`) {
           showMessage(response.msgsType, response.textMsgs)
-          FORM_TASK_ADD.reset()
+          formTaskAdd.reset()
           clearDataEditor()
           clearDataFlatpickr()
         } else if (response.msgsType === `error`) {
           showMessage(response.msgsType, response.textMsgs)
         }
+
         return false
       })
       .finally(() => {
         setTimeout(() => {
-          BUTTON_SUBMIT.removeAttribute('disabled')
+          submit.removeAttribute('disabled')
         }, Vars.TIME)
       })
       .catch((e) => {
@@ -65,7 +44,7 @@ const formTaskAddSubmitHandler = (evt) => {
   }
 }
 
-if (FORM_TASK_ADD) {
-  FORM_TASK_ADD.addEventListener(`submit`, formTaskAddSubmitHandler)
-  FORM_TASK_ADD.querySelector('[name="text"]').removeAttribute('required')
+if (formTaskAdd) {
+  formTaskAdd.addEventListener(`submit`, formTaskAddSubmitHandler)
+  formTaskAdd.querySelector('[name="text"]').removeAttribute('required')
 }

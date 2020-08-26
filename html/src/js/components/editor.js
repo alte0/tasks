@@ -2,8 +2,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import '@ckeditor/ckeditor5-build-classic/build/translations/ru'
 import { showMessage, TypeMessage } from './show-user-message'
 
-const FORM_TASK_ADD = document.querySelector('.form_task-add')
-const CONFIG = {
+const formTaskAdd = document.querySelector('.form_task-add')
+const Config = {
   removePlugins: ['ImageUpload'],
   toolbar: ['Heading', 'bold', 'italic', '|', 'Link', 'bulletedList', 'numberedList', 'blockQuote', 'MediaEmbed', 'Undo', 'Redo'],
   language: 'ru',
@@ -17,20 +17,20 @@ let editor
  * Инициализация ckeditor5
  */
 const initEditor = () => {
-  const TEXTAREA = FORM_TASK_ADD.querySelector('#textarea-text')
-  const BUTTON = FORM_TASK_ADD.querySelector('[type="submit"]')
-  const MAX_CHARACTERS = 1000 || TEXTAREA.maxLength
+  const textarea = formTaskAdd.querySelector('#textarea-text')
+  const submit = formTaskAdd.querySelector('[type="submit"]')
+  const MAX_CHARACTERS = 1000 || textarea.maxLength
 
-  ClassicEditor.create(TEXTAREA, CONFIG)
+  ClassicEditor.create(textarea, Config)
     .then(newEditor => {
       editor = newEditor
       editor.model.document.on('change:data', () => {
-        const EDITOR_DATA = editor.getData()
-        TEXTAREA.innerHTML = EDITOR_DATA
-        const INPUT_CHARACTERS = TEXTAREA.textLength
-        const IS_DISABED = INPUT_CHARACTERS > MAX_CHARACTERS
-        BUTTON.toggleAttribute('disabled', IS_DISABED)
-        if (IS_DISABED) {
+        const isDisabled = textarea.textLength > MAX_CHARACTERS
+
+        textarea.innerHTML = editor.getData()
+        submit.toggleAttribute('disabled', isDisabled)
+
+        if (isDisabled) {
           showMessage(TypeMessage.WARNING, `В редакторе превышен лимит в ${MAX_CHARACTERS} символов!`)
         }
       })
@@ -41,11 +41,11 @@ const initEditor = () => {
     })
 }
 
-if (FORM_TASK_ADD) {
+if (formTaskAdd) {
   initEditor()
 }
 /**
- * Очишает введеные данные в ckeditor5
+ * Очищает введённые данные в ckeditor5
  */
 export const clearDataEditor = function () {
   editor.setData('')

@@ -1,4 +1,3 @@
-export const Vars = {
-  STATUS_OK: 200,
-  TIME: 3000
-}
+export const Vars = Object.freeze({
+  TIME: 2500
+})

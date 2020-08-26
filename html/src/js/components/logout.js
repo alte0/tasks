@@ -1,27 +1,18 @@
 import { Vars } from './vars-common'
 import { showMessage, TypeMessage } from './show-user-message'
-import { deleteCookie } from './cookie'
+import { deleteCookie } from '../helpers'
+import { apiFetch } from './apiFetch'
 
-const LOGOUT = document.querySelector(`.user-menu__logout`)
+const userMenuLogout = document.querySelector(`.user-menu__logout`)
 /**
  * Нативное модальное окно с подтверждением о действии
  */
 const linkClickHandler = (evt) => {
   evt.preventDefault()
-  const IS_QUESTION = confirm(`Вы действительно хотите выйти?`)
-  const URL_EXECUTE_TASK = `/ajax/logout.php?logout=ajax&action=exit`
+  const isQuestion = confirm(`Вы действительно хотите выйти?`)
 
-  if (IS_QUESTION) {
-    fetch(URL_EXECUTE_TASK, {
-      cache: 'no-store'
-    })
-      .then(response => {
-        if (response.ok && response.status === Vars.STATUS_OK) {
-          return response.json()
-        } else {
-          throw new Error(`Не удалось выйти! Проверьте ваше соединение.`)
-        }
-      })
+  if (isQuestion) {
+    apiFetch.logOutUser()
       .then((response) => {
         if (response.msgsType === `success`) {
           showMessage(response.msgsType, response.textMsgs)
@@ -41,8 +32,8 @@ const linkClickHandler = (evt) => {
   }
 }
 
-if (LOGOUT) {
-  LOGOUT.addEventListener(`click`, linkClickHandler)
-  LOGOUT.removeAttribute('href')
-  LOGOUT.setAttribute('tabindex', '0')
+if (userMenuLogout) {
+  userMenuLogout.addEventListener(`click`, linkClickHandler)
+  userMenuLogout.removeAttribute('href')
+  userMenuLogout.setAttribute('tabindex', '0')
 }

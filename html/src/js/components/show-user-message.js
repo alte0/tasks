@@ -22,6 +22,7 @@ toastr.options = {
  * @param {String} type (`info`, `success`, `warning`, `error`)
  * @param {String} message `text`
  * @param {String} title `text`
+ * @returns {Void}
  */
 const showMessage = (type, message, title = ``) => {
   if (title) {
