@@ -10,8 +10,7 @@ if ($isAuth) {
   die;
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["signup"])) {
-  if ($_POST["signup"] === 'ajax') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $textMsgs = "";
     $nameFieds = [
       'login' => "Ваш логин",
@@ -44,5 +43,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["signup"])) {
         echo json_encode(["msgsType"=> "error", "textMsgs" => $textMsgs]);
       }
     }
-  }
 }

@@ -8,8 +8,7 @@ if (!$isAuth) {
   die;
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["add-task"])) {
-  if ($_POST["add-task"] === 'ajax') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $userForm = [
       'date' => isset($_POST["date"]) ? trim($_POST["date"]) : "",
       'executor' => isset($_POST["executor"]) ? trim($_POST["executor"]) : "",
@@ -18,11 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["add-task"])) {
       'date-no-limit' => !empty($_POST["date-no-limit"]) && $_POST["date-no-limit"] === "on" ? 1 : 0
     ];
 
-
     if (addTask($linkDB, $userForm)) {
       echo json_encode(["msgsType"=> "success", "textMsgs" => "Задача успешно добавлена!"]);
     } else {
       echo json_encode(["msgsType"=> "error", "textMsgs" => "Не удалось добавить задачу, проверьте форму!"]);
     }
-  }
 }
