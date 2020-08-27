@@ -3,18 +3,13 @@ require "../init.php";
 
 header("Content-Type: application/json;");
 
-if (!$isAuth) {
-  echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы не авторизованны!"]);
-  die;
-}
+checkAuth(!$isAuth, "Вы не авторизованны!");
 
-if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["my-tasks-done"])) {
-  if ($_GET["my-tasks-done"] === 'ajax') {
-      $myTasks = getMyTasks($linkDB, $sqlMyTasksComplete);
-      if (!empty($myTasks)) {
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $myTasks = getMyTasks($linkDB, $sqlMyTasksComplete);
+    if (!empty($myTasks)) {
         echo json_encode($myTasks);
-      } else {
+    } else {
         echo json_encode(["msgsType"=> "error", "textMsgs" => "Моих выполненых задач нету!"]);
-      }
-  }
+    }
 }

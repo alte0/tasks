@@ -180,7 +180,7 @@ function checkUserInDB($link, $user, $isPwd = false): bool
     }
 
     /**
-     * нет логина 
+     * нет логина
      */
     if (!$result) {
         return false;
@@ -504,4 +504,16 @@ function addUser($link, $sql, $user): bool
 function getTasksSearch($link, $sql, array $data): array
 {
     return dboPrepareAndFetchAll($link, $sql, $data);
+}
+
+/**
+ * Проверяет авторизирован ли пользователь
+ * @param $authValue - булево значение авторизации
+ * @param $text - текст вывода для пользователя (для json)
+ */
+function checkAuth($authValue, $text): void {
+    if ($authValue) {
+        echo json_encode(["msgsType"=> "error", "textMsgs" => "$text"]);
+        die;
+    }
 }

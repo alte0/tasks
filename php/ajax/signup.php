@@ -5,10 +5,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Expose-Headers: *');
 header("Content-Type: application/json;");
 
-if ($isAuth) {
-  echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы уже зарегистрированны!"]);
-  die;
-}
+checkAuth($isAuth, "Вы уже зарегистрированны!");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $textMsgs = "";

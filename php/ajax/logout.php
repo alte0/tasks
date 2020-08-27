@@ -3,10 +3,7 @@ require "../init.php";
 
 header("Content-Type: application/json;");
 
-if (!$isAuth) {
-    echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы не авторизованны! Зачем Вам выходить О_О!?"]);
-    die;
-}
+checkAuth(!$isAuth, "Вы не авторизованны! Зачем Вам выходить О_О!?");
 
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
     if (isset($_GET["action"]) && $_GET["action"] === 'exit') {

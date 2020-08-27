@@ -3,10 +3,7 @@ require "../init.php";
 
 header("Content-Type: application/json;");
 
-if ($isAuth) {
-  echo json_encode(["msgsType"=> "error", "textMsgs" => "Вы уже авторизованны!"]);
-  die;
-}
+checkAuth($isAuth, "Вы уже авторизованны!");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user = [
