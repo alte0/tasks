@@ -45,6 +45,12 @@ class PageTasks extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         const { url: currUrl } = this.props.match;
         const { url: nextUrl } = nextProps.match;
+        const { tasks } = this.props;
+        const { tasks: nextTasks } = nextProps;
+
+        if (tasks.length !== nextTasks.length) {
+            return true;
+        }
 
         const isUpdate = (currUrl !== nextUrl) && (nextUrl !== '/search');
 
