@@ -3,7 +3,7 @@ import "./forms.scss"
 import { checkLengthMinMaxStr } from "../../helpers/helpers";
 import { ConfMinAndMax } from "../../vars/vars";
 import { showMessage, TypeMessage } from "../../plugins/show-message";
-import { signUpUser } from "../../data/data";
+import { apiFetch } from "../../api/api-fetch";
 
 import { Link} from "react-router-dom";
 
@@ -23,7 +23,7 @@ class FormSingUp extends Component {
         this.state = this.initialState;
     }
 
-    render() {        
+    render() {
         return (
             <form
                 onSubmit={this._handleSubmitForm}
@@ -178,10 +178,9 @@ class FormSingUp extends Component {
     _handleSubmitForm = (evt) => {
         evt.preventDefault();
 
-        let formData = new FormData(evt.target);
-        formData.append('signup', 'ajax');
+        const formData = new FormData(evt.target);
 
-        signUpUser(formData)
+        apiFetch.signUpUser(formData)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {

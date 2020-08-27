@@ -3,7 +3,7 @@ import "./forms.scss";
 import {checkLengthMinMaxStr, getCookie} from "../../helpers/helpers";
 import { ConfMinAndMax } from "../../vars/vars";
 import { checkLoggedUser } from "../../helpers/helpers";
-import { signInUser } from "../../data/data";
+import { apiFetch } from "../../api/api-fetch";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
 
 import { Link, withRouter } from "react-router-dom";
@@ -95,9 +95,8 @@ class FormSingIn extends Component {
         evt.preventDefault();
 
         let formData = new FormData(evt.target);
-        formData.append('signin', 'ajax');
 
-        signInUser(formData)
+        apiFetch.signInUser(formData)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {

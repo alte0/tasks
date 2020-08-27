@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./task.scss";
-import {hasDateExpired} from "../../helpers/helpers";
+import { hasDateExpired } from "../../helpers/helpers";
 import dompurify from 'dompurify';
 import { Link } from "react-router-dom";
 
@@ -34,11 +34,11 @@ const getTaskContent = (props) => {
         executor_patronymic,
         executor_surname
     } = task;
-    
+
     return (
         <React.Fragment>
             <h3 className="task__title">{task_title}</h3>
-            <div 
+            <div
                 className="task__desc"
                 dangerouslySetInnerHTML={{ __html: renderDesc(isShowDesc, task_desc) }}
                 >

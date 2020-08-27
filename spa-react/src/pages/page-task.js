@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Task from "../components/task/task"
 import UserMenu from "../components/user-menu/user-menu";
 import LoadingData from '../components/loading-data/loading-data';
-import { getTask, executeTask } from "../data/data";
+import { apiFetch } from "../api/api-fetch";
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import { connect } from "react-redux";
 import { fetchTask, toPerformTask } from "../actions";
@@ -27,7 +27,7 @@ class PageTask extends Component {
     componentDidMount() {
         const idTask = this.props.match.params.id;
 
-        getTask(idTask)
+        apiFetch.getTask(idTask)
             .then(task => {
                 if (task.msgsType === 'error') {
                     this.props.fetchTaskDispatch(null);
@@ -84,7 +84,7 @@ class PageTask extends Component {
         const isQuestion = window.confirm(`Вы хотите выполнить задачу - ${title}?`)
 
         if (isQuestion) {
-            executeTask(idTask)
+            apiFetch.executeTask(idTask)
                 .then(result => {
                     showMessage(result.msgsType, '', result.textMsgs);
                     if (result.msgsType === 'success') {

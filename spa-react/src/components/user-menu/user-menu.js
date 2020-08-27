@@ -3,7 +3,7 @@ import "./user-menu.scss"
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import {deleteCookie, getActiveMenuLinks } from "../../helpers/helpers";
-import {logOut} from "../../data/data";
+import { apiFetch } from "../../api/api-fetch";
 import {showMessage, TypeMessage} from "../../plugins/show-message";
 import { connect} from "react-redux";
 
@@ -13,7 +13,7 @@ const UserMenu = ({ user, url, history}) => {
 
         const isQuestion = window.confirm(`Вы действительно хотите выйти?`);
         if (isQuestion) {
-            logOut()
+            apiFetch.logOut()
                 .then(response => {
                     showMessage(response.msgsType, '', response.textMsgs);
                     if (response.msgsType === 'success') {

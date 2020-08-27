@@ -5,7 +5,7 @@ import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
 import { initEditor, destroyEditor } from "../../plugins/editor";
 import { checkLengthMinMaxStr } from "../../helpers/helpers";
 import { ConfMinAndMaxAddTask } from "../../vars/vars";
-import { getAllUsers } from "../../data/data";
+import { apiFetch } from "../../api/api-fetch";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
 import { addTask } from "../../data/data";
 import { clearDataEditor } from "../../plugins/editor";
@@ -36,7 +36,7 @@ class FormAddTask extends Component {
     componentDidMount() {
         initFlatpickr(this.inputDatesRef.current);
         initEditor(this.textareaRef.current, this._handleDescTaskChange);
-        getAllUsers()
+        apiFetch.getAllUsers()
             .then(users => {
                 if (users.msgsType === 'error') {
                     this.props.getAllUsersDispatch([]);
@@ -181,10 +181,9 @@ class FormAddTask extends Component {
 
     handleSubmitForm = (evt) => {
         evt.preventDefault();
-        let FORM_DATA = new FormData(evt.target);
-        FORM_DATA.append('add-task', 'ajax');
+        const formData = new FormData(evt.target);
 
-        addTask(FORM_DATA)
+        addTask(formData)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {

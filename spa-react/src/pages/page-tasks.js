@@ -8,14 +8,7 @@ import {
     deleteTaskFromArrTasks,
     getTextInSearchParams
 } from "../helpers/helpers";
-import {
-    getMyTasks,
-    getMyTasksDone,
-    getDesignatedTasks,
-    getDesignatedTasksDone,
-    executeTask,
-    getResultSearchText
-} from "../data/data";
+import { apiFetch } from "../api/api-fetch";
 import { TypeMessage, showMessage } from '../plugins/show-message';
 import LoadingData from '../components/loading-data/loading-data';
 import { connect } from "react-redux";
@@ -167,13 +160,13 @@ class PageTasks extends Component {
     _getFuncData(url) {
         switch (url) {
             case "/my-tasks-done":
-                return getMyTasksDone
+                return apiFetch.getMyTasksDone
             case "/designated-tasks":
-                return getDesignatedTasks
+                return apiFetch.getDesignatedTasks
             case "/designated-tasks-done":
-                return getDesignatedTasksDone
+                return apiFetch.getDesignatedTasksDone
             default:
-                return getMyTasks
+                return apiFetch.getMyTasks
         }
     }
 
@@ -184,7 +177,7 @@ class PageTasks extends Component {
         const isQuestion = window.confirm(`Вы хотите выполнить задачу - ${title}?`)
 
         if (isQuestion) {
-            executeTask(idTask)
+            apiFetch.executeTask(idTask)
                 .then(result => {
                     showMessage(result.msgsType, '', result.textMsgs);
                     if (result.msgsType === 'success') {
@@ -208,7 +201,7 @@ class PageTasks extends Component {
     }
 
     _getSearchData(textSearch) {
-        getResultSearchText(textSearch)
+        apiFetch.getResultSearchText(textSearch)
             .then(tasks => {
                 if (tasks.msgsType === 'warning') {
                     this.props.getTasksDispatch([]);
