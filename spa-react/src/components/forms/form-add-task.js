@@ -7,7 +7,6 @@ import { checkLengthMinMaxStr } from "../../helpers/helpers";
 import { ConfMinAndMaxAddTask } from "../../vars/vars";
 import { apiFetch } from "../../api/api-fetch";
 import { TypeMessage, showMessage } from '../../plugins/show-message';
-import { addTask } from "../../data/data";
 import { clearDataEditor } from "../../plugins/editor";
 import { clearDataFlatpickr } from "../../plugins/flatpickr";
 
@@ -183,7 +182,7 @@ class FormAddTask extends Component {
         evt.preventDefault();
         const formData = new FormData(evt.target);
 
-        addTask(formData)
+        apiFetch.addTask(formData)
             .then(result => {
                 showMessage(result.msgsType, '', result.textMsgs);
                 if (result.msgsType === 'success') {
