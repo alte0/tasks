@@ -43,34 +43,35 @@ class PageTasks extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        const { url: currUrl } = this.props.match;
-        const { url: nextUrl } = nextProps.match;
         const { tasks } = this.props;
         const { tasks: nextTasks } = nextProps;
+        const { url: currUrl } = this.props.match;
+        const { url: nextUrl } = nextProps.match;
+        // страница с задачами
+        const isNotPageSearch = (currUrl !== nextUrl) && (nextUrl !== '/search');
+        // страница с поиском
+        const isPageSearch = (currUrl === '/search') || (nextUrl === '/search');
+        // изменение поискового текста
+        const textSearchCurr = getTextInSearchParams(this.props.location);
+        const textSearchNext = getTextInSearchParams(nextProps.location);
+        const isChangeTextSearch = textSearchCurr !== textSearchNext;
+        // загрузка данных/изменение текущей страницы в пагинации/изменения при выполнении задачи.
+        const isLoading = nextState.loading !== this.state.loading;
+        const isChangeCurrentPagination = nextState.pageCurrentPagination !== this.state.pageCurrentPagination;
+        const isChangeTasksLength = tasks.length !== nextTasks.length
 
-        if (tasks.length !== nextTasks.length) {
-            return true;
-        }
-
-        const isUpdate = (currUrl !== nextUrl) && (nextUrl !== '/search');
-
-        if (isUpdate) {
+        if (isNotPageSearch) {
             const dataFunc = this._getFuncData(nextUrl);
             this._getData(dataFunc);
             return true;
         }
 
-        const textSearchCurr =  getTextInSearchParams(this.props.location);
-        const textSearchNext =  getTextInSearchParams(nextProps.location);
-        const isPageSearch = (currUrl === '/search') || (nextUrl === '/search');
-
-        if (isPageSearch && (textSearchCurr !== textSearchNext)) {
+        if (isPageSearch && isChangeTextSearch) {
             this._getSearchData(textSearchNext);
             return true;
         }
 
-        return (nextState.loading !== this.state.loading) ||
-            (nextState.pageCurrentPagination !== this.state.pageCurrentPagination);
+        return isLoading || isChangeCurrentPagination || isChangeTasksLength;
     }
 
     render() {
