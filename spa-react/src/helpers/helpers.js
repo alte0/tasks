@@ -69,21 +69,21 @@ export const deleteCookie = (name) => {
     })
 }
 /**
- * Переворачивает дату с сервера для js
+ * Переворачивает дату с сервера (2020-07-21) для js (21-07-2020)
  * @param {String} date
  */
 export const reverseDate = (date) => {
     return date.split('.').reverse().join('-');
 }
 /**
- * Возврашает заголовок для задач в зависимомти от активного скрина.
+ * Возвращает заголовок для задач в зависимости от активного скрина.
  * @param {String} url
  * @param {String} textSearch
  */
 export const getActiveTitleTasks = (url, textSearch="") => {
     switch (url) {
         case "/my-tasks-done":
-            return "Мои выполненые задачи.";
+            return "Мои выполненные задачи.";
         case "/designated-tasks":
             return "Я назначил задачи.";
         case "/designated-tasks-done":
@@ -124,7 +124,7 @@ export const getActiveMenuLinks = (url) => {
     switch (url) {
         case "/":
             return [
-                { textLink: "Выполненые задачи мною", href: "/my-tasks-done" },
+                { textLink: "Выполненные задачи мною", href: "/my-tasks-done" },
                 { textLink: "Я назначил задачи", href: "/designated-tasks" },
             ]
         case "/my-tasks-done":
@@ -134,12 +134,12 @@ export const getActiveMenuLinks = (url) => {
             ]
         case "/designated-tasks":
             return [
-                { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
+                { textLink: "Выполненные задачи другими", href: "/designated-tasks-done" },
                 { textLink: "Мои задачи", href: "/"},
             ]
         case "/designated-tasks-done":
             return [
-                { textLink: "Выполненые задачи другими", href: "/designated-tasks-done" },
+                { textLink: "Выполненные задачи другими", href: "/designated-tasks-done" },
                 { textLink: "Мои задачи", href: "/"},
             ]
         case "/search":
@@ -161,8 +161,8 @@ export const getActiveMenuLinks = (url) => {
  */
 export const getTextInSearchParams = (location) => {
     const { search } = location;
-    const searchParams = new URLSearchParams(search);
-    const searchTextEncode = searchParams.get("q") || '';
+    const params = new URLSearchParams(search);
+    const searchTextEncode = params.get("q") || '';
     return decodeURIComponent(searchTextEncode);
 }
 /**
