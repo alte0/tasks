@@ -14,6 +14,7 @@ import LoadingData from '../components/loading-data/loading-data';
 import { connect } from "react-redux";
 import { allTasks } from "../actions";
 import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types'
 
 class PageTasks extends Component {
     constructor(props){
@@ -251,6 +252,13 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(allTasks(tasks));
         }
     }
+}
+
+PageTasks.propTypes  = {
+    tasks: PropTypes.array.isRequired,
+    user: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PageTasks));

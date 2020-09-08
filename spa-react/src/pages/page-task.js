@@ -7,6 +7,7 @@ import { TypeMessage, showMessage } from '../plugins/show-message';
 import { connect } from "react-redux";
 import { fetchTask, toPerformTask } from "../actions";
 import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types'
 
 const option = {
     isMore: false,
@@ -63,7 +64,7 @@ class PageTask extends Component {
                 {
                     this.state.loading ?
                         <LoadingData /> :
-                        task ?
+                        task.msgsType !== "error" ?
                             <Task
                                 isMore={option.isMore}
                                 isShowDesc={option.isShowDesc}
@@ -71,7 +72,7 @@ class PageTask extends Component {
                                 userId={userId}
                                 handleClickExecuteTask={this._handleClickExecuteTask}
                             /> :
-                            <p>Такая задача не существует!</p>
+                            <p>{task.textMsgs}</p>
                 }
             </React.Fragment>
         )
@@ -115,6 +116,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toPerformTask(task));
         }
     }
+}
+
+PageTask.propTypes = {
+    user: PropTypes.object.isRequired,
+    task: PropTypes.object,
+    handleClickExit: PropTypes.func
 }
 
 export default withRouter(

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./forms.scss";
 
+import PropTypes from 'prop-types';
 import { initFlatpickr, destroyFlatpickr } from "../../plugins/flatpickr";
 import { initEditor, destroyEditor } from "../../plugins/editor";
 import { checkLengthMinMaxStr } from "../../helpers/helpers";
@@ -215,6 +216,16 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(allUsers(users));
         }
     }
+}
+
+FormAddTask.propTypes = {
+    user: PropTypes.exact({
+        surname: PropTypes.string,
+        name: PropTypes.string,
+        patronymic: PropTypes.string,
+        userId: PropTypes.number
+    }).isRequired,
+    users: PropTypes.array
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormAddTask);

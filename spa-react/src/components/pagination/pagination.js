@@ -1,8 +1,12 @@
 import React from "react";
-import "./pagination.scss"
+import "./pagination.scss";
+import PropTypes from 'prop-types';
 
 const Pagination = (props) => {
-    const {pagesCount, pageCurrentPagination} = props;
+    const {
+        pagesCount,
+        pageCurrentPagination
+    } = props;
     const arr = new Array(pagesCount).fill(pagesCount);
     const lastPage = arr.length;
     const pagePrev = (pageCurrentPagination - 1) === 0 ? 1 : (pageCurrentPagination - 1);
@@ -47,5 +51,10 @@ const Pagination = (props) => {
         </ul>
     )
 };
+
+Pagination.propTypes = {
+    pagesCount: PropTypes.number.isRequired,
+    pageCurrentPagination: PropTypes.number.isRequired
+}
 
 export default Pagination
