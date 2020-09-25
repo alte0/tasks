@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Task render 1`] = `
+<section
+  className="task task_expired task_single"
+>
+  <h3
+    className="task__title"
+  >
+    Задача 1
+  </h3>
+  <div
+    className="task__desc"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Описание задачи: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias qutask_idem officia quisquam optio, nam itaque, task_id neque fugit et tempora saepe, consequatur voluptatem maiores? Corrupti maiores provtask_ident blanditiis voluptas.",
+      }
+    }
+  />
+  <footer
+    className="task__footer"
+  >
+    <div
+      className="task__date-start"
+    >
+      Начало задачи: 
+       2019-12-12
+    </div>
+    <div
+      className="task__date-end"
+    >
+      Закончить задачу до: 
+      2019-12-13
+    </div>
+    <div
+      className="task__status"
+    >
+      Статус: 
+      В работе.
+    </div>
+    <div
+      className="task__execute"
+    >
+      
+    </div>
+    <div
+      className="task__author"
+    >
+      Назначил: 
+      Попов
+       
+      Павел
+       
+      Петрович
+    </div>
+    <div
+      className="task__executor"
+    >
+      Испонитель: 
+      Попов 2
+       
+      Павел 2
+       
+      Петрович 2
+    </div>
+  </footer>
+  
+</section>
+`;

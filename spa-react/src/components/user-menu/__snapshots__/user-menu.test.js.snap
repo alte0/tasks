@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserMenu render 1`] = `
+<nav
+  className="user-menu"
+>
+  <span
+    className="user-menu__user-name"
+  >
+      
+  </span>
+  <a
+    className="user-menu__link link"
+    href="/my-tasks-done"
+    onClick={[Function]}
+  >
+    Выполненные задачи мною
+  </a>
+  <a
+    className="user-menu__link link"
+    href="/designated-tasks"
+    onClick={[Function]}
+  >
+    Я назначил задачи
+  </a>
+  <a
+    className="user-menu__link link"
+    href="/add-task"
+    onClick={[Function]}
+  >
+    Поставить задачу
+  </a>
+  <a
+    className="user-menu__link user-menu__logout link"
+    href="/log-out"
+    onClick={[Function]}
+  >
+    Выйти
+  </a>
+</nav>
+`;

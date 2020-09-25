@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer render 1`] = `
+<footer
+  className="footer"
+>
+  <div
+    className="container"
+  >
+    <p>
+      Разработка Дмитриев Максим. © 2019 г.
+    </p>
+  </div>
+</footer>
+`;

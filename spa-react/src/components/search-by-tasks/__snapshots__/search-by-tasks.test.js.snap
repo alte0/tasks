@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container render 1`] = `
+Array [
+  <form
+    className="form form_search"
+    method="get"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="form__title visually-hidden"
+    >
+      Поиск по задачам.
+    </h3>
+    <div
+      className="form__row form__row_search"
+    >
+      <input
+        className="form__input form__input_search"
+        name="search-field"
+        onChange={[Function]}
+        placeholder="Поиск по задачам"
+        type="search"
+        value="Text search data"
+      />
+      <button
+        className="form__button submit"
+        disabled={true}
+        type="submit"
+      >
+        Найти
+      </button>
+    </div>
+  </form>,
+  ")",
+]
+`;
